@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('guest')->group(function () {
+Route::middleware('guest:peserta')->group(function () {
 	Route::get('/', function () {
 		return view('welcome');
 	})->name('index');
@@ -22,9 +22,13 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth:peserta')->prefix('ujian')->group(function () {
+	Route::post('/keluar', [Controller::class, 'pesertaLogout'])->name('peserta.logout');
 	Route::get('/', function () {
-		return view('peserta', ['title' => 'Data Peserta']);
+		return view('peserta', ['title' => 'Data Peserta', 'wire' => 'peserta.index']);
 	})->name('ujian.index');
+	Route::get('/tes', function () {
+		return view('peserta', ['title' => 'Mengerjakan Ujian', 'wire' => 'peserta.ujian']);
+	})->name('ujian.tes');
 });
 
 Route::middleware(['auth', 'verified', 'role:null,0,1'])->group(function () {

@@ -18,6 +18,8 @@ class CreatePesertaTestsTable extends Migration
             $table->bigInteger('jadwal_id');
             $table->bigInteger('peserta_id');
             $table->bigInteger('soal_id');
+            $table->bigInteger('login_id');
+            $table->bigInteger('item_soal_id');
             $table->string('type');
             $table->text('text');
             $table->double('score')->nullable();

@@ -5,8 +5,18 @@
 			<div class="flex">
 				<!-- Logo -->
 				<div class="shrink-0 flex items-center">
-					<a href="{{ route('dashboard') }}">
+					<a href="{{ route('dashboard') }}" class="flex items-center gap-3">
+						@if (auth()->user()->sekolah->opt['logo'])
+						<div class="block h-full w-10 fill-current text-gray-600">
+							<img src="{{ getUrl(auth()->user()->sekolah->opt['logo']) }}" class="w-full" alt="">
+						</div>
+						@else
 						<x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
+						@endif
+						<div class="flex flex-col items-center justify-start">
+							<span class="self-start text-sm">Aplikasi Ujian</span>
+							<span class="-mt-2 self-start font-bold text-lg">{{ auth()->user()->sekolah->name }}</span>
+						</div>
 					</a>
 				</div>
 

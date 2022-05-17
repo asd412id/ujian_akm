@@ -28,4 +28,14 @@ class PesertaLogin extends Model
 
         return $query;
     }
+
+    public function jadwal()
+    {
+        return $this->belongsTo(Jadwal::class);
+    }
+
+    public function test()
+    {
+        return $this->hasMany(PesertaTest::class, 'login_id');
+    }
 }

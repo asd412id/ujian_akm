@@ -9,16 +9,21 @@
     <title>{{ (isset($title)?$title.' | ':'').config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    @livewireStyles
+    @wireUiScripts
+    <script src="{{ mix('js/app.js') }}" defer></script>
 </head>
 
 <body>
+    <x-dialog z-index="z-50" blur="md" align="center" />
+    <x-notifications z-index="z-50" />
     <div class="font-sans text-gray-900 antialiased">
         {{ $slot }}
     </div>
+    @livewireScripts
 </body>
 
 </html>

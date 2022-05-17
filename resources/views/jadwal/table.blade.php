@@ -19,7 +19,10 @@
     <tbody>
       @forelse ($data as $key => $v)
       <tr class="hover:bg-gray-100">
-        <td class="py-4 px-6 border-b border-gray-100">{{ $v->name }}</td>
+        <td class="py-4 px-6 border-b border-gray-100 flex flex-col">
+          <span>{{ $v->name }}</span>
+          <em class="-mt-1 text-sm text-gray-500">{{ $v->opt['desc']??null }}</em>
+        </td>
         <td class="py-4 px-6 border-b border-gray-100"><span
             class="text-sm bg-lime-50 border border-lime-200 shadow-md text-lime-700 py-1 px-3 rounded-lg">{!!
             implode('</span> <span
@@ -42,10 +45,10 @@
             Aktif</span>' !!}</td>
         <td class="py-5 px-6 border-b border-gray-100 flex justify-end">
           <x-dropdown>
-            <x-dropdown.item wire:click="activate('{{ $v->id }}')" icon="{{ $v->active?'ban':'check-circle' }}"
+            <x-dropdown.item wire:click.prefetch="activate('{{ $v->id }}')" icon="{{ $v->active?'ban':'check-circle' }}"
               label="{{ $v->active?'Non-Aktifkan':'Aktifkan' }}" />
-            <x-dropdown.item wire:click="edit('{{ $v->id }}')" icon="pencil" label="Edit" />
-            <x-dropdown.item wire:click="delete('{{ $v->id }}')" icon="trash" label="Hapus" />
+            <x-dropdown.item wire:click.prefetch="edit('{{ $v->id }}')" icon="pencil" label="Edit" />
+            <x-dropdown.item wire:click.prefetch="delete('{{ $v->id }}')" icon="trash" label="Hapus" />
           </x-dropdown>
         </td>
       </tr>

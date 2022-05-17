@@ -5111,6 +5111,59 @@ window.insertTag = function (el, text) {
   setSelection(el, newPos, newPos);
 };
 
+window.timer = function (expiry) {
+  return {
+    expiry: expiry,
+    remaining: null,
+    init: function init() {
+      var _this = this;
+
+      this.setRemaining();
+      setInterval(function () {
+        _this.setRemaining();
+      }, 1000);
+    },
+    setRemaining: function setRemaining() {
+      var diff = this.expiry - new Date().getTime();
+      this.remaining = parseInt(diff / 1000);
+    },
+    days: function days() {
+      return {
+        value: this.remaining / 86400,
+        remaining: this.remaining % 86400
+      };
+    },
+    hours: function hours() {
+      return {
+        value: this.days().remaining / 3600,
+        remaining: this.days().remaining % 3600
+      };
+    },
+    minutes: function minutes() {
+      return {
+        value: this.hours().remaining / 60,
+        remaining: this.hours().remaining % 60
+      };
+    },
+    seconds: function seconds() {
+      return {
+        value: this.minutes().remaining
+      };
+    },
+    format: function format(value) {
+      return ("0" + parseInt(value)).slice(-2);
+    },
+    time: function time() {
+      return {
+        days: this.format(this.days().value),
+        hours: this.format(this.hours().value),
+        minutes: this.format(this.minutes().value),
+        seconds: this.format(this.seconds().value)
+      };
+    }
+  };
+};
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

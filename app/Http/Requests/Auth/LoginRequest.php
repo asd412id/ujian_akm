@@ -56,17 +56,7 @@ class LoginRequest extends FormRequest
 
         RateLimiter::clear($this->throttleKey());
 
-        if (!Storage::disk('public')->exists('uploads')) {
-            Storage::disk('public')->makeDirectory('uploads');
-            Storage::disk('public')->makeDirectory('thumbs');
-        }
-
-        $dir = generateUserFolder(auth()->user()->sekolah->id);
-        if (!Storage::disk('public')->exists('uploads/' . $dir)) {
-            Storage::disk('public')->makeDirectory('uploads/' . $dir);
-            Storage::disk('public')->makeDirectory('thumbs/' . $dir);
-        }
-        setcookie('_userfolder', $dir, time() + 60 * 60 * 24 * 30 * 12 * 10, '/');
+        setUserFolder(auth()->user()->sekolah->id);
     }
 
     /**

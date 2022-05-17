@@ -14,6 +14,7 @@ class CreateItemSoalsTable extends Migration
     public function up()
     {
         Schema::create('item_soals', function (Blueprint $table) {
+            $table->id();
             $table->bigInteger('soal_id');
             $table->string('type');
             $table->string('num')->nullable();

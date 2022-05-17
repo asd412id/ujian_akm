@@ -26,4 +26,9 @@ class Peserta extends Authenticatable
     {
         return $this->belongsToMany(Jadwal::class);
     }
+
+    public function logins()
+    {
+        return $this->hasMany(PesertaLogin::class);
+    }
 }

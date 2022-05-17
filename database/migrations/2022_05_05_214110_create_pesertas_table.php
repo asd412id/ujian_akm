@@ -22,6 +22,7 @@ class CreatePesertasTable extends Migration
             $table->string('token', 40)->unique();
             $table->string('ruang')->nullable();
             $table->string('remember_token')->nullable();
+            $table->boolean('is_login')->default(false);
             $table->json('opt')->nullable();
             $table->timestamps();
         });

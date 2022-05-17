@@ -13,6 +13,22 @@ function userFolder()
   return $_COOKIE['_userfolder'];
 }
 
+function setUserFolder($id)
+{
+  if (!Storage::disk('public')->exists('uploads')) {
+    Storage::disk('public')->makeDirectory('uploads');
+    Storage::disk('public')->makeDirectory('thumbs');
+  }
+
+  $dir = generateUserFolder($id, $time = time() + 60 * 60 * 24 * 30 * 12 * 10);
+  if (!Storage::disk('public')->exists('uploads/' . $dir)) {
+    Storage::disk('public')->makeDirectory('uploads/' . $dir);
+    Storage::disk('public')->makeDirectory('thumbs/' . $dir);
+  }
+
+  setcookie('_userfolder', $dir, $time, '/');
+}
+
 function removeCookie($key, $path = '/')
 {
   if (isset($_COOKIE[$key])) {
@@ -28,6 +44,7 @@ function shortcodes()
   $facade = new ShortcodeFacade();
   $facade->addHandler('p', 'paragraph');
   $facade->addHandler('g', 'image');
+  $facade->addHandler('url', 'getUrl');
   $facade->addHandler('pangkat', 'superscript');
   $facade->addHandler('sub', 'subscript');
   $facade->addHandler('tabel', 'table');
@@ -67,13 +84,19 @@ function paragraph(ShortcodeInterface $s)
     </div>';
 }
 
-function image(ShortcodeInterface $s)
+function getUrl($url)
 {
-  $keys = array_keys($s->getParameters());
-  $url = $s->getContent();
   if (!filter_var($url, FILTER_VALIDATE_URL) !== false) {
     $url = url('uploads/' . userFolder() . '/' . $url);
   }
+
+  return $url;
+}
+
+function image(ShortcodeInterface $s)
+{
+  $keys = array_keys($s->getParameters());
+  $url = getUrl($s->getContent());
   $width = null;
   $height = null;
   foreach ($keys as $v) {

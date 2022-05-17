@@ -143,7 +143,7 @@ class Soal extends Component
 				foreach ($item_soals as $v) {
 					if (isValidJSON($v)) {
 						$item = json_decode($v);
-						if (!in_array(strtolower($item->type), ['pg', 'pgk', 'jd', 'is', 'u'])) {
+						if (!$item->num || !is_numeric($item->num) || intval($item->num) == 0 || !in_array(strtolower($item->type), ['pg', 'pgk', 'jd', 'is', 'u'])) {
 							continue;
 						}
 						$isoal = new ItemSoal();
