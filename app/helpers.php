@@ -226,7 +226,7 @@ function opsi(ShortcodeInterface $s)
     'label' => $s->getParameter('label') ?? null,
     'code' => @$keys[0] ?? null,
     'correct' => in_array('benar', $keys) ? true : false,
-    'relation' => $s->getParameter('relasi') ? explode(",", $s->getParameter('relasi')) : null,
+    'relation' => $s->getParameter('relasi') ? [explode(",", $s->getParameter('relasi'))[0]] : null,
     'content' => trim($s->getContent())
   ]);
 }

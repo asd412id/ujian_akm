@@ -37,7 +37,7 @@ class Controller extends BaseController
 			return redirect()->back()->with('error', 'ID Peserta dan password tidak sesuai')->withInput($r->only('peserta_id'));
 		}
 
-		if ($user->is_login) {
+		if ($user->sekolah->limit_login && $user->is_login) {
 			return redirect()->back()->with('error', 'Anda telah login di tempat lain')->withInput($r->only('peserta_id'));
 		}
 
@@ -57,6 +57,7 @@ class Controller extends BaseController
 		$user->is_login = false;
 		if ($user->save()) {
 			auth()->logout();
+			removeCookie('_userfolder');
 		}
 		return redirect()->back();
 	}

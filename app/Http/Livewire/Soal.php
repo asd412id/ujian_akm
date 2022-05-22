@@ -139,14 +139,13 @@ class Soal extends Component
 		if ($update->save()) {
 			$item_soals = getJson(parseSoal(cleanCodeTags($this->item_soals)));
 			if (count($item_soals)) {
-				$update->item_soals()->delete();
 				foreach ($item_soals as $v) {
 					if (isValidJSON($v)) {
 						$item = json_decode($v);
-						if (!$item->num || !is_numeric($item->num) || intval($item->num) == 0 || !in_array(strtolower($item->type), ['pg', 'pgk', 'jd', 'is', 'u'])) {
+						if (!$item->num || !is_numeric($item->num) || intval($item->num) == 0 || !in_array(strtolower($item->type), ['pg', 'pgk', 'jd', 'bs', 'is', 'u'])) {
 							continue;
 						}
-						$isoal = new ItemSoal();
+						$isoal = $update->item_soals()->where('num', $item->num)->first() ?? new ItemSoal();
 						$isoal->soal_id = $update->id;
 						$isoal->type = strtolower($item->type);
 						$isoal->num = $item->num;

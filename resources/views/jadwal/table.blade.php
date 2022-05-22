@@ -43,13 +43,15 @@
             class="text-sm bg-positive-50 text-positive-700 border border-positive-200 shadow-md py-1 px-3 rounded-lg">Aktif</span>':'<span
             class="text-sm bg-negative-50 text-negative-700 border border-negative-200 shadow-md py-1 px-3 rounded-lg">Tidak
             Aktif</span>' !!}</td>
-        <td class="py-5 px-6 border-b border-gray-100 flex justify-end">
-          <x-dropdown>
-            <x-dropdown.item wire:click.prefetch="activate('{{ $v->id }}')" icon="{{ $v->active?'ban':'check-circle' }}"
-              label="{{ $v->active?'Non-Aktifkan':'Aktifkan' }}" />
-            <x-dropdown.item wire:click.prefetch="edit('{{ $v->id }}')" icon="pencil" label="Edit" />
-            <x-dropdown.item wire:click.prefetch="delete('{{ $v->id }}')" icon="trash" label="Hapus" />
-          </x-dropdown>
+        <td class="py-4 px-6 border-b border-gray-100">
+          <div class="flex justify-end">
+            <x-dropdown>
+              <x-dropdown.item wire:click="activate('{{ $v->id }}')" icon="{{ $v->active?'ban':'check-circle' }}"
+                label="{{ $v->active?'Non-Aktifkan':'Aktifkan' }}" />
+              <x-dropdown.item wire:click="edit('{{ $v->id }}')" icon="pencil" label="Edit" />
+              <x-dropdown.item wire:click="delete('{{ $v->id }}')" icon="trash" label="Hapus" />
+            </x-dropdown>
+          </div>
         </td>
       </tr>
       @empty

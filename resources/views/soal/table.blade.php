@@ -31,9 +31,9 @@
           @endif
         </td>
         <td class="py-4 px-6 border-b border-gray-100 flex justify-end gap-1">
-          <x-button info icon="search" xs label="Lihat Soal" wire:click.prefetch="show('{{ $v->id }}')" />
-          <x-button warning icon="pencil" xs label="Edit" wire:click.prefetch="edit('{{ $v->id }}')" />
-          <x-button red icon="trash" xs label="Hapus" wire:click.prefetch="delete('{{ $v->id }}')" />
+          <x-button info icon="search" xs label="Lihat Soal" wire:click="show('{{ $v->id }}')" />
+          <x-button warning icon="pencil" xs label="Edit" wire:click="edit('{{ $v->id }}')" />
+          <x-button red icon="trash" xs label="Hapus" wire:click="delete('{{ $v->id }}')" />
         </td>
       </tr>
       @empty

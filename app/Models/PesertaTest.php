@@ -17,8 +17,14 @@ class PesertaTest extends Model
     ];
 
     public $casts = [
-        'options' => 'array',
-        'corrects' => 'array',
-        'relations' => 'array',
+        'option' => 'array',
+        'correct' => 'array',
+        'relation' => 'array',
+        'label' => 'array',
     ];
+
+    public function itemSoal()
+    {
+        return $this->belongsTo(ItemSoal::class);
+    }
 }

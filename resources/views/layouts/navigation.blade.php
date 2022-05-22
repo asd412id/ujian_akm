@@ -14,7 +14,7 @@
 						<x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
 						@endif
 						<div class="flex flex-col items-center justify-start">
-							<span class="self-start text-sm">Aplikasi Ujian</span>
+							<span class="self-start text-sm">{{ env('APP_NAME','Aplikasi Ujian') }}</span>
 							<span class="-mt-2 self-start font-bold text-lg">{{ auth()->user()->sekolah->name }}</span>
 						</div>
 					</a>

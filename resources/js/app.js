@@ -3,12 +3,14 @@ require('./bootstrap');
 import Alpine from 'alpinejs';
 import LeaderLine from 'leader-line-new';
 import { Html5Qrcode } from "html5-qrcode";
+import MD5 from 'crypto-js/md5';
 require('froala-editor/js/plugins.pkgd.min');
 
 window.Alpine = Alpine;
 window.FroalaEditor = require('froala-editor');
 window.LeaderLine = LeaderLine;
 window.Html5Qrcode = Html5Qrcode;
+window.md5 = MD5;
 
 Alpine.start();
 
@@ -169,4 +171,39 @@ window.timer = (expiry) => {
       }
     },
   }
+}
+
+window.lines = {};
+window.linterval = {};
+
+window.generateLine = (start, end, id = 'color') => {
+  const line = new LeaderLine(start, end, {
+    startPlug: 'disc',
+    endPlug: 'disc',
+    color: generateColor('coloravocado' + MD5(id).toString())
+  });
+
+  if (linterval[id] != undefined) {
+    clearInterval(linterval[id]);
+    delete (linterval[id]);
+  }
+
+  linterval[id] = setInterval(() => {
+    try {
+      line.position();
+    } catch { };
+  }, 10)
+
+  return line;
+}
+
+window.removeLine = async (line, id = 'color') => {
+  if (line != undefined) {
+    if (linterval[id] != undefined) {
+      clearInterval(linterval[id]);
+      delete (linterval[id]);
+    }
+    line.remove();
+  }
+  return null;
 }

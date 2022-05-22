@@ -25,6 +25,11 @@ class Jadwal extends Model
         return $this->belongsToMany(Soal::class, 'jadwal_soal');
     }
 
+    public function item_soals($sid)
+    {
+        return ItemSoal::whereIn('soal_id', $sid);
+    }
+
     public function pesertas()
     {
         return $this->belongsToMany(Peserta::class, 'jadwal_peserta');

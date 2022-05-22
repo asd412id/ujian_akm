@@ -27,6 +27,7 @@ class CreatePesertaTestsTable extends Migration
             $table->json('correct')->nullable();
             $table->json('relation')->nullable();
             $table->text('answer')->nullable();
+            $table->json('label')->nullable();
             $table->double('pscore')->nullable();
             $table->json('opt')->nullable();
             $table->timestamps();

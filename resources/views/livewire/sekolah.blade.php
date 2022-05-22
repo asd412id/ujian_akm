@@ -2,16 +2,18 @@
 	<div class="w-full md:w-6/12">
 		<div class="shadow-sm p-6 bg-white border-b border-gray-200 rounded-lg">
 			<h3 class="text-2xl">Data Sekolah</h3>
-			<form wire:submit.prevent='update' class="mt-2 flex flex-col gap-3">
+			<form wire:submit.prevent='update' class="mt-2 flex flex-col gap-3" x-data>
 				<x-input label="Nama Sekolah" wire:model.defer="nama_sekolah" placeholder="Masukkan nama sekolah" />
 				<div>
-					<x-input label="Nama File Logo Sekolah" wire:model.defer="logo_sekolah"
+					<x-input x-ref="logo_input" label="Nama File Logo Sekolah" wire:model.defer="logo_sekolah"
 						placeholder="Masukkan kode logo sekolah" corner-hint="Contoh: nama_file.png, logo/nama_file.png"
 						hint="Nama file berdasarkan lokasi file pada media" />
-					<div class="w-24 mt-1 p-1 border border-solid border-gray-300 rounded-md shadow-md">
+					<div class="w-24 mt-1 p-1 border border-solid border-gray-300 rounded-md shadow-md"
+						x-on:click="$refs.logo_input.select()">
 						{!! shortcode('[g]'.$logo_sekolah.'[/g]') !!}
 					</div>
 				</div>
+				<x-toggle lg wire:model.defer='limitlogin' label="Batasi login peserta untuk 1 (satu) perangkat saja." />
 				<div class="flex flex-col">
 					<x-alabel>KOP Sekolah Editor</x-alable>
 						<x-editor wire:model.defer='kop_sekolah'

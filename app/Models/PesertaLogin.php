@@ -23,10 +23,10 @@ class PesertaLogin extends Model
     public function soals()
     {
         $ids_order = implode(',', $this->soal);
-        $query = Soal::whereIn('id', $this->soal)
+        $query = ItemSoal::whereIn('id', $this->soal)
             ->orderByRaw("FIELD(id, $ids_order)");
 
-        return $query;
+        return $query->get();
     }
 
     public function jadwal()

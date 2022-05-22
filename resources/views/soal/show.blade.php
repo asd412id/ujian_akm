@@ -11,7 +11,7 @@
         <div>
           <p class="font-bold italic text-sm text-gray-400">#Jenis: {{ strtoupper($v->type) }}, Skor: {{ $v->score }}
           </p>
-          <p class="flex gap-1"><span>{{ $v->num??($k+1) }}.</span> <span>{!! shortcode($v->text) !!}</span></p>
+          <p class="flex gap-1"><span>{{ ($k+1) }}.</span> <span>{!! shortcode($v->text) !!}</span></p>
         </div>
         @if ((strtolower($v->type)=='pg' || strtolower($v->type)=='pgk') && is_array($v->options))
         <div class="flex flex-col gap-1">
@@ -24,6 +24,30 @@
         <div class="flex flex-col gap-1">
           <div class="font-bold flex gap-1"><span>Jawaban:</span> {!! shortcode($v->answer) !!}</div>
         </div>
+        @elseif ((strtolower($v->type)=='bs'))
+        <table class="w-full">
+          <thead>
+            <tr>
+              <th class="py-2 px-3 border border-gray-400 border-b-2 bg-gray-200">Pernyataan</th>
+              <th class="py-2 px-3 border border-gray-400 border-b-2 bg-gray-200">Jawaban</th>
+            </tr>
+          </thead>
+          @forelse ($v->options as $key => $o)
+          <tr>
+            <td class="py-2 px-3 border border-gray-400">{!! shortcode($o) !!}</td>
+            <td class="py-2 px-3 border border-gray-400 text-center">
+              {!! $v->corrects[$key]?'<span
+                class="bg-positive-50 text-positive-600 border border-positive-100 px-2 shadow-md rounded-md">Benar</span>':'<span
+                class="bg-negative-50 text-negative-600 border border-negative-100 px-2 shadow-md rounded-md">Salah</span>'
+              !!}
+            </td>
+          </tr>
+          @empty
+          <tr>
+            <td colspan="3" class="text-center">Pilihan jawaban tidak tersedia!</td>
+          </tr>
+          @endforelse
+        </table>
         @elseif (strtolower($v->type)=='jd' && $v->relations)
         <div class="flex gap-48 c`relative">
           <div class="flex flex-col gap-2 relative">

@@ -44,8 +44,14 @@ class Sekolah extends Model
     {
         return $this->opt && isset($this->opt['kop']) ? $this->opt['kop'] : null;
     }
+
     public function getLogoAttribute()
     {
         return $this->opt && isset($this->opt['logo']) ? $this->opt['logo'] : null;
+    }
+
+    public function getLimitLoginAttribute()
+    {
+        return $this->opt && isset($this->opt['limit_login']) ? $this->opt['limit_login'] : null;
     }
 }

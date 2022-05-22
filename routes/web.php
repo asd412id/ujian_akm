@@ -27,8 +27,8 @@ Route::middleware('auth:peserta')->prefix('ujian')->group(function () {
 		return view('peserta', ['title' => 'Data Peserta', 'wire' => 'peserta.index']);
 	})->name('ujian.index');
 	Route::get('/tes', function () {
-		return view('peserta', ['title' => 'Mengerjakan Ujian', 'wire' => 'peserta.ujian']);
-	})->name('ujian.tes');
+		return view('peserta', ['title' => 'Mengerjakan Soal', 'wire' => 'peserta.ujian']);
+	})->name('ujian.tes')->middleware('ujian');
 });
 
 Route::middleware(['auth', 'verified', 'role:null,0,1'])->group(function () {

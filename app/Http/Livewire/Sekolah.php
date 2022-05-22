@@ -20,12 +20,14 @@ class Sekolah extends Component
 	public $password;
 	public $newpassword;
 	public $renewpassword;
+	public $limitlogin = false;
 
 	public function mount()
 	{
 		$this->nama_sekolah = auth()->user()->sekolah->name;
 		$this->logo_sekolah = auth()->user()->sekolah->logo;
 		$this->kop_sekolah = auth()->user()->sekolah->kop;
+		$this->limitlogin = auth()->user()->sekolah->limit_login;
 		$this->nama_admin = auth()->user()->name;
 		$this->email = auth()->user()->email;
 	}
@@ -48,6 +50,7 @@ class Sekolah extends Component
 		$update->opt = [
 			'kop' => $this->kop_sekolah,
 			'logo' => $this->logo_sekolah,
+			'limit_login' => $this->limitlogin,
 		];
 		if ($update->save()) {
 			return $this->notification()->success('Data berhasil disimpan');

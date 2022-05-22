@@ -17,7 +17,7 @@ $sekolah = auth()->user()->sekolah;
 									<img src="{{ getUrl($sekolah->opt['logo']) }}" class="w-full" alt="">
 								</div>
 								<div class="flex flex-col items-center justify-start">
-									<span class="self-start text-sm">Aplikasi Ujian</span>
+									<span class="self-start text-sm">{{ env('APP_NAME','Aplikasi Ujian') }}</span>
 									<span class="-mt-2 self-start font-bold text-lg">{{ $sekolah->name }}</span>
 								</div>
 							</a>
