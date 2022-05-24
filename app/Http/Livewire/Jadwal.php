@@ -259,8 +259,8 @@ class Jadwal extends Component
 		}
 		$this->ID = $jadwal->id;
 		$this->dialog()->confirm([
-			'title' => $jadwal->active ? 'Non-Aktifkan Jadwal?' : 'Aktifkan Jadwal?',
-			'description' => $jadwal->name,
+			'title' => ($jadwal->active ? 'Non-Aktifkan Jadwal' : 'Aktifkan Jadwal') . ' ' . $jadwal->name . '?',
+			'description' => $jadwal->active ? 'Semua peserta akan diset selesai ujian' : 'Peserta akan dapat mengikuti ujian',
 			'acceptLabel' => 'Ya',
 			'rejectLabel' => 'Tidak',
 			'method' => 'activated',
@@ -273,10 +273,43 @@ class Jadwal extends Component
 		if ($jadwal) {
 			$jadwal->active = !$jadwal->active;
 			if ($jadwal->save()) {
+				if (!$jadwal->active) {
+					$jadwal->logins()->update([
+						'end' => now()
+					]);
+				}
 				return $this->notification()->success('Jadwal berhasil di ' . ($jadwal->active ? 'Aktifkan' : 'Non-Aktifkan'));
 			}
 		}
 		return $this->notification()->error('Jadwal gagal di ' . ($jadwal->active ? 'Aktifkan' : 'Non-Aktifkan'));
+	}
+
+	public function resetUjian(ModelsJadwal $jadwal)
+	{
+		if ($jadwal->sekolah_id != auth()->user()->sekolah_id) {
+			$this->reset();
+			$this->resetValidation();
+			return $this->notification()->error('Data tidak tersedia!');
+		}
+		$this->ID = $jadwal->id;
+		$this->dialog()->confirm([
+			'title' => 'Reset Ujian dan Nilai Peserta?',
+			'description' => 'Ujian ini telah diikuti oleh ' . $jadwal->logins()->count() . ' Peserta',
+			'acceptLabel' => 'Ya',
+			'rejectLabel' => 'Tidak',
+			'method' => 'doResetUjian',
+		]);
+	}
+
+	public function doResetUjian()
+	{
+		$jadwal = auth()->user()->sekolah->jadwals()->find($this->ID);
+		if ($jadwal) {
+			$jadwal->logins()->delete();
+			$jadwal->tests()->delete();
+			return $this->notification()->success('Ujian berhasil di reset');
+		}
+		return $this->notification()->error('Ujian gagal di reset');
 	}
 
 	public function destroy()

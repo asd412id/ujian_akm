@@ -5135,6 +5135,7 @@ window.insertTag = function (el, text) {
 };
 
 window.timer = function (expiry) {
+  var ival;
   return {
     expiry: expiry,
     remaining: null,
@@ -5142,9 +5143,12 @@ window.timer = function (expiry) {
       var _this = this;
 
       this.setRemaining();
-      setInterval(function () {
+      ival = setInterval(function () {
         _this.setRemaining();
       }, 1000);
+    },
+    stop: function stop() {
+      clearInterval(ival);
     },
     setRemaining: function setRemaining() {
       var diff = this.expiry - new Date().getTime();

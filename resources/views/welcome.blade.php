@@ -31,7 +31,7 @@
 					@csrf
 					<x-input lg primary type="text" placeholder="Masukkan ID Peserta" label="ID Peserta" autofocus
 						name="peserta_id" x-ref="id" x-bind:readonly='submit' value="{{ old('peserta_id') }}" />
-					<x-input lg name="password" type="password" placeholder="******************" label="Masukkan Password"
+					<x-input lg name="password" type="password" placeholder="******************" label="Password"
 						x-bind:readonly='submit' />
 					<div class="flex items-center {{ request()->secure()?'justify-between':'justify-end' }} gap-2">
 						@if (request()->secure())

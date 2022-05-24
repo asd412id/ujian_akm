@@ -11,6 +11,8 @@ class Peserta extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $fillable = ['is_login'];
+
     protected $hidden = [
         'password',
         'remember_token',

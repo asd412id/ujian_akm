@@ -9,12 +9,19 @@ class PesertaLogin extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['reset', 'end', 'created_at'];
+
     public $dates = [
         'start',
         'end',
         'created_at',
         'updated_at',
     ];
+
+    public function peserta()
+    {
+        return $this->belongsTo(Peserta::class);
+    }
 
     public $casts = [
         'soal' => 'array'
@@ -34,8 +41,16 @@ class PesertaLogin extends Model
         return $this->belongsTo(Jadwal::class);
     }
 
-    public function test()
+    public function tests()
     {
         return $this->hasMany(PesertaTest::class, 'login_id');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+        self::deleting(function ($m) {
+            $m->tests()->delete();
+        });
     }
 }

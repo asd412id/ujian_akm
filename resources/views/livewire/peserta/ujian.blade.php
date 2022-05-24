@@ -1,4 +1,5 @@
-<div class="flex flex-col-reverse md:flex-row gap-3 w-full" x-init="window.onblur=function(){console.log('cheated')}">
+<div class="flex flex-col-reverse md:flex-row gap-3 w-full" x-init="window.onblur=function(){console.log('cheated')}"
+	wire:key='{{ $soal->id }}'>
 	<div class="w-full md:w-9/12">
 		<div class="w-full shadow-md bg-white border border-gray-100 rounded-lg p-5 flex flex-col gap-3">
 			<div class="hidden" x-data x-init="
@@ -72,7 +73,7 @@
 				@elseif (strtolower($soal->type)=='jd' && is_array($soal->option))
 				<div class="flex justify-between md:justify-start md:gap-48 relative mt-5"
 					x-data="{relations: @entangle('srelation').defer, key: null, keyb: null}">
-					<div class="hidden" wire:key='{{ $soal->id }}' x-init="$nextTick(()=>{
+					<div class="hidden" x-init="$nextTick(()=>{
 						for(let i in relations){
 							if(relations[i] != null){
 								lines[i] = generateLine($refs[i], $refs[relations[i]], i);
@@ -233,7 +234,7 @@
 				<x-button amber label="{{ $key+1 }}" wire:click="toSoal('{{ $key }}')" class="shadow-md" />
 				@else
 				@php
-				$ll = $login->test()->where('item_soal_id',$bs->id)->first();
+				$ll = $login->tests()->where('item_soal_id',$bs->id)->first();
 				@endphp
 				@if ($ll && (is_array($ll->correct) && (count($ll->correct)) || is_array($ll->relation) &&
 				(count($ll->relation)) ||

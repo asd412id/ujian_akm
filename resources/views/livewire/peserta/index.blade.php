@@ -1,4 +1,14 @@
 <div class="flex flex-col md:flex-row gap-3 md:gap-5">
+	@if (session()->has('msg'))
+	<div
+		class="absolute top-14 shadow-md w-full max-w-sm right-5 z-50 py-3 px-5 rounded-md bg-amber-100 text-amber-600 border border-amber-100"
+		x-data x-init="setTimeout(()=>{$el.classList.add('hidden')},5000)">
+		<div class="flex gap-2 items-center">
+			<x-icon name="information-circle" class="w-5 h-5" />
+			{{ session()->get('msg') }}
+		</div>
+	</div>
+	@endif
 	<div class="w-full">
 		<div class="w-full shadow-md bg-primary-50 border border-primary-100 text-primary-600 rounded-lg p-5">
 			<div class="italic -mb-1">Selamat Datang,</div>
@@ -139,7 +149,7 @@
 								<td class="pt-1 text-sm align-top">
 									<span
 										class="text-sm align-top bg-rose-50 border border-rose-200 shadow-md text-rose-700 px-1 rounded-md">{{
-										$j->test()->whereNotNull('correct')->orWhereNotNull('relation')->orWhereNotNull('answer')->count().'
+										$j->tests()->whereNotNull('correct')->orWhereNotNull('relation')->orWhereNotNull('answer')->count().'
 										/
 										'.$j->jadwal->soal_count.' Nomor' }}</span>
 								</td>
@@ -180,8 +190,13 @@
 						wire:loading.class='cursor-not-allowed opacity-50' wire:target='join'>
 						<div class="flex flex-col gap-1">
 							<div class="flex flex-col md:flex-row gap-1 items-center" x-data="{countdown: null}" x-init="$nextTick(()=>{
-								countdown = timer({{ $login->start->addMinutes($loginJadwal->duration)->getPreciseTimestamp(3) }});
+								countdown = timer({{ $login->reset == 2 ?
+								now()->addMinutes($loginJadwal->duration)->subSeconds($login->start->diffInSeconds($login->created_at))->getPreciseTimestamp(3) :
+								$login->created_at->addMinutes($loginJadwal->duration)->getPreciseTimestamp(3) }});
 								countdown.init();
+								if(@js($login->reset) == 2){
+									countdown.stop();
+								}
 							})">
 								<div class="hidden" x-text="
 									if(countdown!=null){
@@ -191,7 +206,13 @@
 										}
 									}
 								"></div>
-								<h1 class="font-bold text-lg italic pr-2 text-amber-600">Ujian Sedang Berlangsung</h1>
+								<h1 class="font-bold text-lg italic pr-2 text-amber-600">
+									@if ($login->reset == 2)
+									Sisa Waktu Ujian
+									@else
+									Ujian Sedang Berlangsung
+									@endif
+								</h1>
 								<div
 									class="flex gap-1 py-1 px-3 bg-amber-50 border border-amber-100 text-amber-600 rounded-lg shadow-md mb-2 md:mb-0">
 									<h1 x-text="countdown!=null?countdown.time().days:'00'">00</h1>:
@@ -221,7 +242,7 @@
 										<div class="flex flex-wrap gap-1">
 											<span
 												class="text-sm align-top bg-rose-50 border border-rose-200 shadow-md text-rose-700 px-1 rounded-md">{{
-												$login->test()->whereNotNull('correct')->orWhereNotNull('relation')->orWhereNotNull('answer')->count().'
+												$login->tests()->whereNotNull('correct')->orWhereNotNull('relation')->orWhereNotNull('answer')->count().'
 												/
 												'.$loginJadwal->soal_count.' Nomor' }}</span>
 											@php

@@ -9,6 +9,12 @@ class Jadwal extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'start',
+        'end',
+        'reset',
+    ];
+
     public $dates = [
         'start',
         'end',
@@ -48,6 +54,12 @@ class Jadwal extends Model
     public static function boot()
     {
         parent::boot();
+        self::creating(function ($m) {
+            $m->uuid = \Str::uuid();
+        });
+        self::updating(function ($m) {
+            $m->uuid = $m->uuid ?? \Str::uuid();
+        });
         self::deleting(function ($m) {
             $m->soals()->detach();
             $m->pesertas()->detach();

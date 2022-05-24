@@ -15,6 +15,7 @@ class CreateJadwalsTable extends Migration
     {
         Schema::create('jadwals', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->nullable();
             $table->bigInteger('sekolah_id');
             $table->string('name');
             $table->dateTime('start')->nullable();
@@ -24,7 +25,7 @@ class CreateJadwalsTable extends Migration
             $table->boolean('shuffle')->default(false);
             $table->boolean('show_score')->default(false);
             $table->boolean('active')->default(false);
-            $table->json('opt')->default(false);
+            $table->json('opt')->nullable();
             $table->timestamps();
         });
     }

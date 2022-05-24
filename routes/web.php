@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Controller;
+use App\Models\Jadwal;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,6 +64,13 @@ Route::middleware(['auth', 'verified', 'role:null,0,1'])->group(function () {
 	Route::get('/jadwal', function () {
 		return view('pages', ['title' => 'Jadwal Ujian', 'wire' => 'jadwal']);
 	})->name('jadwal');
+	Route::get('/jadwal/{uuid}', function () {
+		$jadwal = Jadwal::where('uuid', request()->uuid)->first();
+		if (!$jadwal) {
+			return redirect()->route('jadwal')->withErrors('Jadwal tidak tersedia');
+		}
+		return view('pages', ['title' => 'Status Peserta - ' . $jadwal->name, 'wire' => 'status-peserta', 'params' => $jadwal]);
+	})->name('statuspeserta');
 });
 
 require __DIR__ . '/auth.php';

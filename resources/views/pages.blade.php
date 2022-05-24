@@ -7,6 +7,12 @@
 	</x-slot>
 
 	<div class="py-6">
-		@livewire($wire)
+		@php
+		$parameters = [];
+		if (isset($params)) {
+		$parameters['params'] = $params;
+		}
+		@endphp
+		@livewire($wire, $parameters)
 	</div>
 </x-app-layout>

@@ -123,14 +123,18 @@ window.insertTag = (el, text, l = 0) => {
 }
 
 window.timer = (expiry) => {
+  let ival;
   return {
     expiry: expiry,
     remaining: null,
     init() {
       this.setRemaining()
-      setInterval(() => {
+      ival = setInterval(() => {
         this.setRemaining();
       }, 1000);
+    },
+    stop() {
+      clearInterval(ival);
     },
     setRemaining() {
       const diff = this.expiry - new Date().getTime();

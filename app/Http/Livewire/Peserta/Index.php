@@ -20,6 +20,11 @@ class Index extends Component
 
 	public function getJadwal()
 	{
+		if (!$this->user->is_login) {
+			auth()->logout();
+			return redirect()->route('index');
+		}
+
 		$this->login = $this->user->logins()
 			->whereNotNull('start')
 			->whereNull('end')
@@ -40,7 +45,9 @@ class Index extends Component
 				->where('active', true)
 				->where('start', '<=', now())
 				->where('end', '>=', now())
-				->whereDoesntHave('logins')
+				->whereDoesntHave('logins', function ($q) {
+					$q->where('peserta_id', $this->user->id);
+				})
 				->orderBy('start', 'asc')
 				->get();
 		}
@@ -70,6 +77,12 @@ class Index extends Component
 			->first();
 
 		if ($checkLogin) {
+			if ($checkLogin->reset == 2) {
+				$duration = now()->subSeconds($checkLogin->created_at->addMinutes($jadwal->duration)->diffInSeconds($checkLogin->start->addMinutes($jadwal->duration)));
+				$dataUpdate['created_at'] = $duration;
+			}
+			$dataUpdate['reset'] = 0;
+			$checkLogin->update($dataUpdate);
 			return redirect()->route('ujian.tes');
 		}
 
@@ -90,7 +103,7 @@ class Index extends Component
 			$login = new PesertaLogin();
 			$login->peserta_id = auth()->user()->id;
 			$login->jadwal_id = $jadwal->id;
-			$login->soal = $jadwal->shuffle ? ItemSoal::whereIn('soal_id', $jadwal->soals->pluck('id')->toArray())->inRandomOrder('num')->limit($jadwal->soal_count)->select('id')->get()->pluck('id')->toArray() : ItemSoal::whereIn('soal_id', $jadwal->soals->pluck('id')->toArray())->orderBy('num', 'asc')->limit($jadwal->soal_count)->select('id')->get()->pluck('id')->toArray();
+			$login->soal = $jadwal->shuffle ? ItemSoal::whereIn('soal_id', $jadwal->soals->pluck('id')->toArray())->inRandomOrder()->limit($jadwal->soal_count)->select('id')->get()->pluck('id')->toArray() : ItemSoal::whereIn('soal_id', $jadwal->soals->pluck('id')->toArray())->orderBy('num', 'asc')->limit($jadwal->soal_count)->select('id')->get()->pluck('id')->toArray();
 			$login->start = now();
 			$login->end = null;
 			$login->current_number = 0;

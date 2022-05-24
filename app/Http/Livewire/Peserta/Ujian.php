@@ -31,11 +31,15 @@ class Ujian extends Component
 			->whereNull('end')
 			->orderBy('id', 'asc')
 			->first();
-		$this->timer = $this->login->start->addMinutes($this->login->jadwal->duration)->getPreciseTimestamp(3);
+		$this->timer = $this->login->created_at->addMinutes($this->login->jadwal->duration)->getPreciseTimestamp(3);
 	}
 
 	public function checkLogin()
 	{
+		if (!$this->user->is_login) {
+			auth()->logout();
+			return redirect()->route('ujian.tes');
+		}
 		$this->login = $this->user->logins()
 			->whereNotNull('start')
 			->whereNull('end')
@@ -48,7 +52,7 @@ class Ujian extends Component
 			if (now()->greaterThan($this->login->start->addMinutes($this->login->jadwal->duration))) {
 				return $this->stop();
 			}
-			$this->timer = $this->login->start->addMinutes($this->login->jadwal->duration)->getPreciseTimestamp(3);
+			$this->timer = $this->login->created_at->addMinutes($this->login->jadwal->duration)->getPreciseTimestamp(3);
 		}
 	}
 
@@ -71,11 +75,12 @@ class Ujian extends Component
 		$this->soals = $this->login->soals();
 	}
 
-	public function saveAnswer()
+	public function setSoal()
 	{
 		$this->checkLogin();
+		$hasSoal = $this->login->tests()->where('item_soal_id', $this->soals[$this->login->current_number]->id)->first();
 		$opts = null;
-		$this->soal = PesertaTest::where('item_soal_id', $this->soals[$this->login->current_number]->id)->first() ?? new PesertaTest();
+		$this->soal = $hasSoal ?? new PesertaTest();
 		$this->soal->jadwal_id = $this->login->jadwal_id;
 		$this->soal->peserta_id = $this->user->id;
 		$this->soal->soal_id = $this->soals[$this->login->current_number]->soal_id;
@@ -86,22 +91,27 @@ class Ujian extends Component
 		$this->soal->score = $this->soals[$this->login->current_number]->score;
 		$this->soal->label = $this->soals[$this->login->current_number]->labels;
 
-		if (!PesertaTest::where('item_soal_id', $this->soals[$this->login->current_number]->id)->first()) {
-			if ($this->soals[$this->login->current_number]->shuffle) {
-				$keys = array_keys($this->soals[$this->login->current_number]->options);
-				shuffle($keys);
-				foreach ($keys as $k) {
-					$opts[$k] = $this->soals[$this->login->current_number]->options[$k];
-				}
-			} else {
-				$opts = $this->soals[$this->login->current_number]->options;
+		if ($this->soals[$this->login->current_number]->shuffle) {
+			$keys = array_keys($this->soals[$this->login->current_number]->options);
+			shuffle($keys);
+			foreach ($keys as $k) {
+				$opts[$k] = $this->soals[$this->login->current_number]->options[$k];
 			}
+		} else {
+			$opts = $this->soals[$this->login->current_number]->options;
 		}
+
 
 		if ($opts) {
 			$this->soal->option = $opts;
 		}
+	}
 
+	public function saveAnswer()
+	{
+		$this->setSoal();
+
+		$soalOri = $this->soals[$this->login->current_number];
 		switch ($this->soal->type) {
 			case 'pg':
 				if (count($this->schoices)) {
@@ -110,6 +120,11 @@ class Ujian extends Component
 						$correct[$key] = false;
 						if ($this->schoices[0] == $key) {
 							$correct[$key] = true;
+							if ($soalOri->corrects[$key] == $correct[$key]) {
+								$this->soal->pscore = $soalOri->score;
+							} else {
+								$this->soal->pscore = 0;
+							}
 						}
 					}
 					$this->soal->correct = $correct;
@@ -118,27 +133,58 @@ class Ujian extends Component
 				}
 				break;
 			case 'pgk':
+				$ccount = 0;
+				foreach ($soalOri->corrects as $key => $v) {
+					$ccount += $v ? 1 : 0;
+				}
+
 				if (count($this->schoices)) {
 					$correct = [];
+					$i = 0;
+					$j = 0;
 					foreach ($this->soal->option as $key => $o) {
 						$correct[$key] = false;
 						if (in_array($key, $this->schoices[0])) {
 							$correct[$key] = true;
+							$j++;
+							if ($soalOri->corrects[$key] == $correct[$key]) {
+								$i++;
+							} else {
+								$j++;
+							}
 						}
 					}
+					if ($i <= 0) {
+						$i = 0;
+					}
+					if ($i <= $ccount && $j > count($soalOri->corrects)) {
+						$i = 0;
+					}
+					$this->soal->pscore = $i / $ccount * $soalOri->score;
 					$this->soal->correct = $correct;
 				} else {
 					$this->soal->correct = [];
 				}
 				break;
 			case 'jd':
+				$ccount = 0;
+				foreach ($soalOri->relations as $key => $v) {
+					$ccount += is_array($v) ? 1 : 0;
+				}
 				if (is_array($this->srelation) && count($this->srelation)) {
 					$r = [];
+					$i = 0;
 					foreach ($this->srelation as $key => $v) {
 						if ($v != null) {
-							$r[str_replace(['start', '_' . $this->soal->id], '', $key)] = [str_replace(['end', '_' . $this->soal->id], '', $v)];
+							$dkey = str_replace(['start', '_' . $this->soal->id], '', $key);
+							$dv = str_replace(['end', '_' . $this->soal->id], '', $v);
+							$r[$dkey] = [$dv];
+							if (in_array($dv, $soalOri->relations[$dkey])) {
+								$i++;
+							}
 						}
 					}
+					$this->soal->pscore = $i / $ccount * $soalOri->score;
 					$this->soal->relation = $r;
 				} else {
 					$this->soal->relation = [];
@@ -146,15 +192,24 @@ class Ujian extends Component
 				break;
 			case 'bs':
 				$r = [];
+				$i = 0;
 				foreach ($this->choices as $key => $v) {
 					$r[$key] = boolval($v);
+					if ($r[$key] == $soalOri->corrects[$key]) {
+						$i++;
+					}
 				}
+				$this->soal->pscore = $i / count($soalOri->options) * $soalOri->score;
 				$this->soal->correct = $r;
 				break;
 			case 'is':
+				similar_text(strtolower($this->answer), strtolower($soalOri->answer), $percent);
+				$this->soal->pscore = round($percent) / 100 * $soalOri->score;
 				$this->soal->answer = $this->answer;
 				break;
 			case 'u':
+				similar_text(strtolower($this->answer), strtolower($soalOri->answer), $percent);
+				$this->soal->pscore = round($percent) / 100 * $soalOri->score;
 				$this->soal->answer = $this->answer;
 				break;
 		}
@@ -164,37 +219,8 @@ class Ujian extends Component
 
 	public function getAnswer()
 	{
-		$this->checkLogin();
-		$opts = null;
-		$this->soal = PesertaTest::where('item_soal_id', $this->soals[$this->login->current_number]->id)->first() ?? new PesertaTest();
-
-		$this->soal->jadwal_id = $this->login->jadwal_id;
-		$this->soal->peserta_id = $this->user->id;
-		$this->soal->soal_id = $this->soals[$this->login->current_number]->soal_id;
-		$this->soal->login_id = $this->login->id;
-		$this->soal->item_soal_id = $this->soals[$this->login->current_number]->id;
-		$this->soal->type = $this->soals[$this->login->current_number]->type;
-		$this->soal->text = $this->soals[$this->login->current_number]->text;
-		$this->soal->score = $this->soals[$this->login->current_number]->score;
-		$this->soal->label = $this->soals[$this->login->current_number]->labels;
-
+		$this->setSoal();
 		$this->reset(['choices', 'relation', 'answer', 'srelation']);
-
-		if (!PesertaTest::where('item_soal_id', $this->soals[$this->login->current_number]->id)->first()) {
-			if ($this->soals[$this->login->current_number]->shuffle) {
-				$keys = array_keys($this->soals[$this->login->current_number]->options);
-				shuffle($keys);
-				foreach ($keys as $k) {
-					$opts[$k] = $this->soals[$this->login->current_number]->options[$k];
-				}
-			} else {
-				$opts = $this->soals[$this->login->current_number]->options;
-			}
-		}
-
-		if ($opts) {
-			$this->soal->option = $opts;
-		}
 
 		switch ($this->soal->type) {
 			case 'pg':

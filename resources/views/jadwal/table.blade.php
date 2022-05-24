@@ -18,10 +18,12 @@
     </thead>
     <tbody>
       @forelse ($data as $key => $v)
-      <tr class="hover:bg-gray-100">
-        <td class="py-4 px-6 border-b border-gray-100 flex flex-col">
-          <span>{{ $v->name }}</span>
-          <em class="-mt-1 text-sm text-gray-500">{{ $v->opt['desc']??null }}</em>
+      <tr class="{{ !$v->active && $v->logins()->count() ? 'bg-gray-200' : 'hover:bg-gray-100' }}">
+        <td class="py-4 px-6 border-b border-gray-100">
+          <div class="flex flex-col">
+            <span>{{ $v->name }}</span>
+            <em class="-mt-1 text-sm text-gray-500">{{ $v->opt['desc']??null }}</em>
+          </div>
         </td>
         <td class="py-4 px-6 border-b border-gray-100"><span
             class="text-sm bg-lime-50 border border-lime-200 shadow-md text-lime-700 py-1 px-3 rounded-lg">{!!
@@ -46,10 +48,22 @@
         <td class="py-4 px-6 border-b border-gray-100">
           <div class="flex justify-end">
             <x-dropdown>
+              @if ((!$v->active && !$v->logins()->count()) || $v->active)
               <x-dropdown.item wire:click="activate('{{ $v->id }}')" icon="{{ $v->active?'ban':'check-circle' }}"
                 label="{{ $v->active?'Non-Aktifkan':'Aktifkan' }}" />
+              @endif
+              @if (!$v->active)
+              @if ($v->logins()->count())
+              <x-dropdown.item wire:click="edit('{{ $v->id }}')" icon="pencil-alt" label="Input Nilai" />
+              <x-dropdown.item wire:click="resetUjian('{{ $v->id }}')" icon="refresh" label="Reset Ujian" />
+              @else
               <x-dropdown.item wire:click="edit('{{ $v->id }}')" icon="pencil" label="Edit" />
+              @endif
               <x-dropdown.item wire:click="delete('{{ $v->id }}')" icon="trash" label="Hapus" />
+              @else
+              <x-dropdown.item :href="route('statuspeserta',['uuid'=>$v->uuid])" icon="desktop-computer"
+                label="Status Peserta" />
+              @endif
             </x-dropdown>
           </div>
         </td>

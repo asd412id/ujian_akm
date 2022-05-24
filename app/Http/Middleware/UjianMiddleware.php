@@ -23,7 +23,7 @@ class UjianMiddleware
             ->first();
 
         if (!$login) {
-            return redirect()->route('ujian.index');
+            return redirect()->route('ujian.index')->with('msg', 'Jadwal tidak tersedia');
         }
         return $next($request);
     }
