@@ -4,8 +4,12 @@ namespace App\Http\Livewire;
 
 use App\Models\ItemSoal;
 use App\Models\Soal as ModelsSoal;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use WireUi\Traits\Actions;
 
 class Soal extends Component
@@ -13,6 +17,7 @@ class Soal extends Component
 
 	use Actions;
 	use WithPagination;
+	use WithFileUploads;
 
 	public $limit = 10;
 	public $search = null;
@@ -26,6 +31,7 @@ class Soal extends Component
 	public $name;
 	public $mapel;
 	public $item_soals;
+	public $excel;
 	public $listMapel;
 	public $soal;
 	public $dataattrlist = '';
@@ -136,6 +142,12 @@ class Soal extends Component
 		$update->sekolah_id = auth()->user()->sekolah_id;
 		$update->mapel_id = $this->mapel;
 		$update->soal_raw = $this->item_soals;
+		if ($this->excel) {
+			Storage::delete($update->excel);
+			$update->opt = [
+				'excel' => $this->excel->store('soalassets')
+			];
+		}
 		if ($update->save()) {
 			$item_soals = getJson(parseSoal(cleanCodeTags($this->item_soals)));
 			if (count($item_soals)) {
@@ -203,6 +215,179 @@ class Soal extends Component
 		$this->modal = true;
 	}
 
+	public function download(ModelsSoal $soal)
+	{
+		return response()->download(storage_path('app/' . $soal->excel), 'Soal ' . $soal->name . ' - ' . env('APP_NAME', 'Aplikasi Ujian') . '.xlsx');
+	}
+
+	public function downloadFormat()
+	{
+		return response()->download(resource_path('format_soal.xlsx'), 'Format Soal - ' . env('APP_NAME', 'Aplikasi Ujian') . '.xlsx');
+	}
+
+	public function getRichText($text)
+	{
+		if ($text instanceof RichText) {
+			$newtext = '';
+			foreach ($text->getRichTextElements() as $richTextElement) {
+				if ($richTextElement->getFont()) {
+					$st = 0;
+					$styles = '';
+					if ($richTextElement->getFont()->getBold() === true) {
+						$st = 1;
+						$styles = $styles == '' ? $richTextElement->getText() : $styles;
+						$styles = sprintf('<strong>%s</strong>', $styles);
+					}
+					if ($richTextElement->getFont()->getItalic() === true) {
+						$st = 1;
+						$styles = $styles == '' ? $richTextElement->getText() : $styles;
+						$styles = sprintf('<em>%s</em>', $styles);
+					}
+					if ($richTextElement->getFont()->getUnderline() !== 'none') {
+						$st = 1;
+						$styles = $styles == '' ? $richTextElement->getText() : $styles;
+						$styles = sprintf('<u>%s</u>', $styles);
+					}
+					if ($richTextElement->getFont()->getStrikethrough() === true) {
+						$st = 1;
+						$styles = $styles == '' ? $richTextElement->getText() : $styles;
+						$styles = sprintf('<strike>%s</strike>', $styles);
+					}
+					if ($richTextElement->getFont()->getColor()->getRGB() != '000000') {
+						$st = 1;
+						$styles = $styles == '' ? $richTextElement->getText() : $styles;
+						$styles = sprintf('<span style="color: #' . $richTextElement->getFont()->getColor()->getRGB() . '">%s</span>', $styles);
+					}
+					if ($richTextElement->getFont()->getSuperscript() === true) {
+						$st = 1;
+						$styles = $styles == '' ? $richTextElement->getText() : $styles;
+						$styles = sprintf('<sup>%s</sup>', $styles);
+					}
+					if ($richTextElement->getFont()->getSubscript() === true) {
+						$st = 1;
+						$styles = $styles == '' ? $richTextElement->getText() : $styles;
+						$styles = sprintf('<sub>%s</sub>', $styles);
+					}
+
+					if (!$st) {
+						$newtext .= $richTextElement->getText();
+					}
+					$newtext .= $styles;
+				} else {
+					$newtext .= $richTextElement->getText();
+				}
+			}
+			return $newtext;
+		}
+		return $text;
+	}
+
+	public function updatedExcel()
+	{
+		$this->validate([
+			'excel' => 'required|mimes:xls,xlsx,ods,bin'
+		], [
+			'excel.required' => 'File excel tidak boleh kosong',
+			'excel.mimes' => 'Format file yang diimport tidak dikenali',
+		]);
+
+		$reader = IOFactory::load($this->excel->path());
+		$elements = $reader->getSheetByName('Soal')->toArray();
+
+		if (count($elements)) {
+			$cols = range('A', 'Z');
+			$soals = '';
+			foreach ($elements as $key => $row) {
+				if ($key == 0) {
+					continue;
+				}
+				if (!$row[0] || !is_numeric($row[0])) {
+					continue;
+				}
+				$jenis = $row[2];
+				if (!in_array(strtolower($jenis), ['pg', 'pgk', 'is', 'u', 'bs', 'jd'])) {
+					continue;
+				}
+				$opsi_count = $row[6];
+				if (intval($opsi_count) <= 0) {
+					$opsi_count = 1;
+				}
+				$score = $row[5];
+				if (!$score) {
+					continue;
+				}
+				$shuffle = $row[4] == 'Ya' ? ' acak' : null;
+
+				if ($key > 1) {
+					$soals .= "\n";
+				}
+
+				$soals .= sprintf("[soal no=%s jenis=%s skor=%s%s]", $key, $jenis, $score, $shuffle);
+
+				$soal = $reader->getSheetByName('Soal')->getCell($cols[1] . ($key + 1))->getValue();
+
+				if (!$soal || $soal == '') {
+					continue;
+				}
+
+				$soal = $this->getRichText($soal);
+				$soals .= sprintf("\n\t[teks]\n\t\t%s\n\t[/teks]", $soal);
+
+				$options = null;
+				$labels = array_map(function ($d) {
+					return trim($d);
+				}, explode(",", $row[3]));
+				$corrects = null;
+				$relations = null;
+				$answer = null;
+
+				for ($i = 0; $i < $opsi_count; $i++) {
+					$k = $i + 8;
+					$opsi = $reader->getSheetByName('Soal')->getCellByColumnAndRow($k, $key + 1);
+					$val = $opsi->getValue();
+					$opstyle = $opsi->getAppliedStyle();
+
+					if (!$val || $val == '') {
+						continue;
+					}
+
+					$val = $this->getRichText($val);
+
+					if (strtolower($jenis) == 'is' || strtolower($jenis) == 'u') {
+						$answer = trim($val);
+						$soals .= sprintf("\n\t[jawaban]%s[/jawaban]", $answer);
+					} else {
+						$options[$cols[$i]] = trim($val);
+						if (in_array(strtolower($jenis), ['pg', 'pgk', 'bs'])) {
+							$corrects[$cols[$i]] = $opstyle->getFill()->getColorsChanged();
+							if (strtolower($jenis) == 'bs') {
+								$soals .= sprintf("\n\t[opsi %s%s%s]%s[/opsi]", $cols[$i], $corrects[$cols[$i]] ? ' benar' : null, (is_array($labels) && isset($labels[$i]) ? ' label="' . $labels[$i] . '"' : null), trim($val));
+							} else {
+								$soals .= sprintf("\n\t[opsi %s%s]%s[/opsi]", $cols[$i], $corrects[$cols[$i]] ? ' benar' : null, trim($val));
+							}
+						} else {
+							$color = $opstyle->getFill()->getStartColor()->getRGB();
+							if ($color == 'FFFFFF') {
+								$relations[$cols[$i]] = null;
+							} else {
+								$relations[$cols[$i]] = [];
+								for ($j = $i + 1; $j < $opsi_count; $j++) {
+									$color2 = $reader->getSheetByName('Soal')->getCellByColumnAndRow($j + 8, $key + 1)->getAppliedStyle()->getFill()->getStartColor()->getRGB();
+									if ($color == $color2) {
+										array_push($relations[$cols[$i]], $cols[$j]);
+									}
+								}
+							}
+							$soals .= sprintf("\n\t[opsi %s%s%s]%s[/opsi]", $cols[$i], (is_array($relations[$cols[$i]]) && count($relations[$cols[$i]]) ? ' relasi=' . implode(',', $relations[$cols[$i]]) : null), (is_array($labels) && isset($labels[$i]) ? ' label="' . $labels[$i] . '"' : null), trim($val));
+						}
+					}
+				}
+				$soals .= "\n[/soal]";
+			}
+			$this->item_soals = $soals;
+		}
+	}
+
 	public function delete(ModelsSoal $soal)
 	{
 		if ($soal->sekolah_id != auth()->user()->sekolah_id) {
@@ -264,12 +449,19 @@ class Soal extends Component
 
 	public function doDestroyAll()
 	{
-		$count = count($this->IDS);
+		$count = 0;
 		$soals = auth()->user()->sekolah->soals()
 			->whereIn('id', $this->IDS)->get();
 		if (count($soals)) {
 			foreach ($soals as $key => $s) {
-				$s->delete();
+				$items = $s->item_soals->pluck('id')->toArray();
+				if (!$s->jadwals()
+					->whereHas('tests', function ($q) use ($items) {
+						$q->whereIn('item_soal_id', $items);
+					})->count()) {
+					$s->delete();
+					$count++;
+				}
 			}
 			$this->resetValidation();
 			$this->resetExcept('listMapel');

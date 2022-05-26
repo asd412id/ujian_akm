@@ -42,7 +42,7 @@
 	<div class="w-full">
 		<div class="shadow-md bg-white border-b border-gray-200 rounded-lg p-5">
 			<div class="font-bold text-2xl underline underline-offset-8">Daftar Ujian</div>
-			<div class="mt-5 flex flex-col gap-3" wire:poll.keep-alive.15s='checkJadwal'>
+			<div class="mt-5 flex flex-col gap-3" wire:poll.keep-alive='checkJadwal'>
 				@if (is_null($this->login))
 				@forelse ($jadwal as $j)
 				<a href="#" wire:click.prevent='join({{ $j->id }})'>
@@ -125,9 +125,14 @@
 					wire:loading.class='cursor-not-allowed'>
 					<div class="flex flex-col gap-1">
 						<h1
-							class="font-bold bg-positive-50 border border-positive-100 text-positive-600 py-1 px-3 rounded-lg justify-end items-center flex gap-1">
-							<x-icon name="check-circle" class="w-5 h-5" />
-							UJIAN SELESAI
+							class="font-bold bg-positive-50 border border-positive-100 text-positive-600 py-1 px-3 rounded-lg justify-between items-center flex gap-1">
+							@if ($j->jadwal->show_score)
+							SKOR: {{ round($j->tests()->select(DB::raw('SUM(pscore) as nilai'))->get()[0]->nilai,2)??0 }}
+							@endif
+							<div class="flex gap-1 items-center">
+								<x-icon name="check-circle" class="w-5 h-5" />
+								UJIAN SELESAI
+							</div>
 						</h1>
 						<div class="flex flex-col mb-2">
 							<span class="font-bold text-lg">{{ $j->jadwal->name }}</span>

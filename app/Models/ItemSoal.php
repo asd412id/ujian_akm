@@ -16,4 +16,9 @@ class ItemSoal extends Model
         'labels' => 'array',
         'opt' => 'array',
     ];
+
+    public function tests()
+    {
+        return $this->hasMany(PesertaTest::class);
+    }
 }

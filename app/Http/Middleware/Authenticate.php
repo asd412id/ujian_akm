@@ -26,6 +26,7 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (!$request->expectsJson()) {
+            removeCookie('_userfolder');
             foreach ($this->guards as $guard) {
                 if ($guard == 'peserta') {
                     return route('index');

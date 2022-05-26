@@ -16,8 +16,10 @@
         @if ((strtolower($v->type)=='pg' || strtolower($v->type)=='pgk') && is_array($v->options))
         <div class="flex flex-col gap-1">
           @foreach ($v->options as $key => $o)
-          <div class="{{ $v->corrects[$key]?'font-bold':'' }} flex flex-wrap items-start">{!! $key.'. '.shortcode($o)
-            !!}</div>
+          <div class="{{ $v->corrects[$key]?'font-bold':'' }} flex flex-wrap items-start gap-2">{!! $key.'.
+            <span>'.shortcode($o).'</span>'
+            !!}
+          </div>
           @endforeach
         </div>
         @elseif ((strtolower($v->type)=='is' || strtolower($v->type)=='u') && $v->answer)
@@ -28,7 +30,8 @@
         <table class="w-full">
           <thead>
             <tr>
-              <th class="py-2 px-3 border border-gray-400 border-b-2 bg-gray-200">Pernyataan</th>
+              <th class="py-2 px-3 border border-gray-400 border-b-2 bg-gray-200">{{
+                isset($v->labels[0])?$v->labels[0]:'Pernyataan' }}</th>
               <th class="py-2 px-3 border border-gray-400 border-b-2 bg-gray-200">Jawaban</th>
             </tr>
           </thead>
@@ -52,7 +55,7 @@
         <div class="flex gap-48 c`relative">
           <div class="flex flex-col gap-2 relative">
             @if (isset($v->labels[0]))
-            <div class="font-bold border-b-2 border-b-gray-600">{{ $v->labels[0] }}</div>
+            <div class="font-bold border-b-2 border-b-gray-600 text-center">{{ $v->labels[0] }}</div>
             @endif
             @foreach ($v->relations as $key => $o)
             @if (is_array($o))
@@ -82,7 +85,7 @@
           </div>
           <div class="flex flex-col gap-2 relative">
             @if (isset($v->labels[1]))
-            <div class="font-bold border-b-2 border-b-gray-600">{{ $v->labels[1] }}</div>
+            <div class="font-bold border-b-2 border-b-gray-600 text-center">{{ $v->labels[1] }}</div>
             @endif
             @foreach ($v->relations as $key => $o)
             @if (!is_array($o))

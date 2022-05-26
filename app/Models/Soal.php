@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Soal extends Model
 {
     use HasFactory;
+
+    public $casts = ['opt' => 'array'];
 
     public function item_soals()
     {
@@ -19,9 +22,19 @@ class Soal extends Model
         return $this->belongsTo(Mapel::class);
     }
 
+    public function jadwals()
+    {
+        return $this->belongsToMany(Jadwal::class, 'jadwal_soal');
+    }
+
     public function sekolah()
     {
         return $this->belongsTo(Sekolah::class);
+    }
+
+    public function getExcelAttribute()
+    {
+        return isset($this->opt['excel']) ? $this->opt['excel'] : null;
     }
 
     public static function boot()
@@ -29,6 +42,9 @@ class Soal extends Model
         parent::boot();
         self::deleting(function ($m) {
             $m->item_soals()->delete();
+            if ($m->excel && Storage::exists($m->excel)) {
+                Storage::delete($m->excel);
+            }
         });
     }
 }

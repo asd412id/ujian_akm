@@ -275,7 +275,8 @@ class Jadwal extends Component
 			if ($jadwal->save()) {
 				if (!$jadwal->active) {
 					$jadwal->logins()->update([
-						'end' => now()
+						'end' => now(),
+						'created_at' => now(),
 					]);
 				}
 				return $this->notification()->success('Jadwal berhasil di ' . ($jadwal->active ? 'Aktifkan' : 'Non-Aktifkan'));
@@ -342,7 +343,7 @@ class Jadwal extends Component
 		$jadwals = auth()->user()->sekolah->jadwals()
 			->whereIn('id', $this->IDS)->get();
 		if (count($jadwals)) {
-			foreach ($jadwals as $key => $s) {
+			foreach ($jadwals as $s) {
 				$s->delete();
 			}
 			return $this->notification()->success('Berhasil menghapus ' . $count . ' data');

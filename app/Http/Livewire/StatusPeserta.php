@@ -55,7 +55,7 @@ class StatusPeserta extends Component
 
 	public function doResetUjian(PesertaLogin $dlogin)
 	{
-		$dlogin->delete();
+		$dlogin->update(['reset' => 3]);
 		return $this->notification()->success('Ujian peserta berhasil direset (' . $dlogin->peserta->name . ')');
 	}
 
@@ -74,7 +74,8 @@ class StatusPeserta extends Component
 	public function doStopUjian(PesertaLogin $dlogin)
 	{
 		$dlogin->update([
-			'end' => now()
+			'end' => now(),
+			'created_at' => now(),
 		]);
 		return $this->notification()->success('Ujian peserta berhasil dihentikan (' . $dlogin->peserta->name . ')');
 	}

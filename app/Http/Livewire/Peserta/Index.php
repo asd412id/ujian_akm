@@ -31,6 +31,14 @@ class Index extends Component
 			->orderBy('id', 'asc')
 			->first();
 
+		$ulogin = $this->user->logins()
+			->where('reset', 3);
+		if ($ulogin->count()) {
+			foreach ($ulogin->get() as $l) {
+				$l->delete();
+			}
+		}
+
 		if ($this->login && now()->greaterThan($this->login->start->addMinutes($this->login->jadwal->duration))) {
 			$this->login->end = now();
 			$this->login->save();

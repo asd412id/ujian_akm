@@ -3,6 +3,12 @@
     <x-input wire:model.defer='name' label="Nama Soal" placeholder="Masukkan nama soal" />
     <x-select label="Pilih Mata Pelajaran" placeholder="Pilih Mata Pelajaran" searchable wire:model.defer='mapel'
       :options="$listMapel" option-label="name" option-value="id" searchmodel="select_search" />
+    <div class="flex gap-2" x-data>
+      <x-button sm blue label="Download Format Soal Excel" icon="download" wire:click='downloadFormat' />
+      <x-button sm green label="Impor Soal Excel" icon="upload" x-on:click="$refs.excel.click()" />
+      <input type="file" wire:model='excel' class="hidden" x-ref="excel" accept=".xls,.xlsx,.ods,.bin">
+      <x-error name="excel" />
+    </div>
     <div class="flex flex-col gap-1">
       <x-alabel>Butir Soal (Gunakan tombol di bawah untuk memasukkan kode)</x-alabel>
       <div class="flex justify-between flex-wrap">

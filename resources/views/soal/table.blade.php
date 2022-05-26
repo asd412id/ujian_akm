@@ -16,6 +16,13 @@
     </thead>
     <tbody>
       @forelse ($data as $key => $v)
+      @php
+      $items = $v->item_soals->pluck('id')->toArray();
+      $hasTests = $v->jadwals()
+      ->whereHas('tests',function($q) use($items){
+      $q->whereIn('item_soal_id',$items);
+      })->count();
+      @endphp
       <tr class="hover:bg-gray-100">
         <td class="py-4 px-6 border-b border-gray-100">{{ $v->name }}</td>
         <td class="py-4 px-6 border-b border-gray-100">{{ $v->mapel->name }}</td>
@@ -32,8 +39,14 @@
         </td>
         <td class="py-4 px-6 border-b border-gray-100 flex justify-end gap-1">
           <x-button info icon="search" xs label="Lihat Soal" wire:click="show('{{ $v->id }}')" />
+          @if ($v->excel && Storage::exists($v->excel))
+          <x-button green icon="download" xs label="Excel" title="Download Soal Excel"
+            wire:click="download('{{ $v->id }}')" />
+          @endif
           <x-button warning icon="pencil" xs label="Edit" wire:click="edit('{{ $v->id }}')" />
+          @if (!$hasTests)
           <x-button red icon="trash" xs label="Hapus" wire:click="delete('{{ $v->id }}')" />
+          @endif
         </td>
       </tr>
       @empty

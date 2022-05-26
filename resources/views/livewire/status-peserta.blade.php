@@ -1,4 +1,4 @@
-<div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-row md:flex-col gap-2" wire:poll.keep-alive.15s>
+<div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-row md:flex-col gap-2">
 	<div class="flex gap-2 w-full items-center">
 		<div class="w-72">
 			<x-native-select :options="[
@@ -28,14 +28,22 @@
 						Aksi</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody wire:poll.keep-alive>
 				@foreach ($data as $key => $v)
 				@php
 				$dl = $v->logins()->where('jadwal_id',$jadwal->id)->first();
+				$cdown = null;
+				$ukey = null;
+				if ($dl) {
+				$ukey = $dl->id.md5($dl->end).$dl->reset.$dl->current_number;
+				$cdown = $dl->reset == 2 || $dl->end ?
+				now()->addMinutes($jadwal->duration)->subSeconds($dl->start->diffInSeconds($dl->created_at))->getPreciseTimestamp(3)
+				:
+				$dl->created_at->addMinutes($jadwal->duration)->getPreciseTimestamp(3);
+				}
 				@endphp
-				<tr class="{{ !$dl ? 'bg-gray-50 opacity-30 italic' : 'hover:bg-gray-100' }}" wire:ignore
-					wire:key='{{ $dl->id.$dl->reset.$dl->current_number }}'
-					x-data="{cdown: @js($dl->reset == 2 ? now()->addMinutes($jadwal->duration)->subSeconds($dl->start->diffInSeconds($dl->created_at))->getPreciseTimestamp(3) : $dl->created_at->addMinutes($jadwal->duration)->getPreciseTimestamp(3)), countdown: null}">
+				<tr class="{{ !$dl || ($dl && $dl->reset == 3) ? 'bg-gray-50 opacity-30 italic' : 'hover:bg-gray-100' }}"
+					wire:ignore wire:key='{{ $ukey }}' x-data="{cdown: @js($cdown), countdown: null}">
 					<td class="py-4 px-6 border-b border-gray-100">
 						<div class="flex flex-col">
 							<span>{{ $v->name }}</span>
@@ -50,7 +58,7 @@
 					</td>
 					<td class="py-4 px-6 border-b border-gray-100">
 						<div class="flex gap-1 items-center">
-							@if ($dl)
+							@if ($dl && $dl->reset != 3)
 							<span
 								class="text-sm bg-positive-50 border border-positive-200 shadow-md text-positive-700 px-1 rounded-lg">{{
 								$dl->start->format('d/m/Y H:i:s') }}</span>
@@ -64,13 +72,15 @@
 						</div>
 					</td>
 					<td class="py-4 px-6 border-b border-gray-100">
-						@if ($dl)
+						@if ($dl && $dl->reset != 3)
 						<div class="flex items-center">
 							<div class="flex gap-1 !font-bold border border-sky-100 bg-sky-50 text-sky-600 px-2 rounded-md shadow-md"
 								x-ref="timer{{ $dl->id }}" x-init="$nextTick(()=>{
 									countdown = timer(cdown);
 									countdown.init();
-									if(@js($dl->reset) == 2){
+									if(@js($dl->reset) == 2 || @js($dl->end)){
+										$refs.timer{{ $dl->id }}.classList.add('border-orange-100');
+										$refs.timer{{ $dl->id }}.classList.add('bg-orange-50');
 										$refs.timer{{ $dl->id }}.classList.add('text-orange-500');
 										countdown.stop();
 									}
@@ -100,17 +110,20 @@
 						@endif
 					</td>
 					<td class="py-4 px-6 border-b border-gray-100">
+						@if ($dl && $dl->reset != 3)
 						<div class="flex flex-col gap-1">
 							<div class="flex">
-								<div class="font-bold bg-violet-600 text-white px-2 rounded-lg shadow-md">
-									Nilai: {{ round($dl->tests()->select(DB::raw('SUM(pscore) as nilai'))->get()[0]->nilai,2)??0 }}
+								<div class="font-bold bg-rose-50 text-rose-600 border border-rose-100 px-2 rounded-lg shadow-md">
+									Skor: {{ round($dl->tests()->select(DB::raw('SUM(pscore) as nilai'))->get()[0]->nilai,2)??0 }}
 								</div>
 							</div>
 							<div class="flex gap-1">
-								<div class="text-xs bg-blue-600 text-white px-1 rounded-md shadow-md">
+								<div
+									class="text-xs font-bold bg-yellow-50 text-yellow-600 border border-yellow-100 px-1 rounded-md shadow-md">
 									Soal: {{ $dl->current_number+1 }}
 								</div>
-								<div class="text-xs bg-green-600 text-white px-1 rounded-md shadow-md">
+								<div
+									class="text-xs font-bold bg-fuchsia-50 text-fuchsia-600 border border-fuchsia-100 px-1 rounded-md shadow-md">
 									Dikerja: {{
 									$dl->tests()
 									->where('peserta_id',$dl->peserta->id)
@@ -122,29 +135,29 @@
 								</div>
 							</div>
 						</div>
+						@endif
+					</td>
+					<td class="py-4 px-6 border-b border-gray-100">
+						@if ($dl && $dl->reset != 3)
+						<div class="flex flex-wrap justify-end gap-1">
+							@if ($sekolah->limit_login && !$dl->end)
+							@if ($dl->reset != 2)
+							<x-button sm info icon="reply" title="Reset Login" wire:click='resetLogin({{ $dl->id }})'
+								wire:target='resetLogin' />
+							@endif
+							@endif
+							<x-button sm warning icon="refresh" title="Reset Ujian" wire:click='resetUjian({{ $dl->id }})'
+								wire:target='resetUjian' />
+							@if (is_null($dl->end))
+							<x-button sm negative icon="ban" title="Hentikan Ujian" wire:click='stopUjian({{ $dl->id }})'
+								wire:target='stopUjian' />
+							@endif
+						</div>
+						@endif
+					</td>
+				</tr>
+				@endforeach
+			</tbody>
+		</table>
 	</div>
-	</td>
-	<td class="py-4 px-6 border-b border-gray-100">
-		@if ($dl)
-		<div class="flex flex-wrap justify-end gap-1">
-			@if ($sekolah->limit_login)
-			@if ($dl->reset != 2)
-			<x-button sm info icon="reply" title="Reset Login" wire:click='resetLogin({{ $dl->id }})'
-				wire:target='resetLogin' />
-			@endif
-			@endif
-			<x-button sm warning icon="refresh" title="Reset Ujian" wire:click='resetUjian({{ $dl->id }})'
-				wire:target='resetUjian' />
-			@if (is_null($dl->end))
-			<x-button sm negative icon="ban" title="Hentikan Ujian" wire:click='stopUjian({{ $dl->id }})'
-				wire:target='stopUjian' />
-			@endif
-		</div>
-		@endif
-	</td>
-	</tr>
-	@endforeach
-	</tbody>
-	</table>
-</div>
 </div>

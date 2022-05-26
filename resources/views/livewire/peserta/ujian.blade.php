@@ -1,7 +1,7 @@
-<div class="flex flex-col-reverse md:flex-row gap-3 w-full" x-init="window.onblur=function(){console.log('cheated')}"
-	wire:key='{{ $soal->id }}'>
+<div class="flex flex-col-reverse md:flex-row gap-3 w-full" x-init="window.onblur=function(){console.log('cheated')}">
 	<div class="w-full md:w-9/12">
-		<div class="w-full shadow-md bg-white border border-gray-100 rounded-lg p-5 flex flex-col gap-3">
+		<div class="w-full shadow-md bg-white border border-gray-100 rounded-lg p-5 flex flex-col gap-3" wire:ignore
+			wire:key='soal{{ $soal->id.$soal->updated_at->timestamp }}'>
 			<div class="hidden" x-data x-init="
 			$nextTick(()=>{
 				if(Object.keys(lines).length > 0){
@@ -38,7 +38,8 @@
 				<table class="w-full">
 					<thead>
 						<tr>
-							<th class="py-2 px-3 border border-gray-400 border-b-2 bg-gray-200">Pernyataan</th>
+							<th class="py-2 px-3 border border-gray-400 border-b-2 bg-gray-200">{{
+								isset($soal->label[0])?$soal->label[0]:'Pernyataan' }}</th>
 							<th class="py-2 px-3 border border-gray-400 border-b-2 bg-gray-200" colspan="2">Jawaban</th>
 						</tr>
 					</thead>
@@ -83,7 +84,7 @@
 					"></div>
 					<div class="flex flex-col gap-4 relative">
 						@if (isset($soal->label[0]))
-						<div class="font-bold border-b-2 border-b-gray-600">{{ $soal->label[0] }}</div>
+						<div class="font-bold border-b-2 border-b-gray-600 text-center">{{ $soal->label[0] }}</div>
 						@endif
 						@foreach ($soal->option as $key => $o)
 						@if (is_array($soal->itemSoal->relations[$key]))
@@ -128,7 +129,7 @@
 					</div>
 					<div class="flex flex-col gap-4 relative" x-ref="contoh">
 						@if (isset($soal->label[1]))
-						<div class="font-bold border-b-2 border-b-gray-600">{{ $soal->label[1] }}</div>
+						<div class="font-bold border-b-2 border-b-gray-600 text-center">{{ $soal->label[1] }}</div>
 						@endif
 						@foreach ($soal->option as $key => $o)
 						@if (!is_array($soal->itemSoal->relations[$key]))
@@ -182,11 +183,11 @@
 			</div>
 		</div>
 	</div>
-	<div class="w-full md:w-3/12 flex flex-col gap-3" x-data="{opennum: false}" wire:key='{{ $soal->id }}'
+	<div class="w-full md:w-3/12 flex flex-col gap-3" x-data="{opennum: false}" wire:ignore wire:key='attr{{ $soal->id }}'
 		x-init="opennum=false">
 		<div
 			class="w-full shadow-md bg-amber-50 border border-amber-100 text-amber-600 rounded-lg p-3 text-xl md:text-md md:p-5 flex flex-col justify-center gap-3"
-			x-ref="timer" wire:poll.keep-alive.15s='checkTimer'>
+			x-ref="timer" wire:poll.keep-alive='checkTimer'>
 			<div class="flex flex-col items-center" x-data="{cdown: @entangle('timer'), countdown: null}" x-init="$nextTick(()=>{
 				countdown = timer(cdown);
 				countdown.init();

@@ -49,6 +49,10 @@ class Ujian extends Component
 		if (!$this->login) {
 			return redirect()->route('ujian.index')->with('msg', 'Ujian Selesai');
 		} else {
+			if ($this->login->reset == 3) {
+				$this->login->delete();
+				return redirect()->route('ujian.index');
+			}
 			if (now()->greaterThan($this->login->start->addMinutes($this->login->jadwal->duration))) {
 				return $this->stop();
 			}
@@ -65,6 +69,7 @@ class Ujian extends Component
 	public function stop()
 	{
 		$this->login->end = now();
+		$this->login->created_at = now();
 		$this->login->save();
 		$this->reset('login');
 		return redirect()->route('ujian.index')->with('msg', 'Ujian Selesai');
@@ -129,6 +134,7 @@ class Ujian extends Component
 					}
 					$this->soal->correct = $correct;
 				} else {
+					$this->soal->pscore = 0;
 					$this->soal->correct = [];
 				}
 				break;
@@ -163,6 +169,7 @@ class Ujian extends Component
 					$this->soal->pscore = $i / $ccount * $soalOri->score;
 					$this->soal->correct = $correct;
 				} else {
+					$this->soal->pscore = 0;
 					$this->soal->correct = [];
 				}
 				break;
@@ -187,6 +194,7 @@ class Ujian extends Component
 					$this->soal->pscore = $i / $ccount * $soalOri->score;
 					$this->soal->relation = $r;
 				} else {
+					$this->soal->pscore = 0;
 					$this->soal->relation = [];
 				}
 				break;

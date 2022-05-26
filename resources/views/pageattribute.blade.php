@@ -1,8 +1,8 @@
 <div class="flex justify-between">
   <div class="flex gap-1">
-    <x-button primary label="Tambah Data" icon="plus" wire:click.prefetch='create' />
+    <x-button primary label="Tambah Data" icon="plus" wire:click='create' />
     @if (request()->is('*peserta') || request()->is('*soal') || request()->is('*jadwal'))
-    <x-button red label="Hapus Data" icon="trash" wire:click.prefetch='destroyAll' :disabled="!count($this->data)" />
+    <x-button red label="Hapus Data" icon="trash" wire:click='destroyAll' :disabled="!count($this->data)" />
     @endif
   </div>
   <div class=" flex gap-2">
