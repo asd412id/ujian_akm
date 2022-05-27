@@ -17,6 +17,7 @@
         "livewire/livewire": "^2.10",
         "niklasravnsborg/laravel-pdf": "^4.1",
         "phpoffice/phpspreadsheet": "^1.23",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "thunderer/shortcode": "^0.7.5",
         "wireui/wireui": "^0.17.0"
     },

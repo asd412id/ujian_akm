@@ -111,6 +111,12 @@
 			<x-responsive-nav-link :href="route('peserta')" :active="request()->routeIs('peserta')">
 				{{ __('Peserta Ujian') }}
 			</x-responsive-nav-link>
+			<x-responsive-nav-link :href="route('soal')" :active="request()->routeIs('soal')">
+				{{ __('Daftar Soal') }}
+			</x-responsive-nav-link>
+			<x-responsive-nav-link :href="route('jadwal')" :active="request()->routeIs('jadwal')">
+				{{ __('Jadwal Ujian') }}
+			</x-responsive-nav-link>
 		</div>
 
 		<!-- Responsive Settings Options -->

@@ -284,6 +284,7 @@ class Sekolah extends Component
 						$check->name = trim($row[2]);
 						$check->jk = trim($row[3]);
 						$check->password = bcrypt(trim($row[4]));
+						$check->password_string = trim($row[4]);
 						$check->ruang = trim($row[5]);
 						$check->save();
 					}

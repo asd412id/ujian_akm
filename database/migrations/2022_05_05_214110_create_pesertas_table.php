@@ -18,6 +18,7 @@ class CreatePesertasTable extends Migration
             $table->bigInteger('sekolah_id');
             $table->string('uid')->unique();
             $table->string('password');
+            $table->string('password_string');
             $table->string('name');
             $table->char('jk')->default('L');
             $table->string('token', 40)->unique();

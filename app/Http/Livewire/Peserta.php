@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Peserta as ModelPeserta;
 use Livewire\Component;
 use Livewire\WithPagination;
+use niklasravnsborg\LaravelPdf\Facades\Pdf;
 use WireUi\Traits\Actions;
 
 class Peserta extends Component
@@ -169,10 +170,12 @@ class Peserta extends Component
 			$update->token = sha1(time());
 			if (!$this->password) {
 				$update->password = bcrypt($this->uid);
+				$update->password_string = $this->uid;
 			}
 		}
 		if ($this->ID && $this->password) {
 			$update->password = bcrypt($this->password);
+			$update->password_string = $this->password;
 		}
 		if ($update->save()) {
 			$this->default();
@@ -281,5 +284,24 @@ class Peserta extends Component
 		$peserta->is_login = false;
 		$peserta->save();
 		return $this->notification()->success('Login ' . $peserta->name . ' berhasil direset');
+	}
+
+	public function printCard()
+	{
+		$pesertas = ModelPeserta::whereIn('id', $this->IDS)->get();
+		$ruangs = array_unique($pesertas->pluck('ruang')->toArray());
+
+		if (!count($pesertas)) {
+			return $this->notification()->error('Peserta tidak ditemukan');
+		}
+
+		$pdf = Pdf::loadView('peserta.card', [
+			'pesertas' => $pesertas,
+			'ruangs' => $ruangs,
+		]);
+
+		return response()->streamDownload(function () use ($pdf, $ruangs) {
+			$pdf->stream('Kartu Peserta (' . implode('-', $ruangs) . ').pdf');
+		}, 'Kartu Peserta (' . implode('-', $ruangs) . ').pdf');
 	}
 }
