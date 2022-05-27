@@ -100,7 +100,7 @@ function image(ShortcodeInterface $s)
   $width = null;
   $height = null;
   foreach ($keys as $v) {
-    if (strpos($v, 'px') !== false || strpos($v, '%') !== false || is_numeric($v) || strpos($v, 'auto') !== false) {
+    if (strpos($v, 'px') !== false || strpos($v, 'cm') !== false || strpos($v, 'mm') !== false || strpos($v, '%') !== false || is_numeric($v) || strpos($v, 'auto') !== false) {
       if (is_null($width)) {
         $width = is_numeric($v) ? $v . 'px' : $v;
       } else {
@@ -109,7 +109,7 @@ function image(ShortcodeInterface $s)
     }
   }
 
-  return sprintf("<div class='m-1 %s'><img style='max-width: 100%%;width:%s;height:%s' src='%s'></div>", (in_array("kiri", $keys) ? "float-left" : (in_array("kanan", $keys) ? "float-right" : "inline-block")), $width, $height, $url);
+  return sprintf("<div class='m-1 %s'><img style='display: inline-block;max-width: 100%%;width:%s;height:%s' src='%s'></div>", (in_array("kiri", $keys) ? "float-left" : (in_array("kanan", $keys) ? "float-right" : (in_array("tengah", $keys) ? "text-center" : "inline-block"))), $width, $height, $url);
 }
 
 function superscript(ShortcodeInterface $s)

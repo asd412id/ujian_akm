@@ -11,6 +11,7 @@ use Livewire\WithPagination;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use WireUi\Traits\Actions;
+use Str;
 
 class Soal extends Component
 {
@@ -282,17 +283,48 @@ class Soal extends Component
 		return $text;
 	}
 
+	public function saveImage($image)
+	{
+		$zipReader = fopen($image->getPath(), 'r');
+		$imageContents = '';
+		while (!feof($zipReader)) {
+			$imageContents .= fread($zipReader, 1024);
+		}
+		fclose($zipReader);
+		$extension = $image->getExtension();
+
+		$imageName = Str::slug($this->name) . '/' . sha1($image->getName()) . '.' . $extension;
+
+		Storage::disk('public')->put('uploads/' . userFolder() . '/' . $imageName, $imageContents);
+		Storage::disk('public')->put('thumbs/' . userFolder() . '/' . $imageName, $imageContents);
+
+		return $imageName;
+	}
+
 	public function updatedExcel()
 	{
 		$this->validate([
+			'name' => 'required',
 			'excel' => 'required|mimes:xls,xlsx,ods,bin'
 		], [
+			'name.required' => 'Nama soal tidak boleh kosong',
 			'excel.required' => 'File excel tidak boleh kosong',
 			'excel.mimes' => 'Format file yang diimport tidak dikenali',
 		]);
 
 		$reader = IOFactory::load($this->excel->path());
+
+		if (!$reader->getSheetByName('Soal')) {
+			return $this->addError('excel', 'Format file excel tidak dikenali');
+		}
+
 		$elements = $reader->getSheetByName('Soal')->toArray();
+		$drawings = $reader->getSheetByName('Soal')->getDrawingCollection();
+		$images = [];
+
+		foreach ($drawings as $key => $dr) {
+			$images[$dr->getCoordinates()] = $dr;
+		}
 
 		if (count($elements)) {
 			$cols = range('A', 'Z');
@@ -323,7 +355,6 @@ class Soal extends Component
 				}
 
 				$soals .= sprintf("[soal no=%s jenis=%s skor=%s%s]", $key, $jenis, $score, $shuffle);
-
 				$soal = $reader->getSheetByName('Soal')->getCell($cols[1] . ($key + 1))->getValue();
 
 				if (!$soal || $soal == '') {
@@ -331,6 +362,17 @@ class Soal extends Component
 				}
 
 				$soal = $this->getRichText($soal);
+
+				$image = isset($images[$cols[1] . ($key + 1)]) ? $images[$cols[1] . ($key + 1)] : null;
+				if ($image) {
+					$ipath = $this->saveImage($image);
+					if ($image->getOffsetY() == 0) {
+						$soal = "[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() != 0 && $image->getOffsetX2() != 0 || $image->getOffsetX() == $image->getOffsetX2() ? ' tengah' : '')) . "]" . $ipath . "[/g]\n" . $soal;
+					} else {
+						$soal = $soal . "\n[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() != 0 && $image->getOffsetX2() != 0 || $image->getOffsetX() == $image->getOffsetX2() ? ' tengah' : '')) . "]" . $ipath . "[/g]";
+					}
+				}
+
 				$soals .= sprintf("\n\t[teks]\n\t\t%s\n\t[/teks]", $soal);
 
 				$options = null;
@@ -352,6 +394,16 @@ class Soal extends Component
 					}
 
 					$val = $this->getRichText($val);
+
+					$image = isset($images[$cols[$k - 1] . ($key + 1)]) ? $images[$cols[$k - 1] . ($key + 1)] : null;
+					if ($image) {
+						$ipath = $this->saveImage($image);
+						if ($image->getOffsetY() == 0) {
+							$val = "[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() != 0 && $image->getOffsetX2() != 0 || $image->getOffsetX() == $image->getOffsetX2() ? ' tengah' : '')) . "]" . $ipath . "[/g]\n" . $val;
+						} else {
+							$val = $val . "\n[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() != 0 && $image->getOffsetX2() != 0 || $image->getOffsetX() == $image->getOffsetX2() ? ' tengah' : '')) . "]" . $ipath . "[/g]";
+						}
+					}
 
 					if (strtolower($jenis) == 'is' || strtolower($jenis) == 'u') {
 						$answer = trim($val);
