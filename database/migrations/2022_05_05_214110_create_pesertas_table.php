@@ -19,6 +19,7 @@ class CreatePesertasTable extends Migration
             $table->string('uid')->unique();
             $table->string('password');
             $table->string('name');
+            $table->char('jk')->default('L');
             $table->string('token', 40)->unique();
             $table->string('ruang')->nullable();
             $table->string('remember_token')->nullable();

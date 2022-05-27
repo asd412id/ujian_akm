@@ -316,12 +316,12 @@ class Ujian extends Component
 		$this->getAnswer();
 	}
 
-	public function updatingChoices(...$value)
+	public function updatedChoices(...$value)
 	{
 		$this->schoices = $value;
 	}
 
-	public function updatingRelation($value)
+	public function updatedRelation($value)
 	{
 		$this->srelation = $value;
 	}

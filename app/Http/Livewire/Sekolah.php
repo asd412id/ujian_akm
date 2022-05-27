@@ -2,18 +2,25 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Mapel;
+use App\Models\Peserta;
+use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use WireUi\Traits\Actions;
 
 class Sekolah extends Component
 {
 	use Actions;
+	use WithFileUploads;
 
 	public $nama_sekolah;
 	public $logo_sekolah;
+	public $excel;
 	public $kop_sekolah;
 	public $nama_admin;
 	public $username;
@@ -116,6 +123,173 @@ class Sekolah extends Component
 			return $this->notification()->success('Struktur folder berhasil diperbaiki!');
 		} catch (\Throwable $th) {
 			return $this->notification()->error('Tidak dapat melakukan perbaikan!');
+		}
+	}
+
+	public function downloadExcel()
+	{
+		return response()->download(resource_path('master_data.xlsx'), 'Master Data - ' . env('APP_NAME', 'Aplikasi Ujian') . '.xlsx');
+	}
+
+	public function updatedExcel()
+	{
+		$this->validate([
+			'excel' => 'required|mimes:xls,xlsx,ods,bin'
+		], [
+			'excel.required' => 'File excel tidak boleh kosong',
+			'excel.mimes' => 'Format file yang diimport tidak dikenali',
+		]);
+
+		$reader = IOFactory::load($this->excel->path());
+		$mapel = $reader->getSheetByName('Mapel');
+		$penilai = $reader->getSheetByName('Penilai');
+		$peserta = $reader->getSheetByName('Peserta');
+
+		if (!$mapel || !$penilai || !$peserta) {
+			return $this->notification()->warning('Format master data tidak sesuai! Silahkan download template master data terlebih dahulu');
+		}
+
+		$sekolah_id = auth()->user()->sekolah->id;
+
+		if ($mapel) {
+			$mapel = $mapel->toArray();
+			if (count($mapel) <= 1) {
+				$this->notification()->warning('Data mata pelajaran tidak tersedia');
+			} else {
+				$i = 0;
+				foreach ($mapel as $key => $row) {
+					if ($key == 0) {
+						continue;
+					}
+					if (!$row[0] || !is_numeric($row[0]) || !$row[1]) {
+						continue;
+					}
+					$mapel = trim($row[1]);
+					$check = Mapel::where('name', $mapel)
+						->where('sekolah_id', $sekolah_id)
+						->first();
+					if (!$check) {
+						$new = new Mapel();
+						$new->name = $mapel;
+						$new->sekolah_id = $sekolah_id;
+						$new->save();
+						$i++;
+					}
+				}
+				$this->notification()->success($i . " data mata pelajaran berhasil ditambahkan");
+			}
+		}
+		if ($penilai) {
+			$penilai = $penilai->toArray();
+			if (count($penilai) <= 1) {
+				$this->notification()->warning('Data penilai tidak tersedia');
+			} else {
+				$i = 0;
+				$j = 0;
+				foreach ($penilai as $key => $row) {
+					if ($key == 0) {
+						continue;
+					}
+					if (!$row[0] || !is_numeric($row[0]) || !$row[2]) {
+						continue;
+					}
+					$email = trim($row[2]);
+					$check = User::where('email', $email)
+						->where('sekolah_id', '!=', $sekolah_id)
+						->first();
+					if ($check) {
+						$this->notification()->error('Email ' . $email . ' telah digunakan');
+					} else {
+						$new = User::where('email', $email)
+							->where('sekolah_id', $sekolah_id)
+							->where('role', 1)
+							->first();
+						if (!$new) {
+							$new = new User();
+							$new->email = $email;
+							$new->sekolah_id = $sekolah_id;
+							$new->role = 1;
+							$new->email_verified_at = now();
+							$i++;
+						}
+						$new->name = trim($row[1]);
+						$new->password = bcrypt(trim($row[3]));
+						if ($new->save()) {
+							$mapels = array_map(function ($v) {
+								return trim($v);
+							}, explode(',', trim($row[4])));
+
+							if (count($mapels)) {
+								$mid = [];
+								foreach ($mapels as $key => $v) {
+									$mp = Mapel::where('name', $v)
+										->where('sekolah_id', $sekolah_id)
+										->first();
+									if (!$mp) {
+										$newm = new Mapel();
+										$newm->name = $v;
+										$newm->sekolah_id = $sekolah_id;
+										$newm->save();
+										if (!in_array($newm->id, $mid)) {
+											array_push($mid, $newm->id);
+										}
+										$j++;
+									} else {
+										if (!in_array($mp->id, $mid)) {
+											array_push($mid, $mp->id);
+										}
+									}
+								}
+								$new->mapels()->sync($mid);
+							}
+						}
+					}
+				}
+				$this->notification()->success($i . " data penilai berhasil ditambahkan");
+				if ($j > 0) {
+					$this->notification()->success($j . " data mata pelajaran berhasil ditambahkan");
+				}
+			}
+		}
+		if ($peserta) {
+			$peserta = $peserta->toArray();
+			if (count($peserta) <= 1) {
+				$this->notification()->warning('Data peserta tidak tersedia');
+			} else {
+				$i = 0;
+				foreach ($peserta as $key => $row) {
+					if ($key == 0) {
+						continue;
+					}
+					if (!$row[0] || !is_numeric($row[0]) || !$row[1]) {
+						continue;
+					}
+					$uid = trim($row[1]);
+					$check = Peserta::where('uid', $uid)
+						->where('sekolah_id', '!=', $sekolah_id)
+						->first();
+					if ($check) {
+						$this->notification()->error('ID Peserta ' . $uid . ' telah digunakan');
+					} else {
+						$check = Peserta::where('uid', $uid)
+							->where('sekolah_id', $sekolah_id)
+							->first();
+						if (!$check) {
+							$check = new Peserta();
+							$check->uid = $uid;
+							$check->sekolah_id = $sekolah_id;
+							$check->token = sha1($key . time());
+							$i++;
+						}
+						$check->name = trim($row[2]);
+						$check->jk = trim($row[3]);
+						$check->password = bcrypt(trim($row[4]));
+						$check->ruang = trim($row[5]);
+						$check->save();
+					}
+				}
+				$this->notification()->success($i . " data peserta berhasil ditambahkan");
+			}
 		}
 	}
 }

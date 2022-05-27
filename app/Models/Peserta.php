@@ -33,4 +33,18 @@ class Peserta extends Authenticatable
     {
         return $this->hasMany(PesertaLogin::class);
     }
+
+    public function tests()
+    {
+        return $this->hasMany(PesertaTest::class);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+        self::deleting(function ($m) {
+            $m->logins()->delete();
+            $m->tests()->delete();
+        });
+    }
 }

@@ -42,6 +42,7 @@ class Controller extends BaseController
 		}
 
 		Auth::guard('peserta')->login($user, true);
+		Auth::guard('peserta')->logoutOtherDevices($r->password);
 
 		$user->is_login = true;
 		$user->save();

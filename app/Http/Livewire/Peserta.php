@@ -22,6 +22,7 @@ class Peserta extends Component
 	public $IDS;
 	public $uid;
 	public $name;
+	public $jk = 'L';
 	public $password;
 	public $repassword;
 	public $ruang = '';
@@ -161,6 +162,7 @@ class Peserta extends Component
 		$update = $this->ID ? ModelPeserta::find($this->ID) : new ModelPeserta();
 		$update->name = $this->name;
 		$update->uid = $this->uid;
+		$update->jk = $this->jk;
 		$update->sekolah_id = auth()->user()->sekolah_id;
 		$update->ruang = $this->ruang;
 		if (!$this->ID) {
@@ -189,6 +191,7 @@ class Peserta extends Component
 		$this->ID = $peserta->id;
 		$this->uid = $peserta->uid;
 		$this->name = $peserta->name;
+		$this->jk = $peserta->jk;
 		$this->ruang = $peserta->ruang;
 
 		$this->modalTitle = 'Ubah Data (' . $peserta->name . ')';
@@ -239,14 +242,44 @@ class Peserta extends Component
 
 	public function doDestroyAll()
 	{
-		$count = count($this->IDS);
 		$delete = auth()->user()->sekolah->pesertas()
-			->whereIn('id', $this->IDS)->delete();
-		if ($delete) {
+			->whereIn('id', $this->IDS)
+			->whereDoesntHave('tests', function ($q) {
+				$q->whereIn('peserta_id', $this->IDS);
+			});
+		$count = $delete->count();
+		if ($delete->delete()) {
 			$this->resetValidation();
 			$this->resetExcept('listRuang');
 			return $this->notification()->success('Berhasil menghapus ' . $count . ' data');
 		}
 		return $this->notification()->error('Data gagal dihapus');
+	}
+
+	public function resetLogin(ModelPeserta $peserta)
+	{
+		if ($peserta->sekolah_id != auth()->user()->sekolah_id) {
+			$this->default();
+			return $this->notification()->error('Data tidak tersedia!');
+		}
+		$this->dialog()->confirm([
+			'title' => 'Yakin ingin reset login ' . $peserta->name . ' ?',
+			'description' => 'Peserta akan ter-logout dari ujian',
+			'acceptLabel' => 'Ya, Reset',
+			'rejectLabel' => 'Tidak',
+			'method' => 'doResetLogin',
+			'params' => $peserta->id
+		]);
+	}
+
+	public function doResetLogin(ModelPeserta $peserta)
+	{
+		if ($peserta->sekolah_id != auth()->user()->sekolah_id) {
+			$this->default();
+			return $this->notification()->error('Data tidak tersedia!');
+		}
+		$peserta->is_login = false;
+		$peserta->save();
+		return $this->notification()->success('Login ' . $peserta->name . ' berhasil direset');
 	}
 }

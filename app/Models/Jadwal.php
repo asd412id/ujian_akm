@@ -51,6 +51,11 @@ class Jadwal extends Model
         return $this->hasMany(PesertaTest::class);
     }
 
+    public function getDescAttribute()
+    {
+        return isset($this->opt['desc']) ? $this->opt['desc'] : null;
+    }
+
     public static function boot()
     {
         parent::boot();

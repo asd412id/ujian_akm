@@ -4,9 +4,11 @@ namespace App\Http\Livewire;
 
 use App\Models\ItemSoal;
 use App\Models\Jadwal as ModelsJadwal;
+use App\Models\Mapel;
 use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
+use niklasravnsborg\LaravelPdf\Facades\Pdf;
 use WireUi\Traits\Actions;
 
 class Jadwal extends Component
@@ -349,5 +351,61 @@ class Jadwal extends Component
 			return $this->notification()->success('Berhasil menghapus ' . $count . ' data');
 		}
 		return $this->notification()->error('Data gagal dihapus');
+	}
+
+	public function daftarHadir(ModelsJadwal $jadwal)
+	{
+		if ($jadwal->sekolah_id != auth()->user()->sekolah_id) {
+			$this->reset();
+			$this->resetValidation();
+			return $this->notification()->error('Data tidak tersedia!');
+		}
+
+		$mapels = Mapel::whereHas('soals.jadwals', function ($q) use ($jadwal) {
+			$q->where('id', $jadwal->id);
+		})->get()->pluck('name')->toArray();
+
+		$types = ItemSoal::whereHas('soal.jadwals', function ($q) use ($jadwal) {
+			$q->where('jadwal_id', $jadwal->id);
+		})
+			->select('type')->distinct('type')->get()->pluck('type')->toArray();
+
+		$pdf = Pdf::loadView('jadwal.daftar-hadir', [
+			'jadwal' => $jadwal,
+			'mapels' => $mapels,
+			'types' => $types,
+		]);
+
+		return response()->streamDownload(function () use ($pdf, $jadwal) {
+			$pdf->stream('Daftar Hadir ' . $jadwal->name . '.pdf');
+		}, 'Daftar Hadir ' . $jadwal->name . '.pdf');
+	}
+
+	public function daftarNilai(ModelsJadwal $jadwal)
+	{
+		if ($jadwal->sekolah_id != auth()->user()->sekolah_id) {
+			$this->reset();
+			$this->resetValidation();
+			return $this->notification()->error('Data tidak tersedia!');
+		}
+
+		$mapels = Mapel::whereHas('soals.jadwals', function ($q) use ($jadwal) {
+			$q->where('id', $jadwal->id);
+		})->get()->pluck('name')->toArray();
+
+		$types = ItemSoal::whereHas('soal.jadwals', function ($q) use ($jadwal) {
+			$q->where('jadwal_id', $jadwal->id);
+		})
+			->select('type')->distinct('type')->get()->pluck('type')->toArray();
+
+		$pdf = Pdf::loadView('jadwal.daftar-nilai', [
+			'jadwal' => $jadwal,
+			'mapels' => $mapels,
+			'types' => $types,
+		]);
+
+		return response()->streamDownload(function () use ($pdf, $jadwal) {
+			$pdf->stream('Daftar Nilai ' . $jadwal->name . '.pdf');
+		}, 'Daftar Nilai ' . $jadwal->name . '.pdf');
 	}
 }

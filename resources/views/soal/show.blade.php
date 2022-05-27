@@ -52,7 +52,7 @@
           @endforelse
         </table>
         @elseif (strtolower($v->type)=='jd' && $v->relations)
-        <div class="flex gap-48 c`relative">
+        <div class="flex gap-48 relative">
           <div class="flex flex-col gap-2 relative">
             @if (isset($v->labels[0]))
             <div class="font-bold border-b-2 border-b-gray-600 text-center">{{ $v->labels[0] }}</div>

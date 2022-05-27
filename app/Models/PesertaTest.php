@@ -9,6 +9,8 @@ class PesertaTest extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['pscore'];
+
     public $dates = [
         'start',
         'end',
@@ -26,5 +28,9 @@ class PesertaTest extends Model
     public function itemSoal()
     {
         return $this->belongsTo(ItemSoal::class);
+    }
+    public function jadwal()
+    {
+        return $this->belongsTo(Jadwal::class);
     }
 }

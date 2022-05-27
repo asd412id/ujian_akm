@@ -23,4 +23,12 @@ class Mapel extends Model
     {
         return $this->hasMany(Soal::class);
     }
+
+    public static function boot()
+    {
+        parent::boot();
+        self::deleting(function ($m) {
+            $m->users()->detach();
+        });
+    }
 }

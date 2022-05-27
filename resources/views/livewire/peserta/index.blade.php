@@ -25,6 +25,11 @@
 					<th class="text-left pl-2 py-1 align-top">{{ $user->name }}</th>
 				</tr>
 				<tr>
+					<td class="pr-2 py-1 align-top">Jenis Kelamin</td>
+					<td class="pr-2 py-1 align-top">:</td>
+					<th class="text-left pl-2 py-1 align-top">{{ $user->jk == 'L'? 'Laki-Laki' : 'Perempuan' }}</th>
+				</tr>
+				<tr>
 					<td class="pr-2 py-1 align-top">Ruang</td>
 					<td class="pr-2 py-1 align-top">:</td>
 					<th class="text-left pl-2 py-1 align-top">{{ $user->ruang }}</th>

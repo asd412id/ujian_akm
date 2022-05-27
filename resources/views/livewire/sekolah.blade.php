@@ -13,7 +13,13 @@
 						{!! shortcode('[g]'.$logo_sekolah.'[/g]') !!}
 					</div>
 				</div>
-				<x-toggle lg wire:model.defer='limitlogin' label="Batasi login peserta untuk 1 (satu) perangkat saja." />
+				<div class="flex gap-2" x-data>
+					<x-button blue sm label="Download Template Master Data" icon="download" wire:click='downloadExcel' />
+					<x-button green sm label="Impor Master Data" icon="upload" x-on:click="$refs.excel.click()" />
+					<input type="file" wire:model='excel' class="hidden" accept=".xls,.xlsx,.ods,.bin" x-ref="excel">
+					<x-error name="excel" />
+				</div>
+				<x-toggle lg wire:model.defer='limitlogin' label="Batasi login peserta hanya 1 (satu) kali." />
 				<div class="flex flex-col">
 					<x-alabel>KOP Sekolah Editor</x-alable>
 						<x-editor wire:model.defer='kop_sekolah'

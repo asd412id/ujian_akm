@@ -18,11 +18,11 @@
     </thead>
     <tbody>
       @forelse ($data as $key => $v)
-      <tr class="{{ !$v->active && $v->logins()->count() ? 'bg-gray-200' : 'hover:bg-gray-100' }}">
+      <tr class="{{ !$v->active && $v->logins()->count() ? 'bg-primary-100' : 'hover:bg-gray-100' }}">
         <td class="py-4 px-6 border-b border-gray-100">
           <div class="flex flex-col">
             <span>{{ $v->name }}</span>
-            <em class="-mt-1 text-sm text-gray-500">{{ $v->opt['desc']??null }}</em>
+            <em class="-mt-1 text-sm text-gray-500">{!! nl2br($v->desc) !!}</em>
           </div>
         </td>
         <td class="py-4 px-6 border-b border-gray-100"><span
@@ -54,11 +54,13 @@
               @endif
               @if (!$v->active)
               @if ($v->logins()->count())
-              <x-dropdown.item wire:click="edit('{{ $v->id }}')" icon="pencil-alt" label="Input Nilai" />
+              <x-dropdown.item :href="route('nilai',['uuid'=>$v->uuid])" icon="pencil-alt" label="Penilaian" />
               <x-dropdown.item wire:click="resetUjian('{{ $v->id }}')" icon="refresh" label="Reset Ujian" />
+              <x-dropdown.item wire:click="daftarNilai('{{ $v->id }}')" icon="clipboard-list" label="Daftar Nilai" />
               @else
               <x-dropdown.item wire:click="edit('{{ $v->id }}')" icon="pencil" label="Edit" />
               @endif
+              <x-dropdown.item wire:click="daftarHadir('{{ $v->id }}')" icon="view-list" label="Daftar Hadir" />
               <x-dropdown.item wire:click="delete('{{ $v->id }}')" icon="trash" label="Hapus" />
               @else
               <x-dropdown.item :href="route('statuspeserta',['uuid'=>$v->uuid])" icon="desktop-computer"

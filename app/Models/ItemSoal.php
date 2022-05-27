@@ -17,6 +17,10 @@ class ItemSoal extends Model
         'opt' => 'array',
     ];
 
+    public function soal()
+    {
+        return $this->belongsTo(Soal::class);
+    }
     public function tests()
     {
         return $this->hasMany(PesertaTest::class);

@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('guest:peserta')->group(function () {
+Route::middleware(['guest:peserta', 'guest'])->group(function () {
 	Route::get('/', function () {
 		return view('welcome');
 	})->name('index');
@@ -61,16 +61,26 @@ Route::middleware(['auth', 'verified', 'role:null,0,1'])->group(function () {
 	Route::get('/soal', function () {
 		return view('pages', ['title' => 'Daftar Soal', 'wire' => 'soal']);
 	})->name('soal');
-	Route::get('/jadwal', function () {
-		return view('pages', ['title' => 'Jadwal Ujian', 'wire' => 'jadwal']);
-	})->name('jadwal');
-	Route::get('/jadwal/{uuid}', function () {
-		$jadwal = Jadwal::where('uuid', request()->uuid)->first();
-		if (!$jadwal) {
-			return redirect()->route('jadwal')->withErrors('Jadwal tidak tersedia');
-		}
-		return view('pages', ['title' => 'Status Peserta - ' . $jadwal->name, 'wire' => 'status-peserta', 'params' => $jadwal]);
-	})->name('statuspeserta');
+
+	Route::prefix('/jadwal')->group(function () {
+		Route::get('/', function () {
+			return view('pages', ['title' => 'Jadwal Ujian', 'wire' => 'jadwal']);
+		})->name('jadwal');
+		Route::get('/{uuid}', function () {
+			$jadwal = Jadwal::where('uuid', request()->uuid)->first();
+			if (!$jadwal) {
+				return redirect()->route('jadwal')->withErrors('Jadwal tidak tersedia');
+			}
+			return view('pages', ['title' => 'Status Peserta - ' . $jadwal->name, 'wire' => 'status-peserta', 'params' => $jadwal]);
+		})->name('statuspeserta');
+		Route::get('/{uuid}/nilai', function () {
+			$jadwal = Jadwal::where('uuid', request()->uuid)->first();
+			if (!$jadwal) {
+				return redirect()->route('jadwal')->withErrors('Jadwal tidak tersedia');
+			}
+			return view('pages', ['title' => 'Penilaian - ' . $jadwal->name, 'wire' => 'nilai', 'params' => $jadwal]);
+		})->name('nilai');
+	});
 });
 
 require __DIR__ . '/auth.php';

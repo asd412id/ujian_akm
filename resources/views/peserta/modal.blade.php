@@ -2,6 +2,10 @@
   <form wire:submit.prevent='store' class="flex flex-col gap-3">
     <x-input wire:model.defer='uid' label="ID Peserta" placeholder="Masukkan ID peserta" />
     <x-input wire:model.defer='name' label="Nama Lengkap" placeholder="Masukkan nama lengkap" />
+    <x-native-select wire:model.defer='jk' :options="[
+      ['value'=>'L','label'=>'Laki-Laki'],
+      ['value'=>'P','label'=>'Perempuan'],
+    ]" option-value="value" option-label="label" label="Jenis Kelamin" />
     <x-input type="password" wire:model.defer='password' label="Password" placeholder="Masukkan password" />
     <x-input type="password" wire:model.defer='repassword' label="Ulang Password"
       placeholder="Masukkan ulang password" />

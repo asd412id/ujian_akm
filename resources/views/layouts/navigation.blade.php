@@ -31,14 +31,14 @@
 					<x-anav-link :href="route('mapel')" :active="request()->routeIs('mapel')">
 						{{ __('Mata Pelajaran') }}
 					</x-anav-link>
-					<x-anav-link :href="route('soal')" :active="request()->routeIs('soal')">
-						{{ __('Daftar Soal') }}
-					</x-anav-link>
 					<x-anav-link :href="route('penilai')" :active="request()->routeIs('penilai')">
 						{{ __('Penilai') }}
 					</x-anav-link>
 					<x-anav-link :href="route('peserta')" :active="request()->routeIs('peserta')">
 						{{ __('Peserta Ujian') }}
+					</x-anav-link>
+					<x-anav-link :href="route('soal')" :active="request()->routeIs('soal')">
+						{{ __('Daftar Soal') }}
 					</x-anav-link>
 					<x-anav-link :href="route('jadwal')" :active="request()->routeIs('jadwal')">
 						{{ __('Jadwal Ujian') }}
