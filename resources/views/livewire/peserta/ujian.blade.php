@@ -17,7 +17,7 @@
 			"></div>
 			<h2 class="font-bold text-lg">#Soal {{$login->current_number+1}} ({{ $type }})</h2>
 			<div class="flex flex-col gap-3">
-				<div>{!! shortcode($soal->text) !!}</div>
+				<div class="w-full">{!! shortcode($soal->text) !!}</div>
 
 				@if ((strtolower($soal->type)=='pg' || strtolower($soal->type)=='pgk') && is_array($soal->option))
 				<div class="flex flex-col gap-2">

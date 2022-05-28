@@ -9,22 +9,27 @@
     <x-card>
       <div class="flex flex-col gap-2" x-data>
         <div>
-          <p class="font-bold italic text-sm text-gray-400">#Jenis: {{ strtoupper($v->type) }}, Skor: {{ $v->score }}
-          </p>
-          <p class="flex gap-1"><span>{{ ($k+1) }}.</span> <span>{!! shortcode($v->text) !!}</span></p>
+          <div class="font-bold italic text-sm text-gray-400">#Jenis: {{ strtoupper($v->type) }}, Skor: {{ $v->score }}
+          </div>
+          <div class="flex gap-1">
+            <div>{{ ($k+1) }}.</div>
+            <div class="w-full">{!! shortcode($v->text) !!}</div>
+          </div>
         </div>
         @if ((strtolower($v->type)=='pg' || strtolower($v->type)=='pgk') && is_array($v->options))
         <div class="flex flex-col gap-1">
           @foreach ($v->options as $key => $o)
           <div class="{{ $v->corrects[$key]?'font-bold':'' }} flex flex-wrap items-start gap-2">{!! $key.'.
-            <span>'.shortcode($o).'</span>'
+            <div>'.shortcode($o).'</div>'
             !!}
           </div>
           @endforeach
         </div>
         @elseif ((strtolower($v->type)=='is' || strtolower($v->type)=='u') && $v->answer)
         <div class="flex flex-col gap-1">
-          <div class="font-bold flex gap-1"><span>Jawaban:</span> {!! shortcode($v->answer) !!}</div>
+          <div class="font-bold flex gap-1">
+            <div>Jawaban:</div> {!! shortcode($v->answer) !!}
+          </div>
         </div>
         @elseif ((strtolower($v->type)=='bs'))
         <table class="w-full">
@@ -39,15 +44,17 @@
           <tr>
             <td class="py-2 px-3 border border-gray-400">{!! shortcode($o) !!}</td>
             <td class="py-2 px-3 border border-gray-400 text-center">
-              {!! $v->corrects[$key]?'<span
-                class="bg-positive-50 text-positive-600 border border-positive-100 px-2 shadow-md rounded-md">Benar</span>':'<span
-                class="bg-negative-50 text-negative-600 border border-negative-100 px-2 shadow-md rounded-md">Salah</span>'
+              {!! $v->corrects[$key]?'<div
+                class="bg-positive-50 text-positive-600 border border-positive-100 px-2 shadow-md rounded-md">Benar
+              </div>':'<div
+                class="bg-negative-50 text-negative-600 border border-negative-100 px-2 shadow-md rounded-md">Salah
+              </div>'
               !!}
             </td>
           </tr>
           @empty
           <tr>
-            <td colspan="3" class="text-center">Pilihan jawaban tidak tersedia!</td>
+            <td coldiv="3" class="text-center">Pilihan jawaban tidak tersedia!</td>
           </tr>
           @endforelse
         </table>

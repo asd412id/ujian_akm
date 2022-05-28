@@ -1,5 +1,5 @@
-<div class="flex justify-between">
-  <div class="flex gap-1">
+<div class="flex flex-col md:flex-row justify-center md:justify-between gap-2 px-2 md:px-0">
+  <div class="flex flex-col md:flex-row gap-1">
     <x-button primary label="Tambah Data" icon="plus" wire:click='create' />
     @if (request()->is('*peserta') || request()->is('*soal') || request()->is('*jadwal'))
     <x-button red label="Hapus Data" icon="trash" wire:click='destroyAll' :disabled="!count($this->data)" />
@@ -9,8 +9,8 @@
     @endif
     @endif
   </div>
-  <div class=" flex gap-2">
-    <div class="flex gap-1 items-center">
+  <div class="flex flex-col md:flex-row gap-2">
+    <div class="flex gap-1 items-center justify-center">
       Tampilkan Data:
       <x-native-select wire:model='limit' :options=[10,15,30,50,100,500,1000] />
     </div>

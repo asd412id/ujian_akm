@@ -1,4 +1,5 @@
 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col md:flex-row gap-5">
+	@if (auth()->user()->role==0)
 	<div class="w-full md:w-6/12">
 		<div class="shadow-sm p-6 bg-white border-b border-gray-200 rounded-lg">
 			<h3 class="text-2xl">Data Sekolah</h3>
@@ -30,7 +31,9 @@
 			</form>
 		</div>
 	</div>
+	@endif
 	<div class="w-full md:w-6/12">
+		@if (auth()->user()->role==0)
 		@if (!is_dir(public_path('uploads'))||!Storage::disk('public')->exists('uploads'))
 		<div class="w-full shadow-sm p-6 bg-white border-b border-gray-200 rounded-lg mb-3">
 			<p>Folder upload tidak terbaca oleh sistem! Anda tidak dapat melakukan unggahan/upload file ke aplikasi. Jika
@@ -42,8 +45,9 @@
 		<div class="w-full shadow-sm p-6 bg-white border-b border-gray-200 rounded-lg">
 			{!! shortcode($kop_sekolah) !!}
 		</div>
+		@endif
 		<div class="w-full shadow-sm p-6 bg-white border-b border-gray-200 rounded-lg mt-3">
-			<h3 class="text-2xl">Data Admin</h3>
+			<h3 class="text-2xl">Data Pengguna</h3>
 			<form wire:submit.prevent='updateUser' class="mt-2 flex flex-col gap-3">
 				<x-input label="Nama Admin" wire:model.defer="nama_admin" placeholder="Masukkan nama admin" required />
 				<x-input label="Alamat Email" type="email" wire:model.defer="email" placeholder="Masukkan alamat email"

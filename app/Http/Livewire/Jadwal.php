@@ -65,6 +65,11 @@ class Jadwal extends Component
 					$q->where('ruang', $r);
 				});
 			})
+			->when(auth()->user()->role != 0, function ($q) {
+				$q->whereHas('soals', function ($q) {
+					$q->whereIn('mapel_id', auth()->user()->mapels->pluck('id')->toArray());
+				});
+			})
 			->orderBy('active', 'desc')
 			->orderBy('start', 'asc')
 			->paginate($this->limit);

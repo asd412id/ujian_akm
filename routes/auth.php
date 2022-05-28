@@ -16,10 +16,10 @@ Route::middleware(['guest', 'guest:peserta'])->group(function () {
 
     Route::post('daftar', [RegisteredUserController::class, 'store']);
 
-    Route::get('masuk', [AuthenticatedSessionController::class, 'create'])
+    Route::get('admin', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
-    Route::post('masuk', [AuthenticatedSessionController::class, 'store']);
+    Route::post('admin', [AuthenticatedSessionController::class, 'store']);
 
     Route::get('lupa-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');

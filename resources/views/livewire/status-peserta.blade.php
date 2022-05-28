@@ -1,5 +1,5 @@
-<div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-row md:flex-col gap-2">
-	<div class="flex gap-2 w-full items-center">
+<div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col gap-2">
+	<div class="flex gap-2 w-full items-center p-2 md:p-0">
 		<div class="w-72">
 			<x-native-select :options="[
 				['id'=>'all','text'=>'Semua Peserta'],
@@ -11,7 +11,7 @@
 			<x-input type="search" wire:model.debounce.500ms='search' placeholder="Cari Data" right-icon="search" />
 		</div>
 	</div>
-	<div class="w-full shadow-sm bg-white border-b border-gray-200 rounded-lg">
+	<div class="w-full shadow-sm bg-white border-b border-gray-200 rounded-lg overflow-auto">
 		<table class="text-left w-full border-collapse">
 			<thead>
 				<tr>

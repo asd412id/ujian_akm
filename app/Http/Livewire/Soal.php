@@ -59,12 +59,20 @@ class Soal extends Component
 		})
 			->when($this->dataattrlist, function ($q, $r) {
 				$q->where('mapel_id', $r);
-			})
-			->paginate($this->limit);
+			});
+
+		if (auth()->user()->role != 0) {
+			$this->data->whereIn('mapel_id', auth()->user()->mapels->pluck('id')->toArray());
+		}
+
+		$this->data = $this->data->paginate($this->limit);
 
 		$dta = $this->data;
 		$this->IDS = $dta->pluck('id')->toArray();
 		$attrlists = auth()->user()->sekolah->mapels()
+			->when(auth()->user()->role != 0, function ($q) {
+				$q->whereIn('id', auth()->user()->mapels->pluck('id')->toArray());
+			})
 			->whereHas('soals')
 			->select('name as label', 'id as value')
 			->get()
@@ -76,6 +84,9 @@ class Soal extends Component
 	public function boot()
 	{
 		$list = auth()->user()->sekolah->mapels()
+			->when(auth()->user()->role != 0, function ($q) {
+				$q->whereIn('id', auth()->user()->mapels->pluck('id')->toArray());
+			})
 			->select('id', 'name')
 			->limit(10)
 			->get()
@@ -91,6 +102,9 @@ class Soal extends Component
 	public function updatingSelectSearch($value)
 	{
 		$list = auth()->user()->sekolah->mapels()
+			->when(auth()->user()->role != 0, function ($q) {
+				$q->whereIn('id', auth()->user()->mapels->pluck('id')->toArray());
+			})
 			->where('name', 'like', "%$value%")
 			->select('id', 'name')
 			->get()
@@ -112,6 +126,9 @@ class Soal extends Component
 			'item_soals',
 		]);
 		$list = auth()->user()->sekolah->mapels()
+			->when(auth()->user()->role != 0, function ($q) {
+				$q->whereIn('id', auth()->user()->mapels->pluck('id')->toArray());
+			})
 			->select('id', 'name')
 			->limit(10)
 			->get()
@@ -194,12 +211,21 @@ class Soal extends Component
 			'item_soals',
 		]);
 		$this->resetValidation();
-		$list = auth()->user()->sekolah->mapels()
-			->whereIn('id', [$soal->mapel_id])
-			->orWhereNotIn('id', [$soal->mapel_id])
-			->select('id', 'name')
-			->get()
-			->toArray();
+		if (auth()->user()->role == 0) {
+			$list = auth()->user()->sekolah->mapels()
+				->whereIn('id', [$soal->mapel_id])
+				->orWhereNotIn('id', [$soal->mapel_id])
+				->select('id', 'name')
+				->get()
+				->toArray();
+		} else {
+			$list = auth()->user()->sekolah->mapels()
+				->whereIn('id', auth()->user()->mapels->pluck('id')->toArray())
+				->select('id', 'name')
+				->get()
+				->toArray();
+		}
+
 
 		if (count($list)) {
 			$this->listMapel = $list;
@@ -223,7 +249,7 @@ class Soal extends Component
 
 	public function downloadFormat()
 	{
-		return response()->download(resource_path('format_soal.xlsx'), 'Format Soal - ' . env('APP_NAME', 'Aplikasi Ujian') . '.xlsx');
+		return response()->download(resource_path('format_soal.xlsx'), 'Format Soal' . ($this->name ? ' ' . $this->name : '') . ' - ' . env('APP_NAME', 'Aplikasi Ujian') . '.xlsx');
 	}
 
 	public function getRichText($text)
@@ -366,10 +392,10 @@ class Soal extends Component
 				$image = isset($images[$cols[1] . ($key + 1)]) ? $images[$cols[1] . ($key + 1)] : null;
 				if ($image) {
 					$ipath = $this->saveImage($image);
-					if ($image->getOffsetY() == 0) {
-						$soal = "[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() != 0 && $image->getOffsetX2() != 0 || $image->getOffsetX() == $image->getOffsetX2() ? ' tengah' : '')) . "]" . $ipath . "[/g]\n" . $soal;
+					if ($image->getOffsetY2() != 0) {
+						$soal = "[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kiri' : '')) . "]" . $ipath . "[/g]\n" . $soal;
 					} else {
-						$soal = $soal . "\n[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() != 0 && $image->getOffsetX2() != 0 || $image->getOffsetX() == $image->getOffsetX2() ? ' tengah' : '')) . "]" . $ipath . "[/g]";
+						$soal = $soal . "\n[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kiri' : '')) . "]" . $ipath . "[/g]";
 					}
 				}
 
@@ -398,10 +424,10 @@ class Soal extends Component
 					$image = isset($images[$cols[$k - 1] . ($key + 1)]) ? $images[$cols[$k - 1] . ($key + 1)] : null;
 					if ($image) {
 						$ipath = $this->saveImage($image);
-						if ($image->getOffsetY() == 0) {
-							$val = "[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() != 0 && $image->getOffsetX2() != 0 || $image->getOffsetX() == $image->getOffsetX2() ? ' tengah' : '')) . "]" . $ipath . "[/g]\n" . $val;
+						if ($image->getOffsetY2() != 0) {
+							$val = "[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kiri' : '')) . "]" . $ipath . "[/g]\n" . $val;
 						} else {
-							$val = $val . "\n[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() != 0 && $image->getOffsetX2() != 0 || $image->getOffsetX() == $image->getOffsetX2() ? ' tengah' : '')) . "]" . $ipath . "[/g]";
+							$val = $val . "\n[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kiri' : '')) . "]" . $ipath . "[/g]";
 						}
 					}
 

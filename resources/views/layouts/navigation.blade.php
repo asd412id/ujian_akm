@@ -28,12 +28,14 @@
 					<x-anav-link :href="route('media')" :active="request()->routeIs('media')">
 						{{ __('Media') }}
 					</x-anav-link>
+					@if (auth()->user()->role==0)
 					<x-anav-link :href="route('mapel')" :active="request()->routeIs('mapel')">
 						{{ __('Mata Pelajaran') }}
 					</x-anav-link>
 					<x-anav-link :href="route('penilai')" :active="request()->routeIs('penilai')">
 						{{ __('Penilai') }}
 					</x-anav-link>
+					@endif
 					<x-anav-link :href="route('peserta')" :active="request()->routeIs('peserta')">
 						{{ __('Peserta Ujian') }}
 					</x-anav-link>
@@ -102,12 +104,14 @@
 			<x-responsive-nav-link :href="route('media')" :active="request()->routeIs('media')">
 				{{ __('Media') }}
 			</x-responsive-nav-link>
+			@if (auth()->user()->role==0)
 			<x-responsive-nav-link :href="route('mapel')" :active="request()->routeIs('mapel')">
 				{{ __('Mata Pelajaran') }}
 			</x-responsive-nav-link>
 			<x-responsive-nav-link :href="route('penilai')" :active="request()->routeIs('penilai')">
 				{{ __('Penilai') }}
 			</x-responsive-nav-link>
+			@endif
 			<x-responsive-nav-link :href="route('peserta')" :active="request()->routeIs('peserta')">
 				{{ __('Peserta Ujian') }}
 			</x-responsive-nav-link>

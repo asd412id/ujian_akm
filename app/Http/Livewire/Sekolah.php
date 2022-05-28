@@ -32,7 +32,7 @@ class Sekolah extends Component
 	public function mount()
 	{
 		$this->nama_sekolah = auth()->user()->sekolah->name;
-		$this->logo_sekolah = auth()->user()->sekolah->logo;
+		$this->logo_sekolah = auth()->user()->sekolah->logo ?? '[g]kop_sekolah.png[/g]';
 		$this->kop_sekolah = auth()->user()->sekolah->kop;
 		$this->limitlogin = auth()->user()->sekolah->limit_login;
 		$this->nama_admin = auth()->user()->name;
@@ -128,7 +128,7 @@ class Sekolah extends Component
 
 	public function downloadExcel()
 	{
-		return response()->download(resource_path('master_data.xlsx'), 'Master Data - ' . env('APP_NAME', 'Aplikasi Ujian') . '.xlsx');
+		return response()->download(resource_path('master_data.xlsx'), 'Master Data' . ($this->nama_sekolah ? ' ' . $this->nama_sekolah : '') . ' - ' . env('APP_NAME', 'Aplikasi Ujian') . '.xlsx');
 	}
 
 	public function updatedExcel()

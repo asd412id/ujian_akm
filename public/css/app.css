@@ -1011,8 +1011,16 @@ select {
     float: left;
 }
 
+.clear-both {
+    clear: both;
+}
+
 .m-1 {
     margin: 0.25rem;
+}
+
+.m-auto {
+    margin: auto;
 }
 
 .my-2 {
@@ -1649,6 +1657,10 @@ select {
 
 .self-center {
     align-self: center;
+}
+
+.overflow-auto {
+    overflow: auto;
 }
 
 .overflow-hidden {
@@ -9008,6 +9020,10 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
         display: inline-block;
     }
 
+    .md\:flex {
+        display: flex;
+    }
+
     .md\:hidden {
         display: none;
     }
@@ -9036,6 +9052,10 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
         justify-content: flex-start;
     }
 
+    .md\:justify-between {
+        justify-content: space-between;
+    }
+
     .md\:gap-48 {
         gap: 12rem;
     }
@@ -9050,6 +9070,10 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
 
     .md\:p-5 {
         padding: 1.25rem;
+    }
+
+    .md\:p-0 {
+        padding: 0px;
     }
 
     .md\:px-32 {

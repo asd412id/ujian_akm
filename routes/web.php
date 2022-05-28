@@ -32,7 +32,7 @@ Route::middleware('auth:peserta')->prefix('ujian')->group(function () {
 	})->name('ujian.tes')->middleware('ujian');
 });
 
-Route::middleware(['auth', 'verified', 'role:null,0,1'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:null,0,1'])->prefix('/admin')->group(function () {
 	Route::get('/beranda', function () {
 		return view('dashboard', ['title' => 'Beranda']);
 	})->name('dashboard');
