@@ -22,7 +22,7 @@
 				@if ((strtolower($soal->type)=='pg' || strtolower($soal->type)=='pgk') && is_array($soal->option))
 				<div class="flex flex-col gap-2">
 					@foreach ($soal->option as $key => $o)
-					<label class="flex flex-wrap items-center gap-2">
+					<label class="flex items-center gap-2">
 						@if (strtolower($soal->type)=='pg')
 						<input type="radio"
 							class="form-radio rounded-full transition ease-in-out duration-100 border-secondary-300 text-primary-600 focus:ring-primary-600 focus:border-primary-400 dark:border-secondary-500 dark:checked:border-secondary-600 dark:focus:ring-secondary-600 dark:focus:border-secondary-500 dark:bg-secondary-600 dark:text-secondary-600 dark:focus:ring-offset-secondary-800"
@@ -73,10 +73,12 @@
 				<x-textarea wire:model.defer='answer' placeholder="Masukkan jawabanmu" />
 				@elseif (strtolower($soal->type)=='jd' && is_array($soal->option))
 				<div class="flex justify-between md:justify-start md:gap-48 relative mt-5"
-					x-data="{relations: @entangle('srelation').defer, key: null, keyb: null}">
+					x-data="{relations: {}, key: null, keyb: null, paired: {}}">
 					<div class="hidden" x-init="$nextTick(()=>{
-						for(let i in relations){
-							if(relations[i] != null){
+						for(let i in @js($srelation)){
+							if(@js($srelation)[i] != null){
+								relations[i] = @js($srelation)[i];
+								paired[i] = 2;
 								lines[i] = generateLine($refs[i], $refs[relations[i]], i);
 							}
 						}
@@ -92,36 +94,32 @@
 							class="py-1 px-2 rounded-md text-center shadow-md border border-gray-300 hover:cursor-pointer hover:bg-gray-100"
 							x-ref='start{{ $key }}_{{ $soal->id }}' x-on:click="
 							key = 'start{{ $key }}_{{ $soal->id }}';
-							if(relations == null || relations[key] == undefined){
-								relations[key] = null;
-							}else{
-								lines[key] = removeLine(lines[key], key);
-								delete(lines[key]);
-								relations[key] = null;
-								key = null;
+							if(paired[key] == undefined){
+								paired[key] = 1;
 							}
 
 							if(keyb != null){
 								$refs[keyb].classList.remove('bg-primary-300');
 								$refs[keyb].classList.remove('hover:bg-primary-300');
 							}
-							if(key != null){
+
+							if(paired[key] == 1){
 								$refs[key].classList.add('bg-primary-300');
 								$refs[key].classList.add('hover:bg-primary-300');
 								keyb = key;
+							}else{
+								$refs[key].classList.remove('bg-primary-300');
+								$refs[key].classList.remove('hover:bg-primary-300');
 							}
 
-							r = {};
-							for(let i in relations){
-								if(relations[i] != null){
-									r[i] = relations[i];
-								}
+							if(paired[key] == 2){
+								delete(paired[key]);
+								lines[key] = removeLine(lines[key], key);
+								lines[key] = null;
+								relations[key] = null;
 							}
-							if(Object.keys(r).length > 0){
-								$wire.set('relation', r, true);
-							}else{
-								$wire.set('relation', [], true);
-							}
+							
+							$wire.set('relation', {...relations}, true);
 							">{!!
 							shortcode($soal->option[$key]) !!}</div>
 						@endif
@@ -136,29 +134,15 @@
 						<div
 							class="py-1 px-2 rounded-md text-center shadow-md border border-gray-300 hover:cursor-pointer hover:bg-gray-100"
 							x-ref='end{{ $key }}_{{ $soal->id }}' x-on:click="
-							lines[key] = removeLine(lines[key], key);
-								if(key != null && relations != null && relations[key] == null){
+							if(paired[key] == 1){
+								paired[key] = 2;
 								relations[key] = 'end{{ $key }}_{{ $soal->id }}';
 								lines[key] = generateLine($refs[key], $el, key);
 								$refs[key].classList.remove('bg-primary-300');
 								$refs[key].classList.remove('hover:bg-primary-300');
-								key = null;
-							}else{
-								relations[key] = null;
-								delete(lines[key]);
 							}
 
-							r = {};
-							for(let i in relations){
-								if(relations[i] != null){
-									r[i] = relations[i];
-								}
-							}
-							if(Object.keys(r).length > 0){
-								$wire.set('relation', r, true);
-							}else{
-								$wire.set('relation', [], true);
-							}
+							$wire.set('relation', {...relations}, true);
 							">{!!
 							shortcode($soal->option[$key]) !!}</div>
 						@endif

@@ -1011,16 +1011,8 @@ select {
     float: left;
 }
 
-.clear-both {
-    clear: both;
-}
-
 .m-1 {
     margin: 0.25rem;
-}
-
-.m-auto {
-    margin: auto;
 }
 
 .my-2 {
@@ -2146,6 +2138,11 @@ select {
     background-color: rgb(245 158 11 / var(--tw-bg-opacity));
 }
 
+.bg-blue-500 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(59 130 246 / var(--tw-bg-opacity));
+}
+
 .bg-warning-500 {
     --tw-bg-opacity: 1;
     background-color: rgb(245 158 11 / var(--tw-bg-opacity));
@@ -2176,6 +2173,11 @@ select {
     background-color: rgb(239 68 68 / var(--tw-bg-opacity));
 }
 
+.bg-negative-500 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+}
+
 .bg-positive-500 {
     --tw-bg-opacity: 1;
     background-color: rgb(16 185 129 / var(--tw-bg-opacity));
@@ -2184,11 +2186,6 @@ select {
 .bg-secondary-200 {
     --tw-bg-opacity: 1;
     background-color: rgb(229 231 235 / var(--tw-bg-opacity));
-}
-
-.bg-negative-500 {
-    --tw-bg-opacity: 1;
-    background-color: rgb(239 68 68 / var(--tw-bg-opacity));
 }
 
 .bg-green-500 {
@@ -2204,11 +2201,6 @@ select {
 .bg-rose-500 {
     --tw-bg-opacity: 1;
     background-color: rgb(244 63 94 / var(--tw-bg-opacity));
-}
-
-.bg-blue-500 {
-    --tw-bg-opacity: 1;
-    background-color: rgb(59 130 246 / var(--tw-bg-opacity));
 }
 
 .bg-emerald-500 {
@@ -2473,18 +2465,6 @@ select {
 
 .p-2\.5 {
     padding: 0.625rem;
-}
-
-.p-1\.5 {
-    padding: 0.375rem;
-}
-
-.p-3\.5 {
-    padding: 0.875rem;
-}
-
-.p-5\.5 {
-    padding: 1.38rem;
 }
 
 .px-4 {
@@ -3375,6 +3355,11 @@ select {
     --tw-ring-color: rgb(245 158 11 / var(--tw-ring-opacity));
 }
 
+.ring-blue-500 {
+    --tw-ring-opacity: 1;
+    --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity));
+}
+
 .ring-warning-500 {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(245 158 11 / var(--tw-ring-opacity));
@@ -3405,14 +3390,14 @@ select {
     --tw-ring-color: rgb(239 68 68 / var(--tw-ring-opacity));
 }
 
-.ring-positive-500 {
-    --tw-ring-opacity: 1;
-    --tw-ring-color: rgb(16 185 129 / var(--tw-ring-opacity));
-}
-
 .ring-negative-500 {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(239 68 68 / var(--tw-ring-opacity));
+}
+
+.ring-positive-500 {
+    --tw-ring-opacity: 1;
+    --tw-ring-color: rgb(16 185 129 / var(--tw-ring-opacity));
 }
 
 .ring-green-500 {
@@ -3428,11 +3413,6 @@ select {
 .ring-rose-500 {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(244 63 94 / var(--tw-ring-opacity));
-}
-
-.ring-blue-500 {
-    --tw-ring-opacity: 1;
-    --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity));
 }
 
 .ring-emerald-500 {
@@ -6939,6 +6919,11 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
     background-color: rgb(217 119 6 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-blue-600:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(37 99 235 / var(--tw-bg-opacity));
+}
+
 .hover\:bg-warning-600:hover {
     --tw-bg-opacity: 1;
     background-color: rgb(217 119 6 / var(--tw-bg-opacity));
@@ -6969,6 +6954,11 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
     background-color: rgb(220 38 38 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-negative-600:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(220 38 38 / var(--tw-bg-opacity));
+}
+
 .hover\:bg-slate-50:hover {
     --tw-bg-opacity: 1;
     background-color: rgb(249 250 251 / var(--tw-bg-opacity));
@@ -6979,19 +6969,14 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
     background-color: rgb(5 150 105 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-negative-600:hover {
+.hover\:bg-green-600:hover {
     --tw-bg-opacity: 1;
-    background-color: rgb(220 38 38 / var(--tw-bg-opacity));
+    background-color: rgb(22 163 74 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-primary-50:hover {
     --tw-bg-opacity: 1;
     background-color: rgb(240 253 250 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-green-600:hover {
-    --tw-bg-opacity: 1;
-    background-color: rgb(22 163 74 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-violet-600:hover {
@@ -7002,11 +6987,6 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
 .hover\:bg-rose-600:hover {
     --tw-bg-opacity: 1;
     background-color: rgb(225 29 72 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-blue-600:hover {
-    --tw-bg-opacity: 1;
-    background-color: rgb(37 99 235 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-rose-50:hover {
@@ -7415,6 +7395,11 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
     --tw-ring-color: rgb(217 119 6 / var(--tw-ring-opacity));
 }
 
+.hover\:ring-blue-600:hover {
+    --tw-ring-opacity: 1;
+    --tw-ring-color: rgb(37 99 235 / var(--tw-ring-opacity));
+}
+
 .hover\:ring-warning-600:hover {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(217 119 6 / var(--tw-ring-opacity));
@@ -7435,14 +7420,14 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
     --tw-ring-color: rgb(220 38 38 / var(--tw-ring-opacity));
 }
 
-.hover\:ring-positive-600:hover {
-    --tw-ring-opacity: 1;
-    --tw-ring-color: rgb(5 150 105 / var(--tw-ring-opacity));
-}
-
 .hover\:ring-negative-600:hover {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(220 38 38 / var(--tw-ring-opacity));
+}
+
+.hover\:ring-positive-600:hover {
+    --tw-ring-opacity: 1;
+    --tw-ring-color: rgb(5 150 105 / var(--tw-ring-opacity));
 }
 
 .hover\:ring-green-600:hover {
@@ -7458,11 +7443,6 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
 .hover\:ring-rose-600:hover {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(225 29 72 / var(--tw-ring-opacity));
-}
-
-.hover\:ring-blue-600:hover {
-    --tw-ring-opacity: 1;
-    --tw-ring-color: rgb(37 99 235 / var(--tw-ring-opacity));
 }
 
 .hover\:ring-emerald-600:hover {
@@ -7923,6 +7903,11 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
     background-color: rgb(180 83 9 / var(--tw-bg-opacity));
 }
 
+.dark .dark\:bg-blue-700 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(29 78 216 / var(--tw-bg-opacity));
+}
+
 .dark .dark\:bg-warning-700 {
     --tw-bg-opacity: 1;
     background-color: rgb(180 83 9 / var(--tw-bg-opacity));
@@ -7948,6 +7933,11 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
     background-color: rgb(75 85 99 / var(--tw-bg-opacity));
 }
 
+.dark .dark\:bg-negative-700 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(185 28 28 / var(--tw-bg-opacity));
+}
+
 .dark .dark\:bg-slate-700 {
     --tw-bg-opacity: 1;
     background-color: rgb(55 65 81 / var(--tw-bg-opacity));
@@ -7963,11 +7953,6 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
     background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 
-.dark .dark\:bg-negative-700 {
-    --tw-bg-opacity: 1;
-    background-color: rgb(185 28 28 / var(--tw-bg-opacity));
-}
-
 .dark .dark\:bg-green-700 {
     --tw-bg-opacity: 1;
     background-color: rgb(21 128 61 / var(--tw-bg-opacity));
@@ -7981,11 +7966,6 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
 .dark .dark\:bg-rose-700 {
     --tw-bg-opacity: 1;
     background-color: rgb(190 18 60 / var(--tw-bg-opacity));
-}
-
-.dark .dark\:bg-blue-700 {
-    --tw-bg-opacity: 1;
-    background-color: rgb(29 78 216 / var(--tw-bg-opacity));
 }
 
 .dark .dark\:bg-emerald-700 {
@@ -8171,6 +8151,11 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
     --tw-ring-color: rgb(180 83 9 / var(--tw-ring-opacity));
 }
 
+.dark .dark\:ring-blue-700 {
+    --tw-ring-opacity: 1;
+    --tw-ring-color: rgb(29 78 216 / var(--tw-ring-opacity));
+}
+
 .dark .dark\:ring-warning-700 {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(180 83 9 / var(--tw-ring-opacity));
@@ -8196,6 +8181,11 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
     --tw-ring-color: rgb(185 28 28 / var(--tw-ring-opacity));
 }
 
+.dark .dark\:ring-negative-700 {
+    --tw-ring-opacity: 1;
+    --tw-ring-color: rgb(185 28 28 / var(--tw-ring-opacity));
+}
+
 .dark .dark\:ring-slate-700 {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(55 65 81 / var(--tw-ring-opacity));
@@ -8204,11 +8194,6 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
 .dark .dark\:ring-positive-700 {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(4 120 87 / var(--tw-ring-opacity));
-}
-
-.dark .dark\:ring-negative-700 {
-    --tw-ring-opacity: 1;
-    --tw-ring-color: rgb(185 28 28 / var(--tw-ring-opacity));
 }
 
 .dark .dark\:ring-green-700 {
@@ -8224,11 +8209,6 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
 .dark .dark\:ring-rose-700 {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(190 18 60 / var(--tw-ring-opacity));
-}
-
-.dark .dark\:ring-blue-700 {
-    --tw-ring-opacity: 1;
-    --tw-ring-color: rgb(29 78 216 / var(--tw-ring-opacity));
 }
 
 .dark .dark\:ring-emerald-700 {
@@ -8368,6 +8348,11 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
     background-color: rgb(217 119 6 / var(--tw-bg-opacity));
 }
 
+.dark .dark\:hover\:bg-blue-600:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(37 99 235 / var(--tw-bg-opacity));
+}
+
 .dark .dark\:hover\:bg-warning-600:hover {
     --tw-bg-opacity: 1;
     background-color: rgb(217 119 6 / var(--tw-bg-opacity));
@@ -8393,6 +8378,11 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
     background-color: rgb(220 38 38 / var(--tw-bg-opacity));
 }
 
+.dark .dark\:hover\:bg-negative-600:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(220 38 38 / var(--tw-bg-opacity));
+}
+
 .dark .dark\:hover\:bg-slate-600:hover {
     --tw-bg-opacity: 1;
     background-color: rgb(75 85 99 / var(--tw-bg-opacity));
@@ -8401,11 +8391,6 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
 .dark .dark\:hover\:bg-positive-600:hover {
     --tw-bg-opacity: 1;
     background-color: rgb(5 150 105 / var(--tw-bg-opacity));
-}
-
-.dark .dark\:hover\:bg-negative-600:hover {
-    --tw-bg-opacity: 1;
-    background-color: rgb(220 38 38 / var(--tw-bg-opacity));
 }
 
 .dark .dark\:hover\:bg-green-600:hover {
@@ -8421,11 +8406,6 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
 .dark .dark\:hover\:bg-rose-600:hover {
     --tw-bg-opacity: 1;
     background-color: rgb(225 29 72 / var(--tw-bg-opacity));
-}
-
-.dark .dark\:hover\:bg-blue-600:hover {
-    --tw-bg-opacity: 1;
-    background-color: rgb(37 99 235 / var(--tw-bg-opacity));
 }
 
 .dark .dark\:hover\:bg-emerald-600:hover {
@@ -8518,6 +8498,11 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
     --tw-ring-color: rgb(217 119 6 / var(--tw-ring-opacity));
 }
 
+.dark .dark\:hover\:ring-blue-600:hover {
+    --tw-ring-opacity: 1;
+    --tw-ring-color: rgb(37 99 235 / var(--tw-ring-opacity));
+}
+
 .dark .dark\:hover\:ring-warning-600:hover {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(217 119 6 / var(--tw-ring-opacity));
@@ -8538,6 +8523,11 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
     --tw-ring-color: rgb(220 38 38 / var(--tw-ring-opacity));
 }
 
+.dark .dark\:hover\:ring-negative-600:hover {
+    --tw-ring-opacity: 1;
+    --tw-ring-color: rgb(220 38 38 / var(--tw-ring-opacity));
+}
+
 .dark .dark\:hover\:ring-slate-600:hover {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(75 85 99 / var(--tw-ring-opacity));
@@ -8546,11 +8536,6 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
 .dark .dark\:hover\:ring-positive-600:hover {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(5 150 105 / var(--tw-ring-opacity));
-}
-
-.dark .dark\:hover\:ring-negative-600:hover {
-    --tw-ring-opacity: 1;
-    --tw-ring-color: rgb(220 38 38 / var(--tw-ring-opacity));
 }
 
 .dark .dark\:hover\:ring-green-600:hover {
@@ -8566,11 +8551,6 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
 .dark .dark\:hover\:ring-rose-600:hover {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(225 29 72 / var(--tw-ring-opacity));
-}
-
-.dark .dark\:hover\:ring-blue-600:hover {
-    --tw-ring-opacity: 1;
-    --tw-ring-color: rgb(37 99 235 / var(--tw-ring-opacity));
 }
 
 .dark .dark\:hover\:ring-emerald-600:hover {
@@ -9020,10 +9000,6 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
         display: inline-block;
     }
 
-    .md\:flex {
-        display: flex;
-    }
-
     .md\:hidden {
         display: none;
     }
@@ -9068,12 +9044,12 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
         border-radius: 1.5rem;
     }
 
-    .md\:p-5 {
-        padding: 1.25rem;
-    }
-
     .md\:p-0 {
         padding: 0px;
+    }
+
+    .md\:p-5 {
+        padding: 1.25rem;
     }
 
     .md\:px-32 {

@@ -23,7 +23,7 @@ Route::middleware(['guest:peserta', 'guest'])->group(function () {
 	Route::post('/qrcode', [Controller::class, 'loginQR'])->name('peserta.login.qr');
 });
 
-Route::middleware('auth:peserta')->prefix('ujian')->group(function () {
+Route::middleware(['auth:peserta', 'limit_login'])->prefix('ujian')->group(function () {
 	Route::post('/keluar', [Controller::class, 'pesertaLogout'])->name('peserta.logout');
 	Route::get('/', function () {
 		return view('peserta', ['title' => 'Data Peserta', 'wire' => 'peserta.index']);

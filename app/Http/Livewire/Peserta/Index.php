@@ -20,9 +20,9 @@ class Index extends Component
 
 	public function getJadwal()
 	{
-		if (!$this->user->is_login) {
+		if (!$this->user->is_login || session()->getId() != $this->user->session_id) {
 			auth()->logout();
-			return redirect()->route('index');
+			return redirect()->route('index')->with('error', 'Anda telah login di perangkat lain!');
 		}
 
 		$this->login = $this->user->logins()

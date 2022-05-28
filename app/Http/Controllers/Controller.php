@@ -28,31 +28,28 @@ class Controller extends BaseController
 		$user = Peserta::where('uid', $r->peserta_id)->first();
 
 		if (!$user) {
-			return redirect()->back()->with('error', 'ID Peserta dan password tidak sesuai')->withInput($r->only('peserta_id'));
+			return redirect()->route('index')->with('error', 'ID Peserta dan password tidak sesuai')->withInput($r->only('peserta_id'));
 		}
 
 		$checkPassword = Hash::check($r->password, $user->password);
 
 		if (!$checkPassword) {
-			return redirect()->back()->with('error', 'ID Peserta dan password tidak sesuai')->withInput($r->only('peserta_id'));
+			return redirect()->route('index')->with('error', 'ID Peserta dan password tidak sesuai')->withInput($r->only('peserta_id'));
 		}
 
 		if ($user->sekolah->limit_login && $user->is_login) {
-			return redirect()->back()->with('error', 'Anda telah login di tempat lain')->withInput($r->only('peserta_id'));
+			return redirect()->route('index')->with('error', 'Anda telah login pada perangkat lain')->withInput($r->only('peserta_id'));
 		}
 
 		Auth::guard('peserta')->login($user, true);
-		try {
-			Auth::guard('peserta')->logoutOtherDevices($user->password);
-		} catch (\Throwable $th) {
-		}
 
 		$user->is_login = true;
+		$user->session_id = session()->getId();
 		$user->save();
 
 		setUserFolder($user->sekolah->id);
 
-		return redirect()->back();
+		return redirect()->route('index');
 	}
 
 	public function loginQR(Request $r)
@@ -66,11 +63,9 @@ class Controller extends BaseController
 		$check = Peserta::where('token', $r->qrcode)->first();
 		if ($check) {
 			Auth::guard('peserta')->login($check, true);
-			try {
-				Auth::guard('peserta')->logoutOtherDevices($check->password);
-			} catch (\Throwable $th) {
-			}
+
 			$check->is_login = true;
+			$check->session_id = session()->getId();
 			$check->save();
 			setUserFolder($check->sekolah->id);
 
@@ -83,10 +78,11 @@ class Controller extends BaseController
 	{
 		$user = auth()->user();
 		$user->is_login = false;
+		$user->session_id = null;
 		if ($user->save()) {
 			auth()->logout();
 			removeCookie('_userfolder');
 		}
-		return redirect()->back();
+		return redirect()->route('index');
 	}
 }

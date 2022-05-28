@@ -27,11 +27,9 @@ class Authenticate extends Middleware
     {
         if (!$request->expectsJson()) {
             removeCookie('_userfolder');
-            if (strpos(url()->current(), '/ujian') !== false) {
-                foreach ($this->guards as $guard) {
-                    if ($guard == 'peserta') {
-                        return route('index');
-                    }
+            foreach ($this->guards as $guard) {
+                if ($guard == 'peserta') {
+                    return route('index');
                 }
             }
             return route('login');

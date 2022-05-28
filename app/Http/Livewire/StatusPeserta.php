@@ -37,7 +37,7 @@ class StatusPeserta extends Component
 	public function doResetLogin(PesertaLogin $dlogin)
 	{
 		$dlogin->update(['reset' => 2, 'end' => null, 'created_at' => now()]);
-		$dlogin->peserta()->update(['is_login' => false]);
+		$dlogin->peserta()->update(['is_login' => false, 'session_id' => null]);
 		return $this->notification()->success('Login peserta berhasil direset (' . $dlogin->peserta->name . ')');
 	}
 
