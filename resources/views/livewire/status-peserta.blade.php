@@ -11,7 +11,7 @@
 			<x-input type="search" wire:model.debounce.500ms='search' placeholder="Cari Data" right-icon="search" />
 		</div>
 	</div>
-	<div class="w-full shadow-sm bg-white border-b border-gray-200 rounded-lg overflow-auto">
+	<div class="w-full shadow-sm bg-white border-b border-gray-200 rounded-lg">
 		<table class="text-left w-full border-collapse">
 			<thead>
 				<tr>
