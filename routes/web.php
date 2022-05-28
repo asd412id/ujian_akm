@@ -20,6 +20,7 @@ Route::middleware(['guest:peserta', 'guest'])->group(function () {
 		return view('welcome');
 	})->name('index');
 	Route::post('/', [Controller::class, 'pesertaLogin'])->name('peserta.login');
+	Route::post('/qrcode', [Controller::class, 'loginQR'])->name('peserta.login.qr');
 });
 
 Route::middleware('auth:peserta')->prefix('ujian')->group(function () {

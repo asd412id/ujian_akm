@@ -42,7 +42,10 @@ class Controller extends BaseController
 		}
 
 		Auth::guard('peserta')->login($user, true);
-		Auth::guard('peserta')->logoutOtherDevices($r->password);
+		try {
+			Auth::guard('peserta')->logoutOtherDevices($user->password);
+		} catch (\Throwable $th) {
+		}
 
 		$user->is_login = true;
 		$user->save();
@@ -50,6 +53,30 @@ class Controller extends BaseController
 		setUserFolder($user->sekolah->id);
 
 		return redirect()->back();
+	}
+
+	public function loginQR(Request $r)
+	{
+		$r->validate([
+			'qrcode' => 'required'
+		], [
+			'qrcode.required' => 'Kode QR tidak terdeteksi'
+		]);
+
+		$check = Peserta::where('token', $r->qrcode)->first();
+		if ($check) {
+			Auth::guard('peserta')->login($check, true);
+			try {
+				Auth::guard('peserta')->logoutOtherDevices($check->password);
+			} catch (\Throwable $th) {
+			}
+			$check->is_login = true;
+			$check->save();
+			setUserFolder($check->sekolah->id);
+
+			return response()->json(['status' => true]);
+		}
+		return response()->json(['status' => false]);
 	}
 
 	public function pesertaLogout()

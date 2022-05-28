@@ -61,7 +61,18 @@
 						aspectRatio: 1
 					},
 					(decodedText, decodedResult) => {
-						tloading = decodedText;
+						html5QrCode.stop();
+						tloading = 'Mengecek Informasi Login ...'
+						axios.post(@js(route('peserta.login.qr')),{_token: @js(csrf_token()),qrcode: decodedText})
+						.then(res=>{
+							if(res.status){
+								location.reload();
+							}
+						}).catch(err=>{
+							html5QrCode.start();
+							console.log(err);
+							tloading = 'Kode QR tidak dikenali!';
+						})
 					}
 				).catch((err) => {
 					tloading = 'Tidak dapat mengakses kamera!';
@@ -80,7 +91,6 @@
 				console.log('Camera not running!');
 			}
 			tloading = 'Mohon Tunggu';
-			$refs.id.focus();
 		}
 	})" cardClasses="w-full max-w-md bg-white text-center">
 			<span x-text="tloading" class="font-bold text-primary-600">Mohon Tunggu</span>

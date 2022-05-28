@@ -16,7 +16,6 @@
       border-collapse: collapse;
       border: solid 1px #000;
       page-break-inside: avoid !important;
-      font-size: 0.6em !important;
       width: 100%;
     }
 
@@ -33,7 +32,7 @@
     }
 
     @page {
-      margin: 20px;
+      margin: 15px;
     }
   </style>
 </head>
@@ -57,40 +56,38 @@
               <table class="detail">
                 <tr>
                   <td colspan="3" class="text-center"
-                    style="font-weight: bold;font-size: 1.3em;padding-top: 15px;padding-bottom: 10px">
+                    style="font-weight: bold;font-size: 1.3em;padding-top: 10px;padding-bottom: 10px">
                     KARTU
                     PESERTA</td>
                 </tr>
                 <tr class="info">
-                  <td style="width: 100px;padding-left: 15px;padding-top: 5px">ID PESERTA</td>
+                  <td style="width: 100px;padding-left: 10px;padding-top: 5px">ID PESERTA</td>
                   <td style="width: 10px;padding-top: 5px">:</td>
                   <td style="font-weight:  bold;padding-top: 5px">{{ $p->uid }}</td>
                 </tr>
                 <tr class="info">
-                  <td style="width: 100px;padding-left: 15px">NAMA</td>
+                  <td style="width: 100px;padding-left: 10px">NAMA</td>
                   <td style="width: 10px">:</td>
                   <td style="font-weight:  bold">{{ $p->name }}</td>
                 </tr>
                 <tr class="info">
-                  <td style="width: 100px;padding-left: 15px">KELAS/RUANG</td>
+                  <td style="width: 100px;padding-left: 10px">KELAS/RUANG</td>
                   <td style="width: 10px">:</td>
                   <td style="font-weight:  bold">{{ strtoupper($p->ruang) }}</td>
                 </tr>
                 <tr>
-                  <td style="width: 100px;padding-left: 15px">PASSWORD</td>
+                  <td style="width: 100px;padding-left: 10px">PASSWORD</td>
                   <td style="width: 10px">:</td>
                   <td style="font-weight:  bold">{{ $p->password_string }}</td>
                 </tr>
                 <tr>
-                  <td colspan="2" style="padding: 15px" align="center">
+                  <td colspan="2" style="padding: 10px" align="center">
                     <img
-                      src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(65)->generate($p->token)) !!} ">
+                      src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(75)->generate($p->token)) !!} ">
                   </td>
                   <td class="text-right"
-                    style="padding-bottom: 15px;padding-left: 100px;padding-top: 11px;padding-right: 30px">
+                    style="padding-bottom: 10px;padding-left: 100px;padding-top: 11px;padding-right: 30px">
                     {{ now()->translatedFormat('j F Y') }}
-                    <br>
-                    <br>
                     <br>
                     <br>
                     <br>
