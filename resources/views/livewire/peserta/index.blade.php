@@ -81,14 +81,14 @@ if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->st
 								<tr>
 									<td class="text-sm align-top">Durasi</td>
 									<td class="text-sm align-top">:</td>
-									<td class="pt-1 text-sm align-top">
+									<td class="pt-1 text-sm align-top whitespace-nowrap">
 										<span
 											class="px-1 text-sm align-top border rounded-md shadow-md bg-sky-50 border-sky-200 text-sky-700">{{
 											$j->duration.' Menit' }}</span>
 									</td>
 								</tr>
 								<tr>
-									<td class="text-sm align-top">Jumlah Soal</td>
+									<td class="text-sm align-top">Soal</td>
 									<td class="text-sm align-top">:</td>
 									<td class="pt-1 text-sm align-top">
 										<div class="flex flex-wrap gap-1">
@@ -111,9 +111,9 @@ if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->st
 									</td>
 								</tr>
 								<tr>
-									<td class="text-sm align-top">Waktu Pelaksanaan</td>
+									<td class="text-sm align-top">Waktu</td>
 									<td class="text-sm align-top">:</td>
-									<td class="pt-1 text-sm align-top">
+									<td class="pt-1 text-sm align-top whitespace-nowrap">
 										<span
 											class="px-1 text-sm align-top border rounded-md shadow-md bg-amber-50 border-amber-200 text-amber-700">{{
 											$j->start->format('d/m/Y H:i')
@@ -124,7 +124,7 @@ if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->st
 								<tr>
 									<td class="text-sm align-top">Ruangan</td>
 									<td class="text-sm align-top">:</td>
-									<td class="pt-1 text-sm align-top">
+									<td class="pt-1 text-sm align-top whitespace-nowrap">
 										<span
 											class="px-1 text-sm align-top border rounded-md shadow-md bg-lime-50 border-lime-200 text-lime-700">{!!
 											implode('</span> <span
@@ -166,16 +166,16 @@ if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->st
 							<tr>
 								<td class="text-sm align-top">Durasi</td>
 								<td class="text-sm align-top">:</td>
-								<td class="pt-1 text-sm align-top">
+								<td class="pt-1 text-sm align-top whitespace-nowrap">
 									<span
 										class="px-1 text-sm align-top border rounded-md shadow-md bg-sky-50 border-sky-200 text-sky-700">{{
 										$j->jadwal->duration.' Menit' }}</span>
 								</td>
 							</tr>
 							<tr>
-								<td class="text-sm align-top">Soal Dikerjakan</td>
+								<td class="text-sm align-top">Soal</td>
 								<td class="text-sm align-top">:</td>
-								<td class="pt-1 text-sm align-top">
+								<td class="pt-1 text-sm align-top whitespace-nowrap">
 									<span
 										class="px-1 text-sm align-top border rounded-md shadow-md bg-rose-50 border-rose-200 text-rose-700">{{
 										$j->tests()
@@ -189,9 +189,9 @@ if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->st
 								</td>
 							</tr>
 							<tr>
-								<td class="text-sm align-top">Waktu Pengerjaan</td>
+								<td class="text-sm align-top">Waktu</td>
 								<td class="text-sm align-top">:</td>
-								<td class="pt-1 text-sm align-top">
+								<td class="pt-1 text-sm align-top whitespace-nowrap">
 									<span
 										class="px-1 text-sm align-top border rounded-md shadow-md bg-amber-50 border-amber-200 text-amber-700">{{
 										$j->start->format('d/m/Y H:i')
@@ -202,7 +202,7 @@ if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->st
 							<tr>
 								<td class="text-sm align-top">Ruangan</td>
 								<td class="text-sm align-top">:</td>
-								<td class="pt-1 text-sm align-top">
+								<td class="pt-1 text-sm align-top whitespace-nowrap">
 									<span
 										class="px-1 text-sm align-top border rounded-md shadow-md bg-lime-50 border-lime-200 text-lime-700">{!!
 										implode('</span> <span
@@ -263,14 +263,14 @@ if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->st
 								<tr>
 									<td class="text-sm align-top">Durasi</td>
 									<td class="text-sm align-top">:</td>
-									<td class="pt-1 text-sm align-top">
+									<td class="pt-1 text-sm align-top whitespace-nowrap">
 										<span
 											class="px-1 text-sm align-top border rounded-md shadow-md bg-sky-50 border-sky-200 text-sky-700">{{
 											$loginJadwal->duration.' Menit' }}</span>
 									</td>
 								</tr>
 								<tr>
-									<td class="text-sm align-top">Jumlah Soal</td>
+									<td class="text-sm align-top">Soal</td>
 									<td class="text-sm align-top">:</td>
 									<td class="pt-1 text-sm align-top">
 										<div class="flex flex-wrap gap-1">
@@ -295,9 +295,9 @@ if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->st
 									</td>
 								</tr>
 								<tr>
-									<td class="text-sm align-top">Waktu Pengerjaan</td>
+									<td class="text-sm align-top">Waktu</td>
 									<td class="text-sm align-top">:</td>
-									<td class="pt-1 text-sm align-top">
+									<td class="pt-1 text-sm align-top whitespace-nowrap">
 										<span
 											class="px-1 text-sm align-top border rounded-md shadow-md bg-amber-50 border-amber-200 text-amber-700">{{
 											$loginJadwal->start->format('d/m/Y H:i')
@@ -308,7 +308,7 @@ if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->st
 								<tr>
 									<td class="text-sm align-top">Ruangan</td>
 									<td class="text-sm align-top">:</td>
-									<td class="pt-1 text-sm align-top">
+									<td class="pt-1 text-sm align-top whitespace-nowrap">
 										<span
 											class="px-1 text-sm align-top border rounded-md shadow-md bg-lime-50 border-lime-200 text-lime-700">{!!
 											implode('</span> <span

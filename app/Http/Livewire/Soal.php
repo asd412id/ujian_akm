@@ -52,7 +52,7 @@ class Soal extends Component
 							->orWhere('options', 'like', "%$r%")
 							->orWhere('answer', 'like', "%$r%");
 					})
-					->orWhereHas('mapels', function ($q) use ($r) {
+					->orWhereHas('mapel', function ($q) use ($r) {
 						$q->where('name', 'like', "%$r%");
 					});
 			});

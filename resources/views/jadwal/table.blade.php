@@ -72,7 +72,7 @@
       </tr>
       @empty
       <tr class="hover:bg-gray-100">
-        <td colspan="5" class="px-6 py-4 text-center border-b border-gray-100">Data tidak tersedia!</td>
+        <td colspan="6" class="px-6 py-4 text-center border-b border-gray-100">Data tidak tersedia!</td>
       </tr>
       @endforelse
     </tbody>
