@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ (isset($title)?$title.' | ':'').config('app.name', 'Laravel') }}</title>
+    <link rel="shortcut icon" href="{{ url('favicon.png') }}" type="image/png">
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ url('css/app.css') }}">
@@ -20,7 +21,7 @@
 <body>
     <x-dialog z-index="z-99999" blur="md" align="center" />
     <x-notifications z-index="z-99999" />
-    <div class="font-sans text-gray-900 antialiased">
+    <div class="font-sans antialiased text-gray-900">
         {{ $slot }}
     </div>
     @livewireScripts
