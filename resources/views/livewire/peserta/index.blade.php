@@ -47,7 +47,7 @@ if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->st
 				</tr>
 			</table>
 		</div>
-		@if ($user->sekolah->restrict_test && $user->sekolah->restrict_test && is_null($login))
+		@if ($user->sekolah->restrict_test && is_null($jadwal))
 		<div class="w-full shadow-md bg-amber-50 border border-amber-100 text-amber-600 rounded-lg p-5 mt-3">
 			<div class="font-bold text-xl text-red-600 flex gap-2 items-center">
 				<x-icon name="exclamation" solid class="w-9 h-9" />Peringatan!
