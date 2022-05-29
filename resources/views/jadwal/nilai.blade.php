@@ -117,7 +117,8 @@
             @if ((strtolower($v->type)=='pg' || strtolower($v->type)=='pgk') && is_array($v->itemSoal->options))
             <div class="flex flex-col gap-1">
               @foreach ($v->itemSoal->options as $key => $o)
-              <div class="{{ isset($v->correct[$key])?'font-bold':'' }} flex items-start gap-2">{!! $key.'.
+              <div class="{{ isset($v->correct[$key])&&$v->correct[$key]?'font-bold':'' }} flex items-start gap-2">{!!
+                $key.'.
                 <span>'.shortcode($o).'</span>'
                 !!}
               </div>
@@ -140,7 +141,7 @@
               <tr>
                 <td class="align-top py-2 px-3 border border-gray-400">{!! shortcode($o) !!}</td>
                 <td class="align-top py-2 px-3 border border-gray-400 text-center">
-                  {!! isset($v->correct[$key])?'<span
+                  {!! isset($v->correct[$key])&&$v->correct[$key]?'<span
                     class="bg-positive-50 text-positive-600 border border-positive-100 px-2 shadow-md rounded-md">Benar</span>':'<span
                     class="bg-negative-50 text-negative-600 border border-negative-100 px-2 shadow-md rounded-md">Salah</span>'
                   !!}
