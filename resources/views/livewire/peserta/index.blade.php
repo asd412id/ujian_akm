@@ -159,7 +159,12 @@
 								<td class="pt-1 text-sm align-top">
 									<span
 										class="text-sm align-top bg-rose-50 border border-rose-200 shadow-md text-rose-700 px-1 rounded-md">{{
-										$j->tests()->whereNotNull('correct')->orWhereNotNull('relation')->orWhereNotNull('answer')->count().'
+										$j->tests()
+										->where('peserta_id',$j->peserta->id)
+										->where(function($q){
+										$q->whereNotNull('correct')->orWhereNotNull('relation')->orWhereNotNull('answer');
+										})
+										->count().'
 										/
 										'.$j->jadwal->soal_count.' Nomor' }}</span>
 								</td>

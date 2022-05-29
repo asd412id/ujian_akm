@@ -59,7 +59,6 @@ class Nilai extends Component
 
 	public function inputNilai(PesertaLogin $login)
 	{
-		$this->sid++;
 		$this->login = $login;
 		$this->modalTitle = 'Input Nilai (' . $login->peserta->name . ') (' . $this->jadwal->name . ')';
 

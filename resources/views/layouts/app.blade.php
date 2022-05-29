@@ -9,17 +9,17 @@
     <title>{{ (isset($title)?$title.' | ':'').config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ url('css/app.css') }}">
 
     <!-- Scripts -->
     @livewireStyles
     @wireUiScripts
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ url('js/app.js') }}" defer></script>
 </head>
 
 <body class="font-sans antialiased">
-    <x-dialog z-index="z-50" blur="md" align="center" />
-    <x-notifications z-index="z-50" />
+    <x-dialog z-index="z-99999" blur="md" align="center" />
+    <x-notifications z-index="z-99999" />
     <div class="min-h-screen bg-gray-100">
         @include('layouts.navigation')
 

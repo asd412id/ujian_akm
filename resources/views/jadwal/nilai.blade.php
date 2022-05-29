@@ -1,5 +1,5 @@
 <x-modal.card fullscreen blur title="{{ $modalTitle }}" wire:model='modal' staticbackdrop
-  x-on:close="$dispatch('removeline')">
+  x-on:close="$dispatch('removeline')" x-on:open="$wire.sid++">
   @if ($login)
   <div class="overflow-auto">
     <table class="w-full">
@@ -24,7 +24,7 @@
             @if ((strtolower($v->type)=='pg' || strtolower($v->type)=='pgk') && is_array($v->itemSoal->options))
             <div class="flex flex-col gap-1">
               @foreach ($v->itemSoal->options as $key => $o)
-              <div class="{{ $v->itemSoal->corrects[$key]?'font-bold':'' }} flex flex-wrap items-start gap-2">{!!
+              <div class="{{ $v->itemSoal->corrects[$key]?'font-bold':'' }} flex items-start gap-2">{!!
                 $key.'.
                 <span>'.shortcode($o).'</span>'
                 !!}
@@ -61,7 +61,7 @@
               @endforelse
             </table>
             @elseif (strtolower($v->type)=='jd' && $v->itemSoal->relations)
-            <div class="flex justify-between gap-5 relative">
+            <div class="flex justify-between gap-32 relative">
               <div class="flex flex-col gap-2 relative">
                 @if (isset($v->itemSoal->labels[0]))
                 <div class="font-bold border-b-2 border-b-gray-600 text-center">{{ $v->itemSoal->labels[0] }}</div>
@@ -77,15 +77,18 @@
                   if($refs.startA{{ $k.$key }} && $refs.endA{{ $k.$r }}){
                     lineA{{$sid.$k.$key.$r}} = new LeaderLine($refs.startA{{ $k.$key }},$refs.endA{{ $k.$r }},{startPlug:'disc',endPlug:'disc',color: generateColor('coloradoavocado{{'Aa'.$k.$r.$key}}')});
                     lrefresh = setInterval(()=>{
-                      if (lineA{{$sid.$k.$key.$r}}) {
-                        lineA{{$sid.$k.$key.$r}}.position();
-                      }
-                    },10);
+                        if (lineA{{$sid.$k.$key.$r}} != null) {
+                          lineA{{$sid.$k.$key.$r}}.position();
+                        }
+                      },10);
                     $watch('open', value => {
                       if(!value){
-                        lineA{{$sid.$k.$key.$r}}.remove();
-                        delete lineA{{$sid.$k.$key.$r}};
+                        if(lineA{{$sid.$k.$key.$r}} != null){
+                          lineA{{$sid.$k.$key.$r}}.remove();
+                          lineA{{$sid.$k.$key.$r}} = null;
+                        }
                         clearInterval(lrefresh);
+                        open=true;
                       }
                     });
                   }
@@ -114,7 +117,7 @@
             @if ((strtolower($v->type)=='pg' || strtolower($v->type)=='pgk') && is_array($v->itemSoal->options))
             <div class="flex flex-col gap-1">
               @foreach ($v->itemSoal->options as $key => $o)
-              <div class="{{ $v->correct[$key]?'font-bold':'' }} flex flex-wrap items-start gap-2">{!! $key.'.
+              <div class="{{ isset($v->correct[$key])?'font-bold':'' }} flex items-start gap-2">{!! $key.'.
                 <span>'.shortcode($o).'</span>'
                 !!}
               </div>
@@ -137,7 +140,7 @@
               <tr>
                 <td class="align-top py-2 px-3 border border-gray-400">{!! shortcode($o) !!}</td>
                 <td class="align-top py-2 px-3 border border-gray-400 text-center">
-                  {!! $v->correct[$key]?'<span
+                  {!! isset($v->correct[$key])?'<span
                     class="bg-positive-50 text-positive-600 border border-positive-100 px-2 shadow-md rounded-md">Benar</span>':'<span
                     class="bg-negative-50 text-negative-600 border border-negative-100 px-2 shadow-md rounded-md">Salah</span>'
                   !!}
@@ -150,7 +153,7 @@
               @endforelse
             </table>
             @elseif (strtolower($v->type) == 'jd' && $v->itemSoal->options)
-            <div class="flex justify-between gap-5 relative">
+            <div class="flex justify-between gap-32 relative">
               <div class="flex flex-col gap-2 relative">
                 @if (isset($v->label[0]))
                 <div class="font-bold border-b-2 border-b-gray-600 text-center">{{ $v->label[0] }}</div>
@@ -170,15 +173,18 @@
                     }},{startPlug:'disc',endPlug:'disc',color:
                     generateColor('coloradoavocado{{'Ba'.$k.(isset($v->relation[$key])?$v->relation[$key][0]:'nm').$key}}')});
                     lrefresh = setInterval(()=>{
-                      if (line{{$sid.$k.$key.(isset($v->relation[$key])?$v->relation[$key][0]:'nm')}}) {
+                      if (line{{$sid.$k.$key.(isset($v->relation[$key])?$v->relation[$key][0]:'nm')}} != null) {
                         line{{$sid.$k.$key.(isset($v->relation[$key])?$v->relation[$key][0]:'nm')}}.position();
                       }
                     },10);
                     $watch('open', value => {
                       if(!value){
-                        line{{$sid.$k.$key.(isset($v->relation[$key])?$v->relation[$key][0]:'nm')}}.remove();
-                        delete line{{$sid.$k.$key.(isset($v->relation[$key])?$v->relation[$key][0]:'nm')}};
+                        if(line{{$sid.$k.$key.(isset($v->relation[$key])?$v->relation[$key][0]:'nm')}} != null){
+                          line{{$sid.$k.$key.(isset($v->relation[$key])?$v->relation[$key][0]:'nm')}}.remove();
+                          line{{$sid.$k.$key.(isset($v->relation[$key])?$v->relation[$key][0]:'nm')}} = null;
+                        }
                         clearInterval(lrefresh);
+                        open=true;
                       }
                     });
                   }

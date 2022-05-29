@@ -47,26 +47,26 @@
             Aktif</span>' !!}</td>
         <td class="py-4 px-6 border-b border-gray-100">
           <div class="flex justify-end">
-            <x-dropdown>
+            <div class="flex flex-wrap justify-end gap-1">
               @if ((!$v->active && !$v->logins()->count()) || $v->active)
-              <x-dropdown.item wire:click="activate('{{ $v->id }}')" icon="{{ $v->active?'ban':'check-circle' }}"
-                label="{{ $v->active?'Non-Aktifkan':'Aktifkan' }}" />
+              <x-button sm fuchsia wire:click="activate('{{ $v->id }}')" icon="{{
+                $v->active?'ban':'check-circle' }}" label="{{ $v->active?'Non-Aktifkan':'Aktifkan' }}" />
               @endif
               @if (!$v->active)
               @if ($v->logins()->count())
-              <x-dropdown.item :href="route('nilai',['uuid'=>$v->uuid])" icon="pencil-alt" label="Penilaian" />
-              <x-dropdown.item wire:click="resetUjian('{{ $v->id }}')" icon="refresh" label="Reset Ujian" />
-              <x-dropdown.item wire:click="daftarNilai('{{ $v->id }}')" icon="clipboard-list" label="Daftar Nilai" />
+              <x-button positive sm :href="route('nilai',['uuid'=>$v->uuid])" icon="pencil-alt" title="Penilaian" />
+              <x-button amber sm wire:click="resetUjian('{{ $v->id }}')" icon="refresh" title="Reset Ujian" />
+              <x-button purple sm wire:click="daftarNilai('{{ $v->id }}')" icon="clipboard-list" title="Daftar Nilai" />
               @else
-              <x-dropdown.item wire:click="edit('{{ $v->id }}')" icon="pencil" label="Edit" />
+              <x-button warning sm wire:click="edit('{{ $v->id }}')" icon="pencil" title="Edit" />
               @endif
-              <x-dropdown.item wire:click="daftarHadir('{{ $v->id }}')" icon="view-list" label="Daftar Hadir" />
-              <x-dropdown.item wire:click="delete('{{ $v->id }}')" icon="trash" label="Hapus" />
+              <x-button info sm wire:click="daftarHadir('{{ $v->id }}')" icon="view-list" title="Daftar Hadir" />
+              <x-button negative sm wire:click="delete('{{ $v->id }}')" icon="trash" title="Hapus" />
               @else
-              <x-dropdown.item :href="route('statuspeserta',['uuid'=>$v->uuid])" icon="desktop-computer"
-                label="Status Peserta" />
+              <x-button primary sm :href="route('statuspeserta',['uuid'=>$v->uuid])" icon="desktop-computer"
+                title="Status Peserta" />
               @endif
-            </x-dropdown>
+            </div>
           </div>
         </td>
       </tr>

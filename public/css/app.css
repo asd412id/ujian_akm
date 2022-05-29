@@ -1573,6 +1573,10 @@ select {
     gap: 1rem;
 }
 
+.gap-32 {
+    gap: 8rem;
+}
+
 .gap-x-2 {
     -moz-column-gap: 0.5rem;
          column-gap: 0.5rem;
@@ -6864,6 +6868,10 @@ div.fr-modal-body div.fr-image-list div.fr-image-container .fr-insert-img{backgr
 
 .leader-line {
   z-index: 9999;
+}
+
+.z-99999 {
+  z-index: 99999;
 }
 
 .checked\:translate-x-4:checked {

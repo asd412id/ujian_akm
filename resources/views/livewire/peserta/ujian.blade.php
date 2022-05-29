@@ -8,7 +8,7 @@
 					for(let i in lines){
 						if(!i.includes('_'+@js($soal->id))){
 							lines[i] = removeLine(lines[i], i);
-							delete(lines[i]);
+							delete lines[i];
 						}
 					};
 				}
@@ -75,11 +75,13 @@
 				<div class="flex justify-between md:justify-start md:gap-48 relative mt-5"
 					x-data="{relations: {}, key: null, keyb: null, paired: {}}">
 					<div class="hidden" x-init="$nextTick(()=>{
-						for(let i in @js($srelation)){
-							if(@js($srelation)[i] != null){
-								relations[i] = @js($srelation)[i];
-								paired[i] = 2;
-								lines[i] = generateLine($refs[i], $refs[relations[i]], i);
+						if(@js(count($srelation))){
+							for(let i in @js($srelation)){
+								if(@js($srelation)[i] != null){
+									relations[i] = @js($srelation)[i];
+									paired[i] = 2;
+									lines[i] = generateLine($refs[i], $refs[relations[i]], i);
+								}
 							}
 						}
 					})
@@ -113,13 +115,14 @@
 							}
 
 							if(paired[key] == 2){
-								delete(paired[key]);
+								delete paired[key];
 								lines[key] = removeLine(lines[key], key);
 								lines[key] = null;
 								relations[key] = null;
 							}
 							
-							$wire.set('relation', {...relations}, true);
+							rels = {...relations};
+							$wire.relation = rels;
 							">{!!
 							shortcode($soal->option[$key]) !!}</div>
 						@endif
@@ -142,7 +145,8 @@
 								$refs[key].classList.remove('hover:bg-primary-300');
 							}
 
-							$wire.set('relation', {...relations}, true);
+							rels = {...relations};
+							$wire.relation = rels;
 							">{!!
 							shortcode($soal->option[$key]) !!}</div>
 						@endif

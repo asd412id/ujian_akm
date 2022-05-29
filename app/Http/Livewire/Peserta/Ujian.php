@@ -182,8 +182,9 @@ class Ujian extends Component
 					$r = [];
 					$i = 0;
 					foreach ($this->srelation as $key => $v) {
+						$dkey = str_replace(['start', '_' . $this->soal->id], '', $key);
+						$r[$dkey] = null;
 						if ($v != null) {
-							$dkey = str_replace(['start', '_' . $this->soal->id], '', $key);
 							$dv = str_replace(['end', '_' . $this->soal->id], '', $v);
 							$r[$dkey] = [$dv];
 							if (in_array($dv, $soalOri->relations[$dkey])) {
@@ -323,6 +324,7 @@ class Ujian extends Component
 
 	public function updatedRelation($value)
 	{
+		$this->skipRender();
 		$this->srelation = $value;
 	}
 
