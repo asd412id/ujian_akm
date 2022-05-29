@@ -1,4 +1,8 @@
-<div class="flex flex-col-reverse md:flex-row gap-3 w-full" x-init="window.onblur=function(){console.log('cheated')}">
+<div class="flex flex-col-reverse md:flex-row gap-3 w-full" x-init="
+if(@js($user->sekolah->restrict_test)){
+	window.onblur=function(){$wire.stop()};
+}
+">
 	<div class="w-full md:w-9/12">
 		<div class="w-full shadow-md bg-white border border-gray-100 rounded-lg p-5 flex flex-col gap-3" wire:ignore
 			wire:key='soal{{ $soal->id.$soal->updated_at->timestamp }}'>

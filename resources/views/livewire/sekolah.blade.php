@@ -21,6 +21,8 @@
 					<x-error name="excel" />
 				</div>
 				<x-toggle lg wire:model.defer='limitlogin' label="Batasi login peserta hanya 1 (satu) kali." />
+				<x-toggle lg wire:model.defer='restricttest'
+					label="Batasi peserta dari keluar halaman ujian (ujian akan selesai)." />
 				<div class="flex flex-col">
 					<x-alabel>KOP Sekolah Editor</x-alable>
 						<x-editor wire:model.defer='kop_sekolah'

@@ -1,4 +1,8 @@
-<div class="flex flex-col md:flex-row gap-3 md:gap-5">
+<div class="flex flex-col md:flex-row gap-3 md:gap-5" x-init="
+if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->start) && is_null($login->end)))){
+	window.onblur=function(){$wire.stop()};
+}
+">
 	@if (session()->has('msg'))
 	<div
 		class="absolute top-14 shadow-md w-full max-w-sm right-5 z-50 py-3 px-5 rounded-md bg-amber-100 text-amber-600 border border-amber-100"
@@ -43,12 +47,27 @@
 				</tr>
 			</table>
 		</div>
+		@if ($user->sekolah->restrict_test && $user->sekolah->restrict_test && is_null($login))
+		<div class="w-full shadow-md bg-amber-50 border border-amber-100 text-amber-600 rounded-lg p-5 mt-3">
+			<div class="font-bold text-xl text-red-600 flex gap-2 items-center">
+				<x-icon name="exclamation" solid class="w-9 h-9" />Peringatan!
+			</div>
+			<div class="text-red-600 mt-2">
+				Saat mengikuti ujian, maka peserta dilarang untuk meninggalkan halaman ujian, membuka aplikasi lain, membuka
+				halaman lain, dan atau mematikan layar perangkat!
+			</div>
+			<div class="text-red-600 mt-2">
+				Apabila peserta meninggalkan halaman ujian, maka ujian akan selesai secara otomatis dan semua jawaban terakhir
+				akan disimpan.
+			</div>
+		</div>
+		@endif
 	</div>
-	<div class="w-full">
+	<div class=" w-full">
 		<div class="shadow-md bg-white border-b border-gray-200 rounded-lg p-5">
 			<div class="font-bold text-2xl underline underline-offset-8">Daftar Ujian</div>
 			<div class="mt-5 flex flex-col gap-3" wire:poll.keep-alive='checkJadwal'>
-				@if (is_null($this->login))
+				@if (is_null($login))
 				@forelse ($jadwal as $j)
 				<a href="#" wire:click.prevent='join({{ $j->id }})'>
 					<x-card cardClasses="bg-purple-50 border-purple-100 cursor-pointer hover:bg-purple-100"

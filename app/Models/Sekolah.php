@@ -52,6 +52,10 @@ class Sekolah extends Model
 
     public function getLimitLoginAttribute()
     {
-        return $this->opt && isset($this->opt['limit_login']) ? $this->opt['limit_login'] : null;
+        return $this->opt && isset($this->opt['limit_login']) ? $this->opt['limit_login'] : false;
+    }
+    public function getRestrictTestAttribute()
+    {
+        return $this->opt && isset($this->opt['restrict_test']) ? $this->opt['restrict_test'] : false;
     }
 }

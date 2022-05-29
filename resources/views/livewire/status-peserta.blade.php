@@ -67,6 +67,9 @@
 							<span
 								class="text-sm bg-negative-50 border border-negative-200 shadow-md text-negative-700 px-1 rounded-lg">{{
 								$dl->end->format('d/m/Y H:i:s') }}</span>
+							<span
+								class="text-sm bg-pink-50 font-bold italic border border-pink-200 shadow-md text-pink-700 px-1 rounded-lg">{{
+								$dl->start->diffInMinutes($dl->end)}} Menit</span>
 							@endif
 							@endif
 						</div>

@@ -40,9 +40,7 @@ class Index extends Component
 		}
 
 		if ($this->login && now()->greaterThan($this->login->start->addMinutes($this->login->jadwal->duration))) {
-			$this->login->end = now();
-			$this->login->save();
-			$this->reset('login');
+			$this->stop();
 		}
 
 		if (!$this->login) {
@@ -59,6 +57,14 @@ class Index extends Component
 				->orderBy('start', 'asc')
 				->get();
 		}
+	}
+
+	public function stop()
+	{
+		$this->login->end = now();
+		$this->login->created_at = now();
+		$this->login->save();
+		$this->reset('login');
 	}
 
 	public function checkJadwal()

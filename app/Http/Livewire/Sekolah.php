@@ -28,6 +28,7 @@ class Sekolah extends Component
 	public $newpassword;
 	public $renewpassword;
 	public $limitlogin = false;
+	public $restricttest = false;
 
 	public function mount()
 	{
@@ -35,6 +36,7 @@ class Sekolah extends Component
 		$this->logo_sekolah = auth()->user()->sekolah->logo ?? '[g]kop_sekolah.png[/g]';
 		$this->kop_sekolah = auth()->user()->sekolah->kop;
 		$this->limitlogin = auth()->user()->sekolah->limit_login;
+		$this->restricttest = auth()->user()->sekolah->restrict_test;
 		$this->nama_admin = auth()->user()->name;
 		$this->email = auth()->user()->email;
 	}
@@ -58,6 +60,7 @@ class Sekolah extends Component
 			'kop' => $this->kop_sekolah,
 			'logo' => $this->logo_sekolah,
 			'limit_login' => $this->limitlogin,
+			'restrict_test' => $this->restricttest,
 		];
 		if ($update->save()) {
 			return $this->notification()->success('Data berhasil disimpan');
