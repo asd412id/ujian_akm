@@ -53,7 +53,7 @@ if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->st
 				<x-icon name="exclamation" solid class="w-9 h-9" />Peringatan!
 			</div>
 			<div class="text-red-600 mt-2">
-				Saat mengikuti ujian, maka peserta dilarang untuk meninggalkan halaman ujian, membuka aplikasi lain, membuka
+				Saat mengikuti ujian, peserta dilarang untuk meninggalkan halaman ujian, membuka aplikasi lain, membuka
 				halaman lain, dan atau mematikan layar perangkat!
 			</div>
 			<div class="text-red-600 mt-2">
