@@ -2,9 +2,6 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import 'froala-editor/css/froala_editor.pkgd.min.css';
-@import 'froala-editor/css/froala_style.min.css';
-@import 'froala-editor/css/plugins.pkgd.min.css';
 
 .leader-line {
   z-index: 9999;

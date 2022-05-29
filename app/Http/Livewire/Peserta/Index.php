@@ -102,7 +102,7 @@ class Index extends Component
 
 		$this->jid = $jadwal->id;
 		return $this->dialog()->confirm([
-			'title' => '<div class="font-bold text-xl">' . $jadwal->name . '</div><div class="text-sm -mt-1 italic">' . $jadwal->opt['desc'] . '</div><br>Ikut Ujian Sekarang?',
+			'title' => '<div class="text-xl font-bold">' . $jadwal->name . '</div><div class="-mt-1 text-sm italic">' . nl2br($jadwal->desc) . '</div><br>Ikut Ujian Sekarang?',
 			'description' => 'Timer ujian <span class="italic font-bold">' . $jadwal->duration . ' Menit</span> akan mulai berjalan jika anda memilih untuk mengikuti!',
 			'acceptLabel' => 'Ya, Ikuti Sekarang',
 			'rejectLabel' => 'Tidak',

@@ -7,7 +7,14 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ (isset($title)?$title.' | ':'').config('app.name', 'Laravel') }}</title>
-    <link rel="shortcut icon" href="{{ url('favicon.png') }}" type="image/png">
+    @php
+    $logo = url('favicon.png');
+    if (auth()->check() && auth()->user()->sekolah->logo &&
+    Storage::disk('public')->exists('uploads/'.userFolder().'/'.(auth()->user()->sekolah->logo))) {
+    $logo = getUrl(auth()->user()->sekolah->logo);
+    }
+    @endphp
+    <link rel="shortcut icon" href="{{ $logo }}" type="image/png">
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ url('css/app.css') }}">

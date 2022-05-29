@@ -4,10 +4,8 @@ import Alpine from 'alpinejs';
 import LeaderLine from 'leader-line-new';
 import { Html5Qrcode } from "html5-qrcode";
 import MD5 from 'crypto-js/md5';
-require('froala-editor/js/plugins.pkgd.min');
 
 window.Alpine = Alpine;
-window.FroalaEditor = require('froala-editor');
 window.LeaderLine = LeaderLine;
 window.Html5Qrcode = Html5Qrcode;
 window.md5 = MD5;

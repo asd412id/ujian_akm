@@ -33,8 +33,8 @@ class Sekolah extends Component
 	public function mount()
 	{
 		$this->nama_sekolah = auth()->user()->sekolah->name;
-		$this->logo_sekolah = auth()->user()->sekolah->logo ?? '[g]kop_sekolah.png[/g]';
-		$this->kop_sekolah = auth()->user()->sekolah->kop;
+		$this->logo_sekolah = auth()->user()->sekolah->logo;
+		$this->kop_sekolah = auth()->user()->sekolah->kop ?? '[g]kop_sekolah.png[/g]';
 		$this->limitlogin = auth()->user()->sekolah->limit_login;
 		$this->restricttest = auth()->user()->sekolah->restrict_test;
 		$this->nama_admin = auth()->user()->name;

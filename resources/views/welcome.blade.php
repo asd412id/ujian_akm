@@ -6,16 +6,20 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<title>{{ (isset($title)?$title.' | ':'').config('app.name', 'Aplikasi Ujian AKM') }}</title>
+	<link rel="shortcut icon" href="{{ url('favicon.png') }}" type="image/png">
 
-	<link rel="stylesheet" href="{{ asset('css/app.css') }}">
-	<script src="{{ asset('js/app.js') }}" defer></script>
+	<link rel="stylesheet" href="{{ url('css/app.css') }}">
+	<script src="{{ url('js/app.js') }}" defer></script>
 
 </head>
 
 <body class="antialiased" x-data="{modal:false,tloading: 'Mohon Tunggu', html5QrCode: null}">
-	<div class="min-h-screen flex flex-col gap-3 bg-gray-100 justify-center items-center p-5">
-		<div class="text-primary-600">
-			<h1 class="text-center text-3xl font-bold">{{ strtoupper((isset($title)?$title.' | ':'').config('app.name',
+	<div class="flex flex-col items-center justify-center min-h-screen gap-3 p-5 bg-gray-100">
+		<a href="/">
+			<x-application-logo class="w-20 h-20 text-gray-500 fill-current" />
+		</a>
+		<div class="text-center text-primary-600">
+			<h1 class="text-3xl font-bold text-center">{{ strtoupper((isset($title)?$title.' | ':'').config('app.name',
 				'Aplikasi Ujian
 				AKM')) }}</h1>
 			<em>Silahkan Masuk untuk Mengikuti Ujian</em>
@@ -23,7 +27,7 @@
 		<div class="w-full max-w-sm" @keyup.esc="$dispatch('closed')">
 			<x-card cardClasses="px-3 md:px-0" x-data="{submit: false}">
 				@if (session()->has('error'))
-				<div class="mb-3 py-1 px-3 bg-red-50 text-red-600 border border-red-200 text-center rounded-lg">{{
+				<div class="px-3 py-1 mb-3 text-center text-red-600 border border-red-200 rounded-lg bg-red-50">{{
 					session()->get('error') }}
 				</div>
 				@endif
@@ -42,7 +46,7 @@
 					</div>
 				</form>
 			</x-card>
-			<div class="text-center text-sm italic mt-3 text-primary-700">Copyright &copy; 2022 by
+			<div class="mt-3 text-sm italic text-center text-primary-700">Copyright &copy; 2022 by
 				<a class="underline" href="https://www.facebook.com/aezdar">asd412id</a>
 			</div>
 		</div>
@@ -82,7 +86,7 @@
 			tloading = 'Anda harus mengizinkan akses kamera pada perangkat!';
 		});
 	})" x-on:click="$dispatch('closed')"
-		class="min-h-screen backdrop-blur-md backdrop-grayscale absolute inset-0 z-10 flex justify-center items-center p-5">
+		class="absolute inset-0 z-10 flex items-center justify-center min-h-screen p-5 backdrop-blur-md backdrop-grayscale">
 		<x-card @closed.window="modal=false;$nextTick(()=>{
 		if(html5QrCode!=null){
 			try{

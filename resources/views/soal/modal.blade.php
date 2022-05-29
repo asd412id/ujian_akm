@@ -13,7 +13,7 @@
     </div>
     <div class="flex flex-col gap-1">
       <x-alabel>Butir Soal (Gunakan tombol di bawah untuk memasukkan kode)</x-alabel>
-      <div class="flex justify-between flex-wrap">
+      <div class="flex flex-wrap justify-between">
         <x-button xs outline rose
           x-on:click="$refs.editor.focus();insertTag($refs.editor,'[soal no=? jenis={PG|PGK|JD|IS|U} skor=?]\n\t\n[/soal]',18)"
           label="soal" class="uppercase" />
@@ -44,11 +44,6 @@
       </div>
       <x-textarea x-ref="editor" style="min-height: 525px" placeholder='Masukkan kode butir soal disini'
         wire:model.defer='item_soals' x-on:keydown.ctrl.space="insertTag($el,'\t',1);return false;" />
-      {{-- @error('item_soals')
-      <span class="text-sm text-negative-600">{{ $message }}</span>
-      @enderror
-      <x-editor :er="$ID" height='400' placeholder='Masukkan kode butir soal disini' wire:model.defer='item_soals' />
-      --}}
     </div>
     <div class="flex justify-end gap-2">
       <x-button secondary label="Batal" x-on:click="close" />
