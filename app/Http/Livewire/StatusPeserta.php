@@ -105,7 +105,9 @@ class StatusPeserta extends Component
 					$q->where('name', 'like', "%$this->search%")
 						->orWhere('ruang', 'like', "%$this->search%");
 				})
-				->orderBy('created_at', 'desc')
+				->orderBy('uid', 'asc')
+				->orderBy('name', 'asc')
+				->orderBy('created_at', 'asc')
 				->get();
 		}
 
