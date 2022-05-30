@@ -27,6 +27,7 @@ class Soal extends Component
 	public $modalTitle = 'Data Baru';
 	protected $data = [];
 	public $sid;
+	public $error = false;
 	public $ID;
 	public $IDS;
 	public $name;
@@ -41,6 +42,20 @@ class Soal extends Component
 	protected $queryString = [
 		'page' => ['except' => 1, 'as' => 'hal']
 	];
+
+	public function updatingName()
+	{
+		$this->error = false;
+		$this->resetValidation('name');
+		$check = auth()->user()->sekolah->soals()
+			->where('name', $this->name)
+			->where('id', '!=', $this->ID)
+			->first();
+		if ($check) {
+			$this->error = true;
+			return $this->addError('name', 'Nama soal sudah digunakan');
+		}
+	}
 
 	public function render()
 	{
@@ -124,6 +139,7 @@ class Soal extends Component
 			'name',
 			'mapel',
 			'item_soals',
+			'error',
 		]);
 		$list = auth()->user()->sekolah->mapels()
 			->when(auth()->user()->role != 0, function ($q) {
@@ -154,6 +170,15 @@ class Soal extends Component
 			'mapel.required' => 'Mata pelajaran tidak boleh kosong',
 			'item_soals.required' => 'Butir soal tidak boleh kosong',
 		]);
+
+		$check = auth()->user()->sekolah->soals()
+			->where('name', $this->name)
+			->where('id', '!=', $this->ID)
+			->first();
+		if ($check) {
+			$this->error = true;
+			return $this->notification()->error('Nama soal sudah digunakan');
+		}
 
 		$update = $this->ID ? ModelsSoal::find($this->ID) : new ModelsSoal();
 		$update->name = $this->name;
@@ -209,6 +234,7 @@ class Soal extends Component
 			'name',
 			'mapel',
 			'item_soals',
+			'error',
 		]);
 		$this->resetValidation();
 		if (auth()->user()->role == 0) {
@@ -337,6 +363,15 @@ class Soal extends Component
 			'excel.required' => 'File excel tidak boleh kosong',
 			'excel.mimes' => 'Format file yang diimport tidak dikenali',
 		]);
+
+		$check = auth()->user()->sekolah->soals()
+			->where('name', $this->name)
+			->where('id', '!=', $this->ID)
+			->first();
+		if ($check) {
+			$this->error = true;
+			return $this->notification()->error('Nama soal sudah digunakan');
+		}
 
 		$reader = IOFactory::load($this->excel->path());
 

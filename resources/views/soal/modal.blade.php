@@ -1,13 +1,14 @@
 <x-modal.card blur maxWidth="3xl" title="{{ $modalTitle }}" wire:model='modal' staticbackdrop>
-  <form wire:submit.prevent='store' class="flex flex-col gap-3" x-data="{name: @entangle('name').defer}">
-    <x-input wire:model.defer='name' label="Nama Soal" placeholder="Masukkan nama soal" x-on:keyup="name=$el.value"
-      x-on:change="name=$el.value" />
+  <form wire:submit.prevent='store' class="flex flex-col gap-3"
+    x-data="{name: @entangle('name').defer, error: @entangle('error')}">
+    <x-input wire:model.debounce.1s='name' label="Nama Soal" placeholder="Masukkan nama soal"
+      x-on:keyup="name=$el.value" x-on:change="name=$el.value" />
     <x-select label="Pilih Mata Pelajaran" placeholder="Pilih Mata Pelajaran" searchable wire:model.defer='mapel'
       :options="$listMapel" option-label="name" option-value="id" searchmodel="select_search" />
     <div class="flex gap-2">
       <x-button sm blue label="Download Format Soal Excel" icon="download" wire:click='downloadFormat' />
       <x-button sm green label="Impor Soal Excel" icon="upload" x-on:click="$refs.excel.click()"
-        x-bind:disabled="name==''||name==null" />
+        x-bind:disabled="name==''||name==null||error" />
       <input type="file" wire:model='excel' class="hidden" x-ref="excel" accept=".xls,.xlsx,.ods,.bin">
       <x-error name="excel" />
     </div>
@@ -47,7 +48,7 @@
     </div>
     <div class="flex justify-end gap-2">
       <x-button secondary label="Batal" x-on:click="close" />
-      <x-button type="submit" primary label="Simpan" />
+      <x-button type="submit" primary label="Simpan" x-bind:disabled="name==''||name==null||error" />
     </div>
   </form>
 </x-modal.card>
