@@ -71,7 +71,7 @@
             @foreach ($o as $r)
             <div class="hidden" x-data='{open: true,lrefresh:null}' @removeline.window='open=false' x-init="
               if($refs.start{{ $key }} && $refs.end{{ $r }}){
-                line{{$sid.$k.$key.$r}} = new LeaderLine($refs.start{{ $key }},$refs.end{{ $r }},{startPlug:'disc',endPlug:'disc',color: generateColor('coloradoavocado{{$v->num.$v->jenis.$r.$key}}')});
+                line{{$sid.$k.$key.$r}} = new LeaderLine($refs.start{{ $key }},$refs.end{{ $r }},{startPlug:'disc',endPlug:'disc',color: generateColor('coloradoavocado{{$v->num.$v->jenis.$r.$key}}'),startSocket: 'right', endSocket: 'left'});
                 lrefresh = setInterval(()=>{
                   if (line{{$sid.$k.$key.$r}}) {
                     line{{$sid.$k.$key.$r}}.position();

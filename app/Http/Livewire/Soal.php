@@ -415,16 +415,15 @@ class Soal extends Component
 					$soals .= "\n";
 				}
 
-				$soals .= sprintf("[soal no=%s jenis=%s skor=%s%s]", $key, $jenis, $score, $shuffle);
 				$soal = $reader->getSheetByName('Soal')->getCell($cols[1] . ($key + 1))->getValue();
+				$image = isset($images[$cols[1] . ($key + 1)]) ? $images[$cols[1] . ($key + 1)] : null;
 
-				if (!$soal || $soal == '') {
+				if ((!$soal || $soal == '') && (!$image || $image == '')) {
 					continue;
 				}
-
+				$soals .= sprintf("[soal no=%s jenis=%s skor=%s%s]", $key, $jenis, $score, $shuffle);
 				$soal = $this->getRichText($soal);
 
-				$image = isset($images[$cols[1] . ($key + 1)]) ? $images[$cols[1] . ($key + 1)] : null;
 				if ($image) {
 					$ipath = $this->saveImage($image);
 					if ($image->getOffsetY2() != 0) {
@@ -449,14 +448,14 @@ class Soal extends Component
 					$opsi = $reader->getSheetByName('Soal')->getCellByColumnAndRow($k, $key + 1);
 					$val = $opsi->getValue();
 					$opstyle = $opsi->getAppliedStyle();
+					$image = isset($images[$cols[$k - 1] . ($key + 1)]) ? $images[$cols[$k - 1] . ($key + 1)] : null;
 
-					if (!$val || $val == '') {
+					if ((!$val || $val == '') && (!$image || $image == '')) {
 						continue;
 					}
 
 					$val = $this->getRichText($val);
 
-					$image = isset($images[$cols[$k - 1] . ($key + 1)]) ? $images[$cols[$k - 1] . ($key + 1)] : null;
 					if ($image) {
 						$ipath = $this->saveImage($image);
 						if ($image->getOffsetY2() != 0) {

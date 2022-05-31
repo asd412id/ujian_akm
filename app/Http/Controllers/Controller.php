@@ -69,9 +69,9 @@ class Controller extends BaseController
 			$check->save();
 			setUserFolder($check->sekolah->id);
 
-			return response()->json(['status' => true]);
+			return response()->json(['status' => true, 'msg' => 'Login berhasil']);
 		}
-		return response()->json(['status' => false]);
+		return response()->json(['status' => false, 'msg' => 'Kode QR tidak terdaftar!'], 401);
 	}
 
 	public function pesertaLogout()

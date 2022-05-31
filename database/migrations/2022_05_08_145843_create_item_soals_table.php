@@ -17,7 +17,7 @@ class CreateItemSoalsTable extends Migration
             $table->id();
             $table->bigInteger('soal_id');
             $table->string('type');
-            $table->string('num')->nullable();
+            $table->integer('num')->nullable();
             $table->text('text');
             $table->double('score')->nullable();
             $table->json('options')->nullable();

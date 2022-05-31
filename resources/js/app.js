@@ -182,7 +182,9 @@ window.generateLine = (start, end, id = 'color') => {
   const line = new LeaderLine(start, end, {
     startPlug: 'disc',
     endPlug: 'disc',
-    color: generateColor('coloravocado' + MD5(id).toString())
+    color: generateColor('coloravocado' + MD5(id).toString()),
+    startSocket: 'right',
+    endSocket: 'left'
   });
 
   if (linterval[id] != undefined) {

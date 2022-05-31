@@ -15,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        @forelse ($login->tests as $k => $v)
+        @forelse ($login->tests()->orderBy('item_soal_id','asc')->get() as $k => $v)
         <tr>
           <td class="align-top p-2 border border-gray-300 text-center">{{ $k+1 }}</td>
           <td class="align-top p-2 border border-gray-300">{!! shortcode($v->text) !!}</td>
@@ -75,7 +75,7 @@
                 @foreach ($o as $r)
                 <div class="hidden" x-data='{open: true, lrefresh:null}' @removeline.window='open=false' x-init="
                   if($refs.startA{{ $k.$key }} && $refs.endA{{ $k.$r }}){
-                    lineA{{$sid.$k.$key.$r}} = new LeaderLine($refs.startA{{ $k.$key }},$refs.endA{{ $k.$r }},{startPlug:'disc',endPlug:'disc',color: generateColor('coloradoavocado{{'Aa'.$k.$r.$key}}')});
+                    lineA{{$sid.$k.$key.$r}} = new LeaderLine($refs.startA{{ $k.$key }},$refs.endA{{ $k.$r }},{startPlug:'disc',endPlug:'disc',startSocket: 'right', endSocket: 'left',color: generateColor('coloradoavocado{{'Aa'.$k.$r.$key}}')});
                     lrefresh = setInterval(()=>{
                         if (lineA{{$sid.$k.$key.$r}} != null) {
                           lineA{{$sid.$k.$key.$r}}.position();
@@ -171,7 +171,7 @@
                     line{{$sid.$k.$key.(isset($v->relation[$key])?$v->relation[$key][0]:'nm')}} = new LeaderLine($refs.startB{{
                     $k.$key
                     }},$refs.endB{{ $k.(isset($v->relation[$key])?$v->relation[$key][0]:'nm')
-                    }},{startPlug:'disc',endPlug:'disc',color:
+                    }},{startPlug:'disc',endPlug:'disc',startSocket: 'right', endSocket: 'left',color:
                     generateColor('coloradoavocado{{'Ba'.$k.(isset($v->relation[$key])?$v->relation[$key][0]:'nm').$key}}')});
                     lrefresh = setInterval(()=>{
                       if (line{{$sid.$k.$key.(isset($v->relation[$key])?$v->relation[$key][0]:'nm')}} != null) {
@@ -212,7 +212,7 @@
           </td>
           <td class="align-top p-2 border border-gray-300 text-center">{{ $v->score }}</td>
           <td class="align-top p-2 border border-gray-300 text-center">
-            <x-input type='numeric' wire:model.lazy='score.{{ $v->id }}' />
+            <x-input type='numeric' wire:model.lazy='score.{{ $v->id }}' class="w-16 text-center" />
           </td>
         </tr>
         @empty

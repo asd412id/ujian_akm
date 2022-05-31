@@ -43,7 +43,7 @@ if(@js($user->sekolah->restrict_test)){
 					<thead>
 						<tr>
 							<th class="py-2 px-3 border border-gray-400 border-b-2 bg-gray-200">{{
-								isset($soal->label[0])?$soal->label[0]:'Pernyataan' }}</th>
+								isset($soal->label[0])&&$soal->label[0]?$soal->label[0]:'Pernyataan' }}</th>
 							<th class="py-2 px-3 border border-gray-400 border-b-2 bg-gray-200" colspan="2">Jawaban</th>
 						</tr>
 					</thead>
@@ -76,7 +76,7 @@ if(@js($user->sekolah->restrict_test)){
 				@elseif (strtolower($soal->type)=='u')
 				<x-textarea wire:model.defer='answer' placeholder="Masukkan jawabanmu" />
 				@elseif (strtolower($soal->type)=='jd' && is_array($soal->option))
-				<div class="flex justify-between md:justify-start md:gap-48 relative mt-5"
+				<div class="flex justify-between gap-20 md:justify-start md:gap-48 relative mt-5"
 					x-data="{relations: {}, key: null, keyb: null, paired: {}}">
 					<div class="hidden" x-init="$nextTick(()=>{
 						if(@js(count($srelation))){
@@ -91,7 +91,7 @@ if(@js($user->sekolah->restrict_test)){
 					})
 					"></div>
 					<div class="flex flex-col gap-4 relative">
-						@if (isset($soal->label[0]))
+						@if (isset($soal->label[0])&&$soal->label[0])
 						<div class="font-bold border-b-2 border-b-gray-600 text-center">{{ $soal->label[0] }}</div>
 						@endif
 						@foreach ($soal->option as $key => $o)
@@ -133,7 +133,7 @@ if(@js($user->sekolah->restrict_test)){
 						@endforeach
 					</div>
 					<div class="flex flex-col gap-4 relative" x-ref="contoh">
-						@if (isset($soal->label[1]))
+						@if (isset($soal->label[1])&&$soal->label[1])
 						<div class="font-bold border-b-2 border-b-gray-600 text-center">{{ $soal->label[1] }}</div>
 						@endif
 						@foreach ($soal->option as $key => $o)

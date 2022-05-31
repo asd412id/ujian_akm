@@ -69,13 +69,11 @@
 						tloading = 'Mengecek Informasi Login ...'
 						axios.post(@js(route('peserta.login.qr')),{_token: @js(csrf_token()),qrcode: decodedText})
 						.then(res=>{
-							if(res.status){
-								location.reload();
-							}
-						}).catch(err=>{
-							html5QrCode.start();
-							console.log(err);
-							tloading = 'Kode QR tidak dikenali!';
+							tloading = res.msg;
+							location.reload();
+						}).catch(err => {
+							tloading = err.response.data.msg;
+							setTimeout(()=>{modal=false;},3000);
 						})
 					}
 				).catch((err) => {
@@ -85,7 +83,7 @@
 		}).catch(err => {
 			tloading = 'Anda harus mengizinkan akses kamera pada perangkat!';
 		});
-	})" x-on:click="$dispatch('closed')"
+	})"
 		class="absolute inset-0 z-10 flex items-center justify-center min-h-screen p-5 backdrop-blur-md backdrop-grayscale">
 		<x-card @closed.window="modal=false;$nextTick(()=>{
 		if(html5QrCode!=null){
@@ -99,6 +97,7 @@
 	})" cardClasses="w-full max-w-md bg-white text-center">
 			<span x-text="tloading" class="font-bold text-primary-600">Mohon Tunggu</span>
 			<div id="qrscan"></div>
+			<x-button x-on:click="$dispatch('closed')" label="TUTUP SCANNER" sm outline primary class="mt-3" />
 		</x-card>
 	</div>
 	@endif

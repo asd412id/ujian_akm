@@ -198,9 +198,9 @@ function soal(ShortcodeInterface $s)
   }
 
   $data = [
-    'num' => $num,
+    'num' => intval($num),
     'type' => $type,
-    'score' => $score,
+    'score' => doubleval($score),
     'text' => $content,
     'options' => $options,
     'shuffle' => $shuffle,

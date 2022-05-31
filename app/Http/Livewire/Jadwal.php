@@ -71,7 +71,7 @@ class Jadwal extends Component
 				});
 			})
 			->orderBy('active', 'desc')
-			->orderBy('start', 'asc')
+			->orderBy('start', 'desc')
 			->paginate($this->limit);
 
 		$dta = $this->data;
