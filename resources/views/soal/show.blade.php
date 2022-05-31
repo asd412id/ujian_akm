@@ -36,7 +36,7 @@
           <thead>
             <tr>
               <th class="py-2 px-3 border border-gray-400 border-b-2 bg-gray-200">{{
-                isset($v->labels[0])?$v->labels[0]:'Pernyataan' }}</th>
+                isset($v->labels[0])&&$v->labels[0]?$v->labels[0]:'Pernyataan' }}</th>
               <th class="py-2 px-3 border border-gray-400 border-b-2 bg-gray-200">Jawaban</th>
             </tr>
           </thead>
@@ -61,7 +61,7 @@
         @elseif (strtolower($v->type)=='jd' && $v->relations)
         <div class="flex gap-48 relative">
           <div class="flex flex-col gap-2 relative">
-            @if (isset($v->labels[0]))
+            @if (isset($v->labels[0])&&$v->labels[0])
             <div class="font-bold border-b-2 border-b-gray-600 text-center">{{ $v->labels[0] }}</div>
             @endif
             @foreach ($v->relations as $key => $o)
@@ -91,7 +91,7 @@
             @endforeach
           </div>
           <div class="flex flex-col gap-2 relative">
-            @if (isset($v->labels[1]))
+            @if (isset($v->labels[1])&&$v->labels[1])
             <div class="font-bold border-b-2 border-b-gray-600 text-center">{{ $v->labels[1] }}</div>
             @endif
             @foreach ($v->relations as $key => $o)
