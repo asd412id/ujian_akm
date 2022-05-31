@@ -364,6 +364,8 @@ class Soal extends Component
 			'excel.mimes' => 'Format file yang diimport tidak dikenali',
 		]);
 
+		$this->error = true;
+
 		$check = auth()->user()->sekolah->soals()
 			->where('name', $this->name)
 			->where('id', '!=', $this->ID)
@@ -497,6 +499,8 @@ class Soal extends Component
 				$soals .= "\n[/soal]";
 			}
 			$this->item_soals = $soals;
+			$this->error = false;
+			$this->notification()->success('Soal berhasil diimpor');
 		}
 	}
 
