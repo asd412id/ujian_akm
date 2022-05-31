@@ -5,7 +5,7 @@ if(@js($user->sekolah->restrict_test)){
 ">
 	<div class="w-full md:w-9/12">
 		<div class="w-full shadow-md bg-white border border-gray-100 rounded-lg p-5 flex flex-col gap-3" wire:ignore
-			wire:key='soal{{ $soal->id.$soal->updated_at->timestamp }}'>
+			wire:key='soal_{{ $soal->id.' _'.$sid }}'>
 			<div class="hidden" x-data x-init="
 			$nextTick(()=>{
 				if(Object.keys(lines).length > 0){
@@ -26,13 +26,13 @@ if(@js($user->sekolah->restrict_test)){
 				@if ((strtolower($soal->type)=='pg' || strtolower($soal->type)=='pgk') && is_array($soal->option))
 				<div class="flex flex-col gap-2">
 					@foreach ($soal->option as $key => $o)
-					<label class="flex items-center gap-2">
+					<label class="flex gap-2">
 						@if (strtolower($soal->type)=='pg')
 						<input type="radio"
-							class="form-radio rounded-full transition ease-in-out duration-100 border-secondary-300 text-primary-600 focus:ring-primary-600 focus:border-primary-400 dark:border-secondary-500 dark:checked:border-secondary-600 dark:focus:ring-secondary-600 dark:focus:border-secondary-500 dark:bg-secondary-600 dark:text-secondary-600 dark:focus:ring-offset-secondary-800"
+							class="form-radio mt-1 rounded-full transition ease-in-out duration-100 border-secondary-300 text-primary-600 focus:ring-primary-600 focus:border-primary-400 dark:border-secondary-500 dark:checked:border-secondary-600 dark:focus:ring-secondary-600 dark:focus:border-secondary-500 dark:bg-secondary-600 dark:text-secondary-600 dark:focus:ring-offset-secondary-800"
 							wire:model.defer="choices" name='choice' value="{{ $key }}">
 						@else
-						<x-checkbox wire:model.defer="choices" value="{{ $key }}" />
+						<x-checkbox wire:model.defer="choices" value="{{ $key }}" class="mt-1" />
 						@endif
 						<span>{!! shortcode($o) !!}</span>
 					</label>
@@ -50,14 +50,14 @@ if(@js($user->sekolah->restrict_test)){
 					@forelse ($soal->option as $key => $s)
 					<tr>
 						<td class="py-2 px-3 border border-gray-400">{!! shortcode($s) !!}</td>
-						<td class="py-2 px-3 border border-gray-400">
+						<td class="py-2 px-3 border border-gray-400 align-top">
 							<label class="flex gap-2 items-center justify-center">
 								<input type="radio"
 									class="form-radio rounded-full transition ease-in-out duration-100 border-secondary-300 text-primary-600 focus:ring-primary-600 focus:border-primary-400 dark:border-secondary-500 dark:checked:border-secondary-600 dark:focus:ring-secondary-600 dark:focus:border-secondary-500 dark:bg-secondary-600 dark:text-secondary-600 dark:focus:ring-offset-secondary-800"
 									wire:key='ch{{ $key }}' name="ch{{ $key }}" wire:model.defer="choices.{{ $key }}" value="1">Benar
 							</label>
 						</td>
-						<td class="py-2 px-3 border border-gray-400">
+						<td class="py-2 px-3 border border-gray-400 align-top">
 							<label class="flex gap-2 items-center justify-center">
 								<input type="radio"
 									class="form-radio rounded-full transition ease-in-out duration-100 border-secondary-300 text-primary-600 focus:ring-primary-600 focus:border-primary-400 dark:border-secondary-500 dark:checked:border-secondary-600 dark:focus:ring-secondary-600 dark:focus:border-secondary-500 dark:bg-secondary-600 dark:text-secondary-600 dark:focus:ring-offset-secondary-800"

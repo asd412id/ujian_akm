@@ -19,7 +19,7 @@
         @if ((strtolower($v->type)=='pg' || strtolower($v->type)=='pgk') && is_array($v->options))
         <div class="flex flex-col gap-1">
           @foreach ($v->options as $key => $o)
-          <div class="{{ $v->corrects[$key]?'font-bold':'' }} flex flex-wrap items-start gap-2">{!! $key.'.
+          <div class="{{ $v->corrects[$key]?'font-bold':'' }} flex items-start gap-2">{!! $key.'.
             <div>'.shortcode($o).'</div>'
             !!}
           </div>

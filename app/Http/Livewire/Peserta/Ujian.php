@@ -13,6 +13,7 @@ class Ujian extends Component
 	public $user;
 	public $login = null;
 	public $timer = null;
+	public $sid = 0;
 	public $soals = [];
 	public $soal;
 	public $type;
@@ -82,6 +83,7 @@ class Ujian extends Component
 
 	public function setSoal()
 	{
+		$this->sid++;
 		$this->checkLogin();
 		$hasSoal = $this->login->tests()->where('item_soal_id', $this->soals[$this->login->current_number]->id)->first();
 		$opts = null;
