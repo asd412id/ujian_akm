@@ -45,6 +45,7 @@ class Peserta extends Authenticatable
         self::deleting(function ($m) {
             $m->logins()->delete();
             $m->tests()->delete();
+            $m->jadwals()->detach();
         });
     }
 }
