@@ -109,7 +109,7 @@ function image(ShortcodeInterface $s)
     }
   }
 
-  return sprintf("<div class='m-1 %s'><img style='max-width: 100%%;width:%s;height:%s' src='%s'></div>", (in_array("kiri", $keys) ? "float-left" : (in_array("kanan", $keys) ? "float-right" : "flex justify-center")), $width, $height, $url);
+  return sprintf("<div class='m-1 %s'><img style='max-width: 100%%;width:%s;height:%s' src='%s'></div>", (in_array("kiri", $keys) ? "float-left" : (in_array("kanan", $keys) ? "float-right" : (in_array("tengah", $keys) ? "flex justify-center" : (in_array("auto", $keys) ? "inline-block" : "flex")))), $width, $height, $url);
 }
 
 function superscript(ShortcodeInterface $s)

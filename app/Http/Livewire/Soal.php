@@ -386,7 +386,7 @@ class Soal extends Component
 		$images = [];
 
 		foreach ($drawings as $key => $dr) {
-			$images[$dr->getCoordinates()] = $dr;
+			$images[$dr->getCoordinates()][$key] = $dr;
 		}
 
 		if (count($elements)) {
@@ -418,20 +418,40 @@ class Soal extends Component
 				}
 
 				$soal = $reader->getSheetByName('Soal')->getCell($cols[1] . ($key + 1))->getValue();
-				$image = isset($images[$cols[1] . ($key + 1)]) ? $images[$cols[1] . ($key + 1)] : null;
+				$imgs = isset($images[$cols[1] . ($key + 1)]) ? $images[$cols[1] . ($key + 1)] : [];
 
-				if ((!$soal || $soal == '') && (!$image || $image == '')) {
+				if ((!$soal || $soal == '') && (!is_array($imgs) || !count($imgs))) {
 					continue;
 				}
 				$soals .= sprintf("[soal no=%s jenis=%s skor=%s%s]", $key, $jenis, $score, $shuffle);
 				$soal = $this->getRichText($soal);
 
-				if ($image) {
-					$ipath = $this->saveImage($image);
-					if ($image->getOffsetY2() != 0) {
-						$soal = "[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kiri' : '')) . "]" . $ipath . "[/g]\n" . $soal;
-					} else {
-						$soal = $soal . "\n[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kiri' : '')) . "]" . $ipath . "[/g]";
+				if (count($imgs)) {
+					$inserted = [];
+					foreach ($imgs as $ki => $image) {
+						$ipath = $this->saveImage($image);
+						$img = "[g" . ($image->getOffsetX() == 0 && $image->getOffsetX() != $image->getOffsetX2() ? ' kiri' : ($image->getOffsetX2() == 0 && $image->getOffsetX() != $image->getOffsetX2() ? ' kanan' : ($image->getOffsetX() == $image->getOffsetX2() || ($image->getOffsetX() > 0 && $image->getOffsetX2() / $image->getOffsetX() <= 2.1) ? ' tengah' : ''))) . "]" . $ipath . "[/g]";
+						if ($image->getOffsetY() == 0) {
+							$soal = $img . $soal;
+						} elseif ($image->getOffsetY2() == 0) {
+							$soal = $soal . $img;
+						} else {
+							$break = explode("\n\n", $soal);
+							if (count($break)) {
+								$soal = '';
+								foreach ($break as $kn => $n) {
+									$soal .= $n;
+									if (!in_array($ki, $inserted)) {
+										array_push($inserted, $ki);
+										$soal .= $img;
+									} else {
+										if ($kn < count($break) - 1) {
+											$soal .= "\n\n";
+										}
+									}
+								}
+							}
+						}
 					}
 				}
 
@@ -450,20 +470,40 @@ class Soal extends Component
 					$opsi = $reader->getSheetByName('Soal')->getCellByColumnAndRow($k, $key + 1);
 					$val = $opsi->getValue();
 					$opstyle = $opsi->getAppliedStyle();
-					$image = isset($images[$cols[$k - 1] . ($key + 1)]) ? $images[$cols[$k - 1] . ($key + 1)] : null;
+					$imgs = isset($images[$cols[$k - 1] . ($key + 1)]) ? $images[$cols[$k - 1] . ($key + 1)] : [];
 
-					if ((!$val || $val == '') && (!$image || $image == '')) {
+					if ((!$val || $val == '') && (!is_array($imgs) || !count($imgs))) {
 						continue;
 					}
 
 					$val = $this->getRichText($val);
 
-					if ($image) {
-						$ipath = $this->saveImage($image);
-						if ($image->getOffsetY2() != 0) {
-							$val = "[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kiri' : '')) . "]" . $ipath . "[/g]\n" . $val;
-						} else {
-							$val = $val . "\n[g" . ($image->getOffsetX2() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kanan' : ($image->getOffsetX() == 0 && $image->getOffsetX2() != $image->getOffsetX() ? ' kiri' : '')) . "]" . $ipath . "[/g]";
+					if (count($imgs)) {
+						$inserted = [];
+						foreach ($imgs as $ki => $image) {
+							$ipath = $this->saveImage($image);
+							$img = "[g" . ($image->getOffsetX() == 0 && $image->getOffsetX() != $image->getOffsetX2() ? ' kiri' : ($image->getOffsetX2() == 0 && $image->getOffsetX() != $image->getOffsetX2() ? ' kanan' : ($image->getOffsetX() == $image->getOffsetX2() || ($image->getOffsetX() > 0 && $image->getOffsetX2() / $image->getOffsetX() <= 2.1) ? ' tengah' : ''))) . "]" . $ipath . "[/g]";
+							if ($image->getOffsetY() == 0) {
+								$val = $img . $val;
+							} elseif ($image->getOffsetY2() == 0) {
+								$val = $val . $img;
+							} else {
+								$break = explode("\n\n", $val);
+								if (count($break)) {
+									$val = '';
+									foreach ($break as $kn => $n) {
+										$val .= $n;
+										if (!in_array($ki, $inserted)) {
+											array_push($inserted, $ki);
+											$val .= $img;
+										} else {
+											if ($kn < count($break) - 1) {
+												$val .= "\n\n";
+											}
+										}
+									}
+								}
+							}
 						}
 					}
 
