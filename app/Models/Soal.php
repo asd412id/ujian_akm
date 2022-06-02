@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Soal extends Model
 {
@@ -44,6 +45,10 @@ class Soal extends Model
             $m->item_soals()->delete();
             if ($m->excel && Storage::exists($m->excel)) {
                 Storage::delete($m->excel);
+            }
+            if (Storage::disk('public')->exists('uploads/' . userFolder() . '/' . Str::slug($m->name))) {
+                Storage::disk('public')->deleteDirectory('uploads/' . userFolder() . '/' . Str::slug($m->name));
+                Storage::disk('public')->deleteDirectory('thumbs/' . userFolder() . '/' . Str::slug($m->name));
             }
         });
     }
