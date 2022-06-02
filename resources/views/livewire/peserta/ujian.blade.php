@@ -1,10 +1,10 @@
-<div class="flex flex-col-reverse md:flex-row gap-3 w-full" x-init="
+<div class="flex flex-col-reverse w-full gap-3 md:flex-row" x-init="
 if(@js($user->sekolah->restrict_test)){
 	window.onblur=function(){$wire.stop()};
 }
 ">
 	<div class="w-full md:w-9/12">
-		<div class="w-full shadow-md bg-white border border-gray-100 rounded-lg p-5 flex flex-col gap-3" wire:ignore
+		<div class="flex flex-col w-full gap-3 p-5 bg-white border border-gray-100 rounded-lg shadow-md" wire:ignore
 			wire:key='soal_{{ $soal->id.' _'.$sid }}'>
 			<div class="hidden" x-data x-init="
 			$nextTick(()=>{
@@ -19,7 +19,7 @@ if(@js($user->sekolah->restrict_test)){
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 			})
 			"></div>
-			<h2 class="font-bold text-lg">#Soal {{$login->current_number+1}} ({{ $type }})</h2>
+			<h2 class="text-lg font-bold">#Soal {{$login->current_number+1}} ({{ $type }})</h2>
 			<div class="flex flex-col gap-3">
 				<div class="w-full">{!! shortcode($soal->text) !!}</div>
 
@@ -29,7 +29,7 @@ if(@js($user->sekolah->restrict_test)){
 					<label class="flex gap-2">
 						@if (strtolower($soal->type)=='pg')
 						<input type="radio"
-							class="form-radio mt-1 rounded-full transition ease-in-out duration-100 border-secondary-300 text-primary-600 focus:ring-primary-600 focus:border-primary-400 dark:border-secondary-500 dark:checked:border-secondary-600 dark:focus:ring-secondary-600 dark:focus:border-secondary-500 dark:bg-secondary-600 dark:text-secondary-600 dark:focus:ring-offset-secondary-800"
+							class="mt-1 transition duration-100 ease-in-out rounded-full form-radio border-secondary-300 text-primary-600 focus:ring-primary-600 focus:border-primary-400 dark:border-secondary-500 dark:checked:border-secondary-600 dark:focus:ring-secondary-600 dark:focus:border-secondary-500 dark:bg-secondary-600 dark:text-secondary-600 dark:focus:ring-offset-secondary-800"
 							wire:model.defer="choices" name='choice' value="{{ $key }}">
 						@else
 						<x-checkbox wire:model.defer="choices" value="{{ $key }}" class="mt-1" />
@@ -42,25 +42,26 @@ if(@js($user->sekolah->restrict_test)){
 				<table class="w-full">
 					<thead>
 						<tr>
-							<th class="py-2 px-3 border border-gray-400 border-b-2 bg-gray-200">{{
+							<th class="px-3 py-2 bg-gray-200 border border-b-2 border-gray-400">{{
 								isset($soal->label[0])&&$soal->label[0]?$soal->label[0]:'Pernyataan' }}</th>
-							<th class="py-2 px-3 border border-gray-400 border-b-2 bg-gray-200" colspan="2">Jawaban</th>
+							<th class="px-3 py-2 bg-gray-200 border border-b-2 border-gray-400" colspan="2">{{
+								isset($soal->label[1])&&$soal->label[1]?$soal->label[1]:'Jawaban' }}</th>
 						</tr>
 					</thead>
 					@forelse ($soal->option as $key => $s)
 					<tr>
-						<td class="py-2 px-3 border border-gray-400">{!! shortcode($s) !!}</td>
-						<td class="py-2 px-3 border border-gray-400 align-top">
-							<label class="flex gap-2 items-center justify-center">
+						<td class="px-3 py-2 border border-gray-400">{!! shortcode($s) !!}</td>
+						<td class="px-3 py-2 align-top border border-gray-400">
+							<label class="flex items-center justify-center gap-2">
 								<input type="radio"
-									class="form-radio rounded-full transition ease-in-out duration-100 border-secondary-300 text-primary-600 focus:ring-primary-600 focus:border-primary-400 dark:border-secondary-500 dark:checked:border-secondary-600 dark:focus:ring-secondary-600 dark:focus:border-secondary-500 dark:bg-secondary-600 dark:text-secondary-600 dark:focus:ring-offset-secondary-800"
+									class="transition duration-100 ease-in-out rounded-full form-radio border-secondary-300 text-primary-600 focus:ring-primary-600 focus:border-primary-400 dark:border-secondary-500 dark:checked:border-secondary-600 dark:focus:ring-secondary-600 dark:focus:border-secondary-500 dark:bg-secondary-600 dark:text-secondary-600 dark:focus:ring-offset-secondary-800"
 									wire:key='ch{{ $key }}' name="ch{{ $key }}" wire:model.defer="choices.{{ $key }}" value="1">Benar
 							</label>
 						</td>
-						<td class="py-2 px-3 border border-gray-400 align-top">
-							<label class="flex gap-2 items-center justify-center">
+						<td class="px-3 py-2 align-top border border-gray-400">
+							<label class="flex items-center justify-center gap-2">
 								<input type="radio"
-									class="form-radio rounded-full transition ease-in-out duration-100 border-secondary-300 text-primary-600 focus:ring-primary-600 focus:border-primary-400 dark:border-secondary-500 dark:checked:border-secondary-600 dark:focus:ring-secondary-600 dark:focus:border-secondary-500 dark:bg-secondary-600 dark:text-secondary-600 dark:focus:ring-offset-secondary-800"
+									class="transition duration-100 ease-in-out rounded-full form-radio border-secondary-300 text-primary-600 focus:ring-primary-600 focus:border-primary-400 dark:border-secondary-500 dark:checked:border-secondary-600 dark:focus:ring-secondary-600 dark:focus:border-secondary-500 dark:bg-secondary-600 dark:text-secondary-600 dark:focus:ring-offset-secondary-800"
 									wire:key='ch{{ $key }}' name="ch{{ $key }}" wire:model.defer="choices.{{ $key }}" value="0">Salah
 							</label>
 						</td>
@@ -76,7 +77,7 @@ if(@js($user->sekolah->restrict_test)){
 				@elseif (strtolower($soal->type)=='u')
 				<x-textarea wire:model.defer='answer' placeholder="Masukkan jawabanmu" />
 				@elseif (strtolower($soal->type)=='jd' && is_array($soal->option))
-				<div class="flex justify-between gap-20 md:justify-start md:gap-48 relative mt-5"
+				<div class="relative flex justify-between gap-20 mt-5 md:justify-start md:gap-48"
 					x-data="{relations: {}, key: null, keyb: null, paired: {}}">
 					<div class="hidden" x-init="$nextTick(()=>{
 						if(@js(count($srelation))){
@@ -90,14 +91,14 @@ if(@js($user->sekolah->restrict_test)){
 						}
 					})
 					"></div>
-					<div class="flex flex-col gap-4 relative">
+					<div class="relative flex flex-col gap-4">
 						@if (isset($soal->label[0])&&$soal->label[0])
-						<div class="font-bold border-b-2 border-b-gray-600 text-center">{{ $soal->label[0] }}</div>
+						<div class="font-bold text-center border-b-2 border-b-gray-600">{{ $soal->label[0] }}</div>
 						@endif
 						@foreach ($soal->option as $key => $o)
 						@if (is_array($soal->itemSoal->relations[$key]))
 						<div
-							class="py-1 px-2 rounded-md text-center shadow-md border border-gray-300 hover:cursor-pointer hover:bg-gray-100"
+							class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md hover:cursor-pointer hover:bg-gray-100"
 							x-ref='start{{ $key }}_{{ $soal->id }}' x-on:click="
 							key = 'start{{ $key }}_{{ $soal->id }}';
 							if(paired[key] == undefined){
@@ -132,14 +133,14 @@ if(@js($user->sekolah->restrict_test)){
 						@endif
 						@endforeach
 					</div>
-					<div class="flex flex-col gap-4 relative" x-ref="contoh">
+					<div class="relative flex flex-col gap-4" x-ref="contoh">
 						@if (isset($soal->label[1])&&$soal->label[1])
-						<div class="font-bold border-b-2 border-b-gray-600 text-center">{{ $soal->label[1] }}</div>
+						<div class="font-bold text-center border-b-2 border-b-gray-600">{{ $soal->label[1] }}</div>
 						@endif
 						@foreach ($soal->option as $key => $o)
 						@if (!is_array($soal->itemSoal->relations[$key]))
 						<div
-							class="py-1 px-2 rounded-md text-center shadow-md border border-gray-300 hover:cursor-pointer hover:bg-gray-100"
+							class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md hover:cursor-pointer hover:bg-gray-100"
 							x-ref='end{{ $key }}_{{ $soal->id }}' x-on:click="
 							if(paired[key] == 1){
 								paired[key] = 2;
@@ -159,14 +160,14 @@ if(@js($user->sekolah->restrict_test)){
 				</div>
 				@endif
 			</div>
-			<div class="flex flex-col md:flex-row gap-2 justify-between mt-5 pt-5 items-center border-t border-t-gray-200">
+			<div class="flex flex-col items-center justify-between gap-2 pt-5 mt-5 border-t md:flex-row border-t-gray-200">
 				<span>
 					<x-button negative icon="arrow-narrow-left" label="Soal Sebelumnya" wire:click='prevSoal'
 						wire:target='prevSoal' class="rounded-3xl" />
 				</span>
 				<span>
 					<x-button primary label="SIMPAN JAWABAN" lg x-on:click="$wire.saveAnswer();$wire.nextSoal()"
-						wire:target='saveAnswer' class="rounded-3xl px-16 md:px-32" />
+						wire:target='saveAnswer' class="px-16 rounded-3xl md:px-32" />
 				</span>
 				<span>
 					<x-button positive label="Soal Selanjutnya" wire:click='nextSoal' right-icon="arrow-narrow-right"
@@ -175,10 +176,10 @@ if(@js($user->sekolah->restrict_test)){
 			</div>
 		</div>
 	</div>
-	<div class="w-full md:w-3/12 flex flex-col gap-3" x-data="{opennum: false}" wire:ignore wire:key='attr{{ $soal->id }}'
+	<div class="flex flex-col w-full gap-3 md:w-3/12" x-data="{opennum: false}" wire:ignore wire:key='attr{{ $soal->id }}'
 		x-init="opennum=false">
 		<div
-			class="w-full shadow-md bg-amber-50 border border-amber-100 text-amber-600 rounded-lg p-3 text-xl md:text-md md:p-5 flex flex-col justify-center gap-3"
+			class="flex flex-col justify-center w-full gap-3 p-3 text-xl border rounded-lg shadow-md bg-amber-50 border-amber-100 text-amber-600 md:text-md md:p-5"
 			x-ref="timer" wire:poll.keep-alive='checkTimer'>
 			<div class="flex flex-col items-center" x-data="{cdown: @entangle('timer'), countdown: null}" x-init="$nextTick(()=>{
 				countdown = timer(cdown);
@@ -209,7 +210,7 @@ if(@js($user->sekolah->restrict_test)){
 				</div>
 			</div>
 			<x-button negative label="SELESAI" wire:click='stopUjian' />
-			<x-button primary label="NOMOR SOAL" class="md:hidden inline-block" wire:target='none' x-on:click="
+			<x-button primary label="NOMOR SOAL" class="inline-block md:hidden" wire:target='none' x-on:click="
 			$el.blur();
 			opennum = !opennum;
 			if(!opennum){
@@ -219,9 +220,9 @@ if(@js($user->sekolah->restrict_test)){
 			}
 			" />
 		</div>
-		<div x-ref="number" class="w-full hidden md:block shadow-md bg-white border border-gray-100 rounded-lg p-5">
-			<div class="text-center text-lg font-bold underline underline-offset-2 text-gray-600">Nomor Soal</div>
-			<div class="mt-5 grid grid-cols-5 gap-3 content-center text-center">
+		<div x-ref="number" class="hidden w-full p-5 bg-white border border-gray-100 rounded-lg shadow-md md:block">
+			<div class="text-lg font-bold text-center text-gray-600 underline underline-offset-2">Nomor Soal</div>
+			<div class="grid content-center grid-cols-5 gap-3 mt-5 text-center">
 				@foreach ($login->soals() as $key => $bs)
 				@if ($key == $login->current_number)
 				<x-button amber label="{{ $key+1 }}" wire:click="toSoal('{{ $key }}')" class="shadow-md" />

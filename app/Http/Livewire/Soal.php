@@ -180,7 +180,7 @@ class Soal extends Component
 			return $this->notification()->error('Nama soal sudah digunakan');
 		}
 
-		$update = $this->ID ? ModelsSoal::find($this->ID) : new ModelsSoal();
+		$update = $this->ID ? auth()->user()->sekolah->soals()->find($this->ID) : new ModelsSoal();
 		$update->name = $this->name;
 		$update->sekolah_id = auth()->user()->sekolah_id;
 		$update->mapel_id = $this->mapel;
