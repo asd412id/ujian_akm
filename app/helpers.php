@@ -87,7 +87,7 @@ function paragraph(ShortcodeInterface $s)
 function getUrl($url)
 {
   if (!filter_var($url, FILTER_VALIDATE_URL) !== false) {
-    $url = url('uploads/' . userFolder() . '/' . $url);
+    $url = Storage::disk('public')->exists('uploads/' . userFolder() . '/' . $url) ? url('uploads/' . userFolder() . '/' . $url) : url('favicon.png');
   }
 
   return $url;

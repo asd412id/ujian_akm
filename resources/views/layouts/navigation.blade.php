@@ -6,7 +6,8 @@
 				<!-- Logo -->
 				<div class="flex items-center shrink-0">
 					<a href="{{ route('dashboard') }}" class="flex items-center gap-3">
-						@if (auth()->user()->sekolah->logo)
+						@if (auth()->user()->sekolah->logo &&
+						Storage::disk('public')->exists('uploads/'.userFolder().'/'.auth()->user()->sekolah->logo))
 						<div class="block w-10 h-full text-gray-600 fill-current">
 							<img src="{{ getUrl(auth()->user()->sekolah->logo) }}" class="w-full" alt="">
 						</div>

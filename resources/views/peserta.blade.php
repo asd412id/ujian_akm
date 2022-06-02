@@ -13,7 +13,7 @@ $sekolah = auth()->user()->sekolah;
 						<!-- Logo -->
 						<div class="flex items-center shrink-0">
 							<a href="{{ route('ujian.index') }}" class="flex items-center gap-3">
-								@if ($sekolah->logo)
+								@if ($sekolah->logo && Storage::disk('public')->exists('uploads/'.userFolder().'/'.$sekolah->logo))
 								<div class="block w-10 h-full text-gray-600 fill-current">
 									<img src="{{ getUrl($sekolah->logo) }}" class="w-full" alt="">
 								</div>

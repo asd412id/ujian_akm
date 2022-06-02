@@ -6,15 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ (isset($title)?$title.' | ':'').config('app.name', 'Laravel') }}</title>
+    <title>{{ (isset($title)?$title.' | ':'').config('app.name', 'Aplikasi Ujian AKM').(auth()->check() &&
+        auth()->user()->sekolah->name?' - '.auth()->user()->sekolah->name:'') }}</title>
     @php
     $logo = url('favicon.png');
     if (auth()->check() && auth()->user()->sekolah->logo &&
-    Storage::exists('app/public/uploads/'.userFolder().'/'.(auth()->user()->sekolah->logo))) {
+    Storage::disk('public')->exists('uploads/'.userFolder().'/'.auth()->user()->sekolah->logo)) {
     $logo = getUrl(auth()->user()->sekolah->logo);
     }
     @endphp
-    <link rel="shortcut icon" href="{{ $logo }}" type="image/png">
+    <link rel="shortcut icon" href="{{ $logo }}" {!! auth()->check() && Storage::disk('public')->
+    exists('uploads/'.userFolder().'/'.auth()->user()->sekolah->logo)?'type="'.Storage::disk('public')->mimeType('uploads/'.userFolder().'/'.auth()->user()->sekolah->logo).'"':'type="image/png"'
+    !!}>
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ url('css/app.css') }}">
