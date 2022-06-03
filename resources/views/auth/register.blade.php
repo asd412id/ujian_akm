@@ -3,10 +3,10 @@
 	@push('scripts')
 	{!! NoCaptcha::renderJs('id') !!}
 	@endpush
-	<x-auth-card class="sm:py-6">
+	<x-auth-card class="py-6">
 		<x-slot name="logo">
-			<a href="/" class="flex flex-col gap-2 justify-center">
-				<x-application-logo class="w-16 h-16 fill-current text-gray-500 self-center" />
+			<a href="/" class="flex flex-col justify-center gap-2">
+				<x-application-logo class="self-center w-16 h-16 text-gray-500 fill-current" />
 				<h1 class="text-xl font-bold text-center">Buat Akun Sekolah</h1>
 			</a>
 		</x-slot>
@@ -19,42 +19,42 @@
 			<div>
 				<x-alabel for="sekolah" :value="__('Nama Sekolah')" />
 
-				<x-ainput id="sekolah" class="block mt-1 w-full" type="text" name="sekolah" :value="old('sekolah')" required
+				<x-ainput id="sekolah" class="block w-full mt-1" type="text" name="sekolah" :value="old('sekolah')" required
 					autofocus />
 			</div>
 
 			<div class="mt-4">
 				<x-alabel for="name" :value="__('Nama Lengkap')" />
 
-				<x-ainput id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+				<x-ainput id="name" class="block w-full mt-1" type="text" name="name" :value="old('name')" required autofocus />
 			</div>
 
 			<div class="mt-4">
 				<x-alabel for="email" :value="__('Alamat Email')" />
 
-				<x-ainput id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+				<x-ainput id="email" class="block w-full mt-1" type="email" name="email" :value="old('email')" required />
 			</div>
 
 			<div class="mt-4">
 				<x-alabel for="password" :value="__('Password')" />
 
-				<x-ainput id="password" class="block mt-1 w-full" type="password" name="password" required
+				<x-ainput id="password" class="block w-full mt-1" type="password" name="password" required
 					autocomplete="new-password" />
 			</div>
 
 			<div class="mt-4">
 				<x-alabel for="password_confirmation" :value="__('Ulang Password')" />
 
-				<x-ainput id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation"
+				<x-ainput id="password_confirmation" class="block w-full mt-1" type="password" name="password_confirmation"
 					required />
 			</div>
 
-			<div class="mt-4 flex justify-center">
+			<div class="flex justify-center mt-4">
 				{!! NoCaptcha::display() !!}
 			</div>
 
 			<div class="flex items-center justify-end mt-4">
-				<a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+				<a class="text-sm text-gray-600 underline hover:text-gray-900" href="{{ route('login') }}">
 					{{ __('Sudah mendaftar?') }}
 				</a>
 
