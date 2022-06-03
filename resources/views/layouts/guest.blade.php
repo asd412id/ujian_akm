@@ -25,6 +25,7 @@
     <!-- Scripts -->
     @livewireStyles
     @wireUiScripts
+    @stack('scripts')
     <script src="{{ url('js/app.js') }}" defer></script>
 </head>
 

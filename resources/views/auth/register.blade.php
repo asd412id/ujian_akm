@@ -1,12 +1,17 @@
 <x-guest-layout>
-	<x-auth-card>
+	<x-slot name="title">Buat Akun Sekolah</x-slot>
+	@push('scripts')
+	{!! NoCaptcha::renderJs('id') !!}
+	@endpush
+	<x-auth-card class="sm:py-6">
 		<x-slot name="logo">
-			<a href="/">
-				<x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+			<a href="/" class="flex flex-col gap-2 justify-center">
+				<x-application-logo class="w-16 h-16 fill-current text-gray-500 self-center" />
+				<h1 class="text-xl font-bold text-center">Buat Akun Sekolah</h1>
 			</a>
 		</x-slot>
 
-		<x-auth-validation-errors class="mb-4" :errors="$errors" />
+		<x-auth-validation-errors class="mb-4 text-center" :errors="$errors" />
 
 		<form method="POST" action="{{ route('register') }}">
 			@csrf
@@ -42,6 +47,10 @@
 
 				<x-ainput id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation"
 					required />
+			</div>
+
+			<div class="mt-4 flex justify-center">
+				{!! NoCaptcha::display() !!}
 			</div>
 
 			<div class="flex items-center justify-end mt-4">

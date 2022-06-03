@@ -39,6 +39,17 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'g-recaptcha-response' => 'required|captcha'
+        ], [
+            'sekolah.required' => 'Nama sekolah tidak boleh kosong',
+            'name.required' => 'Nama lengkap tidak boleh kosong',
+            'email.required' => 'Email tidak boleh kosong',
+            'email.unique' => 'Email telah digunakan',
+            'password.required' => 'Password tidak boleh kosong',
+            'password.confirmed' => 'Perulangan password tidak sesuai',
+            'password.min' => 'Panjang password minimal 8 karakter',
+            'g-recaptcha-response.required' => 'Pastikan Anda bukan robot dengan mencentang reCAPTCHA di bawah',
+            'g-recaptcha-response.captcha' => 'Verifkasi captcha bermasalah! Silahkan hubungi developer',
         ]);
 
         $sekolah = Sekolah::create([

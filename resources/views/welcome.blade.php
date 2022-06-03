@@ -45,6 +45,9 @@
 						<x-button type="submit" x-bind:disabled='submit' primary label="Masuk" icon="login" />
 					</div>
 				</form>
+				<div class="text-right mt-6 text-primary-700 text-sm">
+					<a class="underline" href="{{ route('login') }}">Masuk Sebagai Administrator</a>
+				</div>
 			</x-card>
 			<div class="mt-3 text-sm italic text-center text-primary-700">Copyright &copy; 2022 by
 				<a class="underline" href="https://www.facebook.com/aezdar">asd412id</a>

@@ -1,16 +1,18 @@
 <x-guest-layout>
-	<x-auth-card>
+	<x-slot name="title">Masuk Halaman Admin</x-slot>
+	<x-auth-card class="py-6">
 		<x-slot name="logo">
-			<a href="/">
-				<x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+			<a href="/" class="flex flex-col gap-2 justify-center">
+				<x-application-logo class="w-16 h-16 fill-current text-gray-500 self-center" />
+				<h1 class="text-lg font-bold text-center">Masuk Halaman Admin</h1>
 			</a>
 		</x-slot>
 
 		<!-- Session Status -->
-		<x-auth-session-status class="mb-4" :status="session('status')" />
+		<x-auth-session-status class="mb-4 text-center" :status="session('status')" />
 
 		<!-- Validation Errors -->
-		<x-auth-validation-errors class="mb-4" :errors="$errors" />
+		<x-auth-validation-errors class="mb-4 text-center" :errors="$errors" />
 
 		<form method="POST" action="{{ route('login') }}">
 			@csrf
@@ -53,5 +55,13 @@
 				</x-abutton>
 			</div>
 		</form>
+		@if (Route::has('register'))
+		<div class="text-right mt-3 text-sm">
+			<a class="underline" href="{{ route('register') }}">Belum punya akun? Daftar sekarang!</a>
+		</div>
+		@endif
+		<div class="text-right mt-3 text-sm">
+			<a class="underline" href="{{ route('index') }}">Anda peserta ujian? Masuk Di Sini!</a>
+		</div>
 	</x-auth-card>
 </x-guest-layout>
