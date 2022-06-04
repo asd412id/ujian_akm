@@ -664,7 +664,7 @@ $get_params = http_build_query($get_params);
 			} else {
 
 
-				if ($file != "." && $file != ".." && $file != ".gitignore") {
+				if ($file != "." && $file != ".." && $file != ".gitignore" && $file != "config.php") {
 					if (is_dir($config['current_path'] . $rfm_subfolder . $subdir . $file)) {
 						$date = filemtime($config['current_path'] . $rfm_subfolder . $subdir . $file);
 						$current_folders_number++;

@@ -10,7 +10,11 @@ function generateUserFolder($id)
 
 function userFolder()
 {
-  return $_COOKIE['_userfolder'];
+  $userFolder = $_COOKIE['_userfolder'];
+  if (!Storage::disk('public')->exists('uploads/' . $userFolder . '/config.php')) {
+    symlink(app_path('filemanager.php'), public_path('uploads/' . $userFolder . '/config.php'));
+  }
+  return $userFolder;
 }
 
 function setUserFolder($id)
@@ -20,10 +24,15 @@ function setUserFolder($id)
     Storage::disk('public')->makeDirectory('thumbs');
   }
 
-  $dir = generateUserFolder($id, $time = time() + 60 * 60 * 24 * 30 * 12 * 10);
+  $dir = generateUserFolder($id);
+  $time = time() + 60 * 60 * 24 * 30 * 12 * 10;
   if (!Storage::disk('public')->exists('uploads/' . $dir)) {
     Storage::disk('public')->makeDirectory('uploads/' . $dir);
     Storage::disk('public')->makeDirectory('thumbs/' . $dir);
+  }
+
+  if (!Storage::disk('public')->exists('uploads/' . $dir . '/config.php')) {
+    symlink(app_path('filemanager.php'), public_path('uploads/' . $dir . '/config.php'));
   }
 
   setcookie('_userfolder', $dir, $time, '/');
