@@ -3,12 +3,28 @@
 	<div class="w-full md:w-6/12">
 		<div class="p-6 bg-white border-b border-gray-200 rounded-lg shadow-sm">
 			<h3 class="text-2xl">Data Sekolah</h3>
-			<form wire:submit.prevent='update' class="flex flex-col gap-3 mt-2" x-data>
-				<x-input label="Nama Sekolah" wire:model.defer="nama_sekolah" placeholder="Masukkan nama sekolah" />
+			<form wire:submit.prevent='update' class="flex flex-col gap-3 mt-2"
+				x-data="{logo: @entangle('logo_sekolah').defer,kop: @entangle('kop_sekolah').defer}" x-init="$nextTick(()=>{
+					setLogo = (id) =>{
+						value = document.getElementById(id).value;
+						logo = value.replace(@js(userFolder().'/'),'');
+					}
+					setKop = (id) => {
+						value = document.getElementById(id).value;
+						kop = '[g]'+value.replace(@js(userFolder().'/'),'')+'[/g]';
+					}
+				})">
 				<div>
-					<x-input x-ref="logo_input" label="Nama File Logo Sekolah" wire:model.defer="logo_sekolah"
+					<x-input x-ref="logo_input" x-model="logo" label="Nama File Logo Sekolah" wire:model.defer="logo_sekolah"
 						placeholder="Masukkan kode logo sekolah" corner-hint="Contoh: nama_file.png, logo/nama_file.png"
-						hint="Nama file berdasarkan lokasi file pada media" />
+						hint="Nama file berdasarkan lokasi file pada media" style="padding-right: 9rem" id="logo">
+						<x-slot name="append">
+							<div class="absolute inset-y-0 right-0 flex items-center p-0.5">
+								<x-button class="h-full rounded-r-md" icon="folder" label="Pilih Gambar" primary flat squared
+									x-on:click="window.open('/plugins/filemanager/dialog.php?type=1&field_id=logo&popup=1&multiple=0&relative_url=1&callback=setLogo&fldr=','Galeri','width=800,height=600,toolbar=no,menubar=no,location=no,status=no')" />
+							</div>
+						</x-slot>
+					</x-input>
 					@if ($logo_sekolah)
 					<div class="w-24 p-1 mt-1 border border-gray-300 border-solid rounded-md shadow-md"
 						x-on:click="$refs.logo_input.select()">
@@ -28,6 +44,8 @@
 				<div class="flex flex-col gap-1" x-data>
 					<x-alabel>KOP Sekolah (Gunakan tombol di bawah untuk memasukkan kode)</x-alabel>
 					<div class="flex flex-wrap gap-1">
+						<x-button xs primary icon="folder" label="Pilih Gambar"
+							x-on:click="window.open('/plugins/filemanager/dialog.php?type=1&field_id=kop_s&popup=1&multiple=0&relative_url=1&callback=setKop&fldr=','Galeri','width=800,height=600,toolbar=no,menubar=no,location=no,status=no')" />
 						<x-button xs outline primary x-on:click="$refs.editor.focus();insertTag($refs.editor,'[p][/p]')"
 							label="paragraf" class="uppercase" />
 						<x-button xs outline primary
@@ -42,9 +60,9 @@
 							x-on:click="$refs.editor.focus();insertTag($refs.editor,'[kolom {lebar} {tinggi} {posisi_h} {posisi_v}][/kolom]',19)"
 							label="kolom" class="uppercase" />
 					</div>
-					<x-textarea x-ref="editor" wire:model.defer='kop_sekolah'
+					<x-textarea x-ref="editor" x-model="kop" wire:model.defer='kop_sekolah'
 						plugins="align,table,fontAwesome,fontFamily,fontSize,lists,fullscreen,codeView"
-						placeholder="Masukkan kop sekolah atau kode gambar kop" />
+						placeholder="Masukkan kop sekolah atau kode gambar kop" id="kop_s" />
 				</div>
 				<x-button label="SIMPAN" primary type='submit' />
 			</form>
