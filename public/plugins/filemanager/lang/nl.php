@@ -45,7 +45,7 @@ return array(
     'Upload_base_help' => "Drag & Drop bestanden (moderne browsers) of klik op de bovenste knop om het bestand (en) toe te voegen en klik op Begin uploaden. Wanneer het uploaden is voltooid, klikt u op de knop 'Terug naar bestanden'.",
     'Upload_add_files' => 'Voeg bestanden toe',
     'Upload_start' => 'Begin uploaden',
-    'Upload_error_messages' =>array(
+    'Upload_error_messages' => array(
         1 => 'Bestandsgrootte is te groot.',
         2 => 'Bestandsgrootte is te groot.',
         3 => 'Bestand is slechts gedeeltelijk geupload.',
@@ -137,7 +137,7 @@ return array(
     'no file' => "No file",
     'view type number missing' => "View type number missing",
     'Not enough Memory' => "Not enough Memory",
-    'max_size_reached' => "Your image folder has reach its maximale size of %d MB.", //%d = max overall size
+    'max_size_reached' => "Your folder has reached its maximum size of %d MB.", //%d = max overall size
     'B' => "B",
     'KB' => "KB",
     'MB' => "MB",

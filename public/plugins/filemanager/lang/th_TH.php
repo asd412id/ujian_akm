@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ผู้แปล: ณัฐพงษ์ สารคณา(โดนัท)
  * โปรไฟล์: https://web.facebook.com/pandonus
@@ -52,7 +53,7 @@ return array(
     'Upload_base_help' => "สามารถอัพโหลดไฟล์แบบลากวางได้ หรือคลิกที่ปุ่มด้านบนเพื่อเพิ่มไฟล์และคลิกอัพโหลด เมื่อการอัปโหลดเสร็จสมบูรณ์คลิกปุ่ม \"กลับสู่หน้ารายการ\"",
     'Upload_add_files' => 'เลือกไฟล์ (สามารเลือกได้หลายไฟล์)',
     'Upload_start' => 'อัพโหลด',
-    'Upload_error_messages' =>array(
+    'Upload_error_messages' => array(
         1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
         2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
         3 => 'The uploaded file was only partially uploaded',
@@ -144,7 +145,7 @@ return array(
     'no file' => "No file",
     'view type number missing' => "View type number missing",
     'Not enough Memory' => "Not enough Memory",
-    'max_size_reached' => "Your image folder has reach its maximale size of %d MB.", //%d = max overall size
+    'max_size_reached' => "Your folder has reached its maximum size of %d MB.", //%d = max overall size
     'B' => "B",
     'KB' => "KB",
     'MB' => "MB",

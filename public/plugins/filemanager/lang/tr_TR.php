@@ -44,7 +44,7 @@ return array(
     'Upload_base_help' => "Dosyaları sürükleyip bırakın (modern tarayıcılar) veya dosya ekleye tıklayarak dosyaları ekleyin ve Yüklemeyi başlat'a tıklayın. Yükleme tamamlandığında, 'Dosya listesine dön' düğmesini tıklayın.",
     'Upload_add_files' => 'Dosya(ları) Ekle',
     'Upload_start' => 'Yüklemeyi Başlat',
-    'Upload_error_messages' =>array(
+    'Upload_error_messages' => array(
         1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
         2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
         3 => 'The uploaded file was only partially uploaded',
@@ -137,7 +137,7 @@ return array(
     'no file' => "No file",
     'view type number missing' => "View type number missing",
     'Not enough Memory' => "Not enough Memory",
-    'max_size_reached' => "Your image folder has reach its maximale size of %d MB.", //%d = max overall size
+    'max_size_reached' => "Your folder has reached its maximum size of %d MB.", //%d = max overall size
     'B' => "B",
     'KB' => "KB",
     'MB' => "MB",

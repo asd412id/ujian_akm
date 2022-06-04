@@ -143,6 +143,9 @@ if (!$ftp) {
 			$configTemp = include $config['current_path'] . $parent . 'config.php';
 			$config = array_merge($config, $configTemp);
 			$cycle = FALSE;
+			if ($config['show_total_size']) {
+				list($sizeCurrentFolder, $fileCurrentNum, $foldersCurrentCount) = folder_info($config['current_path'] . $parent, false);
+			}
 		}
 
 		if ($parent == "") {

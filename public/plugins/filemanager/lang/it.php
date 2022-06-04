@@ -44,7 +44,7 @@ return array(
     'Upload_add_files' => 'Aggiungi file',
     'Upload_start' => "Esegui l'upload",
     'Upload_base_help' => "Trascina i file nell'area superiore (per i moderni browser) o clicca sul bottone \"Aggiungi file\" e clicca sul bottone \"Esegui l'upload\".  Quando il caricamento dei file è terminato clicca sul bottone di ritorno in alto.",
-    'Upload_error_messages' =>array(
+    'Upload_error_messages' => array(
         1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
         2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
         3 => 'The uploaded file was only partially uploaded',
@@ -119,7 +119,7 @@ return array(
     'File_Save_OK' => "Il file è stato salvato con successo.",
     'File_Save_Error' => "C'è stato un errore nel salvataggio del file.",
     'New_File' => 'Nuovo file',
-    'No_Extension',"Non hai inserito l'estensione del file.",
+    'No_Extension', "Non hai inserito l'estensione del file.",
     'Valid_Extensions' => 'Estensioni valide: %s', // %s = txt,log etc.
     'Upload_message' => "Trascina qui i file per l'upload",
 
@@ -137,7 +137,7 @@ return array(
     'no file' => "No file",
     'view type number missing' => "View type number missing",
     'Not enough Memory' => "Not enough Memory",
-    'max_size_reached' => "Your image folder has reach its maximale size of %d MB.", //%d = max overall size
+    'max_size_reached' => "Your folder has reached its maximum size of %d MB.", //%d = max overall size
     'B' => "B",
     'KB' => "KB",
     'MB' => "MB",
