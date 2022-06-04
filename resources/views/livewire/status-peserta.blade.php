@@ -8,7 +8,8 @@
 			]" wire:model='login' option-label='text' option-value='id' />
 		</div>
 		<div class="w-full">
-			<x-input type="search" wire:model.debounce.500ms='search' placeholder="Cari Data" right-icon="search" />
+			<x-input type="search" wire:model.debounce.500ms='search' placeholder="Cari Data" right-icon="search"
+				autofocus="true" />
 		</div>
 	</div>
 	<div class="w-full shadow-sm bg-white border-b border-gray-200 rounded-lg">
@@ -33,9 +34,9 @@
 				@php
 				$dl = $v->logins()->where('jadwal_id',$jadwal->id)->first();
 				$cdown = null;
-				$ukey = null;
+				$ukey = $search ? $v->id : null;
 				if ($dl) {
-				$ukey = $dl->id.md5($dl->end).$dl->reset.$dl->current_number;
+				$ukey = md5($ukey.$dl->id.$dl->end.$dl->reset.$dl->current_number);
 				$cdown = $dl->reset == 2 || $dl->end ?
 				now()->addMinutes($jadwal->duration)->subSeconds($dl->start->diffInSeconds($dl->created_at))->getPreciseTimestamp(3)
 				:

@@ -92,6 +92,7 @@ class StatusPeserta extends Component
 				})
 				->where(function ($q) {
 					$q->where('name', 'like', "%$this->search%")
+						->orWhere('uid', 'like', "%$this->search%")
 						->orWhere('ruang', 'like', "%$this->search%");
 				})
 				->select('pesertas.*')
@@ -105,6 +106,7 @@ class StatusPeserta extends Component
 				->whereDoesntHave('logins')
 				->where(function ($q) {
 					$q->where('name', 'like', "%$this->search%")
+						->orWhere('uid', 'like', "%$this->search%")
 						->orWhere('ruang', 'like', "%$this->search%");
 				})
 				->orderBy('uid', 'asc')
