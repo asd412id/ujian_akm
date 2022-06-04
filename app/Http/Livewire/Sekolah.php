@@ -205,7 +205,6 @@ class Sekolah extends Component
 					} else {
 						$new = User::where('email', $email)
 							->where('sekolah_id', $sekolah_id)
-							->where('role', 1)
 							->first();
 						if (!$new) {
 							$new = new User();
@@ -214,6 +213,9 @@ class Sekolah extends Component
 							$new->role = 1;
 							$new->email_verified_at = now();
 							$i++;
+						} elseif ($new->role != 1) {
+							$this->notification()->error('Email ' . $email . ' tidak dapat digunakan sebagai penilai');
+							continue;
 						}
 						$new->name = trim($row[1]);
 						$new->password = bcrypt(trim($row[3]));
