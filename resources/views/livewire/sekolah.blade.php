@@ -21,7 +21,7 @@
 						<x-slot name="append">
 							<div class="absolute inset-y-0 right-0 flex items-center p-0.5">
 								<x-button class="h-full rounded-r-md" icon="folder" label="Pilih Gambar" primary flat squared
-									x-on:click="window.open('/plugins/filemanager/dialog.php?type=1&field_id=logo&popup=1&multiple=0&relative_url=1&callback=setLogo&fldr=','Galeri','width=800,height=600,toolbar=no,menubar=no,location=no,status=no')" />
+									x-on:click="window.open('/plugins/filemanager/dialog.php?type=1&field_id=logo&popup=1&multiple=0&relative_url=1&callback=setLogo&fldr=','Galeri','width=1000,height=600,left='+(window.innerWidth-1000)/2+',top='+(window.innerHeight-600)/2+',toolbar=no,menubar=no,location=no,status=no')" />
 							</div>
 						</x-slot>
 					</x-input>
@@ -45,7 +45,7 @@
 					<x-alabel>KOP Sekolah (Gunakan tombol di bawah untuk memasukkan kode)</x-alabel>
 					<div class="flex flex-wrap gap-1">
 						<x-button xs primary icon="folder" label="Pilih Gambar"
-							x-on:click="window.open('/plugins/filemanager/dialog.php?type=1&field_id=kop_s&popup=1&multiple=0&relative_url=1&callback=setKop&fldr=','Galeri','width=800,height=600,toolbar=no,menubar=no,location=no,status=no')" />
+							x-on:click="window.open('/plugins/filemanager/dialog.php?type=1&field_id=kop_s&popup=1&multiple=0&relative_url=1&callback=setKop&fldr=','Galeri','width=1000,height=600,left='+(window.innerWidth-1000)/2+',top='+(window.innerHeight-600)/2+',toolbar=no,menubar=no,location=no,status=no')" />
 						<x-button xs outline primary x-on:click="$refs.editor.focus();insertTag($refs.editor,'[p][/p]')"
 							label="paragraf" class="uppercase" />
 						<x-button xs outline primary
