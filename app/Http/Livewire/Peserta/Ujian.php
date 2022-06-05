@@ -214,12 +214,12 @@ class Ujian extends Component
 				$this->soal->correct = $r;
 				break;
 			case 'is':
-				similar_text(strtolower($this->answer), strtolower($soalOri->answer), $percent);
+				similar_text(strtolower(str_replace("\n", '', $this->answer)), strtolower(str_replace("\n", '', $soalOri->answer)), $percent);
 				$this->soal->pscore = round($percent) / 100 * $soalOri->score;
 				$this->soal->answer = $this->answer;
 				break;
 			case 'u':
-				similar_text(strtolower($this->answer), strtolower($soalOri->answer), $percent);
+				similar_text(strtolower(str_replace("\n", '', $this->answer)), strtolower(str_replace("\n", '', $soalOri->answer)), $percent);
 				$this->soal->pscore = round($percent) / 100 * $soalOri->score;
 				$this->soal->answer = $this->answer;
 				break;

@@ -321,6 +321,11 @@ class Soal extends Component
 						$styles = $styles == '' ? $richTextElement->getText() : $styles;
 						$styles = sprintf('<sub>%s</sub>', $styles);
 					}
+					if ($richTextElement->getFont()->getSize()) {
+						$st = 1;
+						$styles = $styles == '' ? $richTextElement->getText() : $styles;
+						$styles = sprintf('<span style="font-size: %spt">%s</span>', $richTextElement->getFont()->getSize(), $styles);
+					}
 
 					if (!$st) {
 						$newtext .= $richTextElement->getText();
@@ -396,22 +401,22 @@ class Soal extends Component
 				if ($key == 0) {
 					continue;
 				}
-				if (!$row[0] || !is_numeric($row[0])) {
+				if (!$row[0] || !is_numeric(trim($row[0]))) {
 					continue;
 				}
-				$jenis = $row[2];
+				$jenis = trim($row[2]);
 				if (!in_array(strtolower($jenis), ['pg', 'pgk', 'is', 'u', 'bs', 'jd'])) {
 					continue;
 				}
-				$opsi_count = $row[6];
+				$opsi_count = trim($row[6]);
 				if (intval($opsi_count) <= 0) {
 					$opsi_count = 1;
 				}
-				$score = $row[5];
+				$score = trim($row[5]);
 				if (!$score) {
 					continue;
 				}
-				$shuffle = $row[4] == 'Ya' ? ' acak' : null;
+				$shuffle = strtolower(trim($row[4])) == 'ya' ? ' acak' : null;
 
 				if ($key > 1) {
 					$soals .= "\n";

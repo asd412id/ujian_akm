@@ -33,7 +33,8 @@
             </div>
             @elseif ((strtolower($v->type)=='is' || strtolower($v->type)=='u') && $v->answer)
             <div class="flex flex-col gap-1">
-              <div class="flex gap-1 font-bold"><span>Jawaban:</span> {!! shortcode($v->itemSoal->answer) !!}</div>
+              <div class="flex gap-1 font-bold"><span>Jawaban:</span> {!! shortcode(nl2br($v->itemSoal->answer)) !!}
+              </div>
             </div>
             @elseif ((strtolower($v->type)=='bs'))
             <table class="w-full">
