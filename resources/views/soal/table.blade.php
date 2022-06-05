@@ -30,16 +30,20 @@
             !!}</span>
           @endif
         </td>
-        <td class="flex justify-end gap-1 px-6 py-4 border-b border-gray-100">
-          <x-button info icon="search" xs label="Lihat Soal" wire:click="show('{{ $v->id }}')" />
-          @if ($v->excel && Storage::exists($v->excel))
-          <x-button green icon="download" xs label="Excel" title="Download Soal Excel"
-            wire:click="download('{{ $v->id }}')" />
-          @endif
-          <x-button warning icon="pencil" xs label="Edit" wire:click="edit('{{ $v->id }}')" />
-          @if (!$v->jadwals()->count())
-          <x-button red icon="trash" xs label="Hapus" wire:click="delete('{{ $v->id }}')" />
-          @endif
+        <td class="px-6 py-4 border-b border-gray-100">
+          <div class="flex justify-end">
+            <div class="flex justify-end gap-1">
+              <x-button info icon="search" xs label="Lihat Soal" wire:click="show('{{ $v->id }}')" />
+              @if ($v->excel && Storage::exists($v->excel))
+              <x-button green icon="download" xs label="Excel" title="Download Soal Excel"
+                wire:click="download('{{ $v->id }}')" />
+              @endif
+              <x-button warning icon="pencil" xs label="Edit" wire:click="edit('{{ $v->id }}')" />
+              @if (!$v->jadwals()->count())
+              <x-button red icon="trash" xs label="Hapus" wire:click="delete('{{ $v->id }}')" />
+              @endif
+            </div>
+          </div>
         </td>
       </tr>
       @empty

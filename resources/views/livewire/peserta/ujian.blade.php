@@ -187,7 +187,7 @@ if(@js($user->sekolah->restrict_test)){
 			})">
 				<div class="hidden" x-text="
 					if(countdown!=null){
-						if(Number(countdown.time().minutes) < 10 && countdown.time().hours == '00' && countdown.time().days == '00'){
+						if(Number(countdown.time().minutes) < 10 && Number(countdown.time().hours) <= 0 && Number(countdown.time().days) <= 0){
 							$refs.timer.classList.remove('bg-amber-50');
 							$refs.timer.classList.remove('border-amber-100');
 							$refs.timer.classList.remove('text-amber-600');
@@ -195,8 +195,8 @@ if(@js($user->sekolah->restrict_test)){
 							$refs.timer.classList.add('border-red-200');
 							$refs.timer.classList.add('text-red-700');
 						}
-						if(countdown.time().seconds == '00' && countdown.time().minutes == '00' && countdown.time().hours == '00' && countdown.time().days == '00'){
-							$wire.checkTimer();
+						if(Number(countdown.time().seconds) <= 0 && Number(countdown.time().minutes) <= 0 && Number(countdown.time().hours) <= 0 && Number(countdown.time().days) <= 0){
+							$wire.stop();
 							countdown = null;
 						}
 					}

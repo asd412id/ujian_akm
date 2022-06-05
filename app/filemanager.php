@@ -1,6 +1,6 @@
 <?php
 return [
-  'MaxSizeTotal' => 100,
+  'MaxSizeTotal' => 50,
   'MaxSizeUpload' => 2,
   'default_language' => "id",
   'show_total_size' => true,

@@ -36,7 +36,7 @@ class StatusPeserta extends Component
 
 	public function doResetLogin(PesertaLogin $dlogin)
 	{
-		$dlogin->update(['reset' => 2, 'end' => null, 'created_at' => now()]);
+		$dlogin->update(['reset' => 2, 'end' => null, 'created_at' => now()->lessThanOrEqualTo($dlogin->jadwal->end) ? now() : $dlogin->jadwal->end]);
 		$dlogin->peserta()->update(['is_login' => false, 'session_id' => null]);
 		return $this->notification()->success('Login peserta berhasil direset (' . $dlogin->peserta->name . ')');
 	}
@@ -74,10 +74,18 @@ class StatusPeserta extends Component
 	public function doStopUjian(PesertaLogin $dlogin)
 	{
 		$dlogin->update([
-			'end' => now(),
-			'created_at' => now(),
+			'end' => now()->lessThanOrEqualTo($dlogin->jadwal->end) ? now() : $dlogin->jadwal->end,
+			'created_at' => now()->lessThanOrEqualTo($dlogin->jadwal->end) ? now() : $dlogin->jadwal->end,
 		]);
 		return $this->notification()->success('Ujian peserta berhasil dihentikan (' . $dlogin->peserta->name . ')');
+	}
+
+	public function stopPeserta(PesertaLogin $dlogin)
+	{
+		$dlogin->update([
+			'end' => now()->lessThanOrEqualTo($dlogin->jadwal->end) ? now() : $dlogin->jadwal->end,
+			'created_at' => now()->lessThanOrEqualTo($dlogin->jadwal->end) ? now() : $dlogin->jadwal->end,
+		]);
 	}
 
 	public function render()

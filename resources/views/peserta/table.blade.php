@@ -27,14 +27,18 @@
             class="px-3 py-1 text-sm border rounded-lg shadow-md bg-emerald-50 border-emerald-200 text-emerald-700">{{
             $v->ruang
             }}</span></td>
-        <td class="flex justify-end gap-1 px-6 py-4 border-b border-gray-100">
-          @if ($v->sekolah->limit_login && $v->is_login)
-          <x-button blue icon="reply" xs label="Reset Login" wire:click="resetLogin('{{ $v->id }}')" />
-          @endif
-          <x-button warning icon="pencil" xs label="Edit" wire:click="edit('{{ $v->id }}')" />
-          @if (!$hasTests)
-          <x-button red icon="trash" xs label="Hapus" wire:click="delete('{{ $v->id }}')" />
-          @endif
+        <td class="px-6 py-4 border-b border-gray-100">
+          <div class="flex justify-end">
+            <div class="flex justify-end gap-1">
+              @if ($v->sekolah->limit_login && $v->is_login)
+              <x-button blue icon="reply" xs label="Reset Login" wire:click="resetLogin('{{ $v->id }}')" />
+              @endif
+              <x-button warning icon="pencil" xs label="Edit" wire:click="edit('{{ $v->id }}')" />
+              @if (!$hasTests)
+              <x-button red icon="trash" xs label="Hapus" wire:click="delete('{{ $v->id }}')" />
+              @endif
+            </div>
+          </div>
         </td>
       </tr>
       @empty

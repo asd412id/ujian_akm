@@ -12,10 +12,6 @@
     </thead>
     <tbody>
       @forelse ($data as $key => $v)
-      @php
-      $hasTests = $v->soals()
-      ->has('jadwals')->count();
-      @endphp
       <tr class="hover:bg-gray-100">
         <td class="px-6 py-4 border-b border-gray-100">{{ $v->name }}</td>
         <td class="px-6 py-4 border-b border-gray-100">
@@ -27,11 +23,15 @@
             !!}</span>
           @endif
         </td>
-        <td class="flex justify-end gap-1 px-6 py-4 border-b border-gray-100">
-          <x-button warning icon="pencil" xs label="Edit" wire:click="edit('{{ $v->id }}')" />
-          @if (!$hasTests)
-          <x-button red icon="trash" xs label="Hapus" wire:click="delete('{{ $v->id }}')" />
-          @endif
+        <td class="px-6 py-4 border-b border-gray-100">
+          <div class="flex justify-end">
+            <div class="flex justify-end gap-1">
+              <x-button warning icon="pencil" xs label="Edit" wire:click="edit('{{ $v->id }}')" />
+              @if (!$v->soals()->count())
+              <x-button red icon="trash" xs label="Hapus" wire:click="delete('{{ $v->id }}')" />
+              @endif
+            </div>
+          </div>
         </td>
       </tr>
       @empty

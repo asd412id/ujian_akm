@@ -282,8 +282,8 @@ class Jadwal extends Component
 			if ($jadwal->save()) {
 				if (!$jadwal->active) {
 					$jadwal->logins()->update([
-						'end' => now(),
-						'created_at' => now(),
+						'end' => now()->lessThanOrEqualTo($jadwal->end) ? now() : $jadwal->end,
+						'created_at' => now()->lessThanOrEqualTo($jadwal->end) ? now() : $jadwal->end,
 					]);
 				}
 				return $this->notification()->success('Jadwal berhasil di ' . ($jadwal->active ? 'Aktifkan' : 'Non-Aktifkan'));

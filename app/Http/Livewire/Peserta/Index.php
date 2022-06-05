@@ -61,8 +61,8 @@ class Index extends Component
 
 	public function stop()
 	{
-		$this->login->end = now();
-		$this->login->created_at = now();
+		$this->login->end = now()->lessThanOrEqualTo($this->login->jadwal->end) ? now() : $this->login->jadwal->end;
+		$this->login->created_at = now()->lessThanOrEqualTo($this->login->jadwal->end) ? now() : $this->login->jadwal->end;
 		$this->login->save();
 		$this->reset('login');
 	}

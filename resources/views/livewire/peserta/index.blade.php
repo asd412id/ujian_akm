@@ -234,8 +234,8 @@ if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->st
 							})">
 								<div class="hidden" x-text="
 									if(countdown!=null){
-										if(countdown.time().seconds == '00' && countdown.time().minutes == '00' && countdown.time().hours == '00' && countdown.time().days == '00'){
-											$wire.checkJadwal();
+										if(Number(countdown.time().seconds) <= 0 && Number(countdown.time().minutes) <= 0 && Number(countdown.time().hours) <= 0 && Number(countdown.time().days) <= 0){
+											$wire.stop();
 											countdown = null;
 										}
 									}
