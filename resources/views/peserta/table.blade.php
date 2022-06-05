@@ -1,16 +1,16 @@
-<div class="bg-white shadow-md rounded">
-  <table class="text-left w-full border-collapse">
+<div class="bg-white rounded shadow-md">
+  <table class="w-full text-left border-collapse">
     <thead>
       <tr>
-        <th class="py-4 px-6 bg-gray-100 font-bold uppercase text-sm text-gray-700 border-b border-gray-100">
+        <th class="px-6 py-4 text-sm font-bold text-gray-700 uppercase bg-gray-100 border-b border-gray-100">
           ID Peserta</th>
-        <th class="py-4 px-6 bg-gray-100 font-bold uppercase text-sm text-gray-700 border-b border-gray-100">
+        <th class="px-6 py-4 text-sm font-bold text-gray-700 uppercase bg-gray-100 border-b border-gray-100">
           Nama</th>
-        <th class="py-4 px-6 bg-gray-100 font-bold uppercase text-sm text-gray-700 border-b border-gray-100">
+        <th class="px-6 py-4 text-sm font-bold text-gray-700 uppercase bg-gray-100 border-b border-gray-100">
           Jenis Kelamin</th>
-        <th class="py-4 px-6 bg-gray-100 font-bold uppercase text-sm text-gray-700 border-b border-gray-100">
+        <th class="px-6 py-4 text-sm font-bold text-gray-700 uppercase bg-gray-100 border-b border-gray-100">
           Ruangan</th>
-        <th class="text-right py-4 px-6 bg-gray-100 font-bold uppercase text-sm text-gray-700 border-b border-gray-100">
+        <th class="px-6 py-4 text-sm font-bold text-right text-gray-700 uppercase bg-gray-100 border-b border-gray-100">
           Aksi</th>
       </tr>
     </thead>
@@ -20,14 +20,14 @@
       $hasTests = $v->logins()->has('tests')->count();
       @endphp
       <tr class="hover:bg-gray-100">
-        <td class="py-4 px-6 border-b border-gray-100">{{ $v->uid }}</td>
-        <td class="py-4 px-6 border-b border-gray-100">{{ $v->name }}</td>
-        <td class="py-4 px-6 border-b border-gray-100">{{ $v->jk }}</td>
-        <td class="py-4 px-6 border-b border-gray-100"><span
-            class="text-sm bg-emerald-50 border border-emerald-200 shadow-md text-emerald-700 py-1 px-3 rounded-lg">{{
+        <td class="px-6 py-4 border-b border-gray-100">{{ $v->uid }}</td>
+        <td class="px-6 py-4 border-b border-gray-100">{{ $v->name }}</td>
+        <td class="px-6 py-4 border-b border-gray-100">{{ $v->jk }}</td>
+        <td class="px-6 py-4 border-b border-gray-100"><span
+            class="px-3 py-1 text-sm border rounded-lg shadow-md bg-emerald-50 border-emerald-200 text-emerald-700">{{
             $v->ruang
             }}</span></td>
-        <td class="py-4 px-6 border-b border-gray-100 flex justify-end gap-1">
+        <td class="flex justify-end gap-1 px-6 py-4 border-b border-gray-100">
           @if ($v->sekolah->limit_login && $v->is_login)
           <x-button blue icon="reply" xs label="Reset Login" wire:click="resetLogin('{{ $v->id }}')" />
           @endif
@@ -39,7 +39,7 @@
       </tr>
       @empty
       <tr class="hover:bg-gray-100">
-        <td colspan="4" class="py-4 px-6 border-b border-gray-100 text-center">Data tidak tersedia!</td>
+        <td colspan="5" class="px-6 py-4 text-center border-b border-gray-100">Data tidak tersedia!</td>
       </tr>
       @endforelse
     </tbody>
