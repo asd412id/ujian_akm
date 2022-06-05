@@ -186,7 +186,7 @@ class Penilai extends Component
 
 	public function destroy()
 	{
-		$data = auth()->user()->sekolah->mapels()->find($this->ID);
+		$data = auth()->user()->sekolah->users()->find($this->ID);
 		$this->reset();
 		$this->resetValidation();
 		if ($data) {

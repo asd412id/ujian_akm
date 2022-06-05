@@ -18,7 +18,7 @@
       @forelse ($data as $key => $v)
       <tr class="hover:bg-gray-100">
         <td class="px-6 py-4 border-b border-gray-100">{{ $v->name }}</td>
-        <td class="px-6 py-4 border-b border-gray-100">{{ $v->mapel->name }}</td>
+        <td class="px-6 py-4 border-b border-gray-100">{{ isset($v->mapel)?$v->mapel->name:'-' }}</td>
         <td class="px-6 py-4 border-b border-gray-100">{{ $v->item_soals()->count() }}</td>
         <td class="px-6 py-4 border-b border-gray-100">
           @php($type = $v->item_soals()->select('type')->distinct('type')->get()->pluck('type')->toArray())
