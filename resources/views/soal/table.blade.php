@@ -21,7 +21,8 @@
         <td class="px-6 py-4 border-b border-gray-100">{{ isset($v->mapel)?$v->mapel->name:'-' }}</td>
         <td class="px-6 py-4 border-b border-gray-100">{{ $v->item_soals()->count() }}</td>
         <td class="px-6 py-4 border-b border-gray-100">
-          @php($type = $v->item_soals()->select('type')->distinct('type')->get()->pluck('type')->toArray())
+          @php($type =
+          $v->item_soals()->select('type')->distinct('type')->orderBy('num','asc')->get()->pluck('type')->toArray())
           @if (count($type))
           <div class="flex flex-wrap gap-1">
             <span class="px-3 py-1 text-sm border rounded-lg shadow-md bg-amber-50 border-amber-200 text-amber-700">{!!
