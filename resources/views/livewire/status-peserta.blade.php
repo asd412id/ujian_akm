@@ -100,7 +100,7 @@
 											$refs.timer{{ $dl->id }}.classList.add('text-red-600');
 										}
 										
-										if(Number(countdown.time().seconds) <= 0 && Number(countdown.time().minutes) <= 0 && Number(countdown.time().hours) <= 0 && Number(countdown.time().days) <= 0){
+										if(@js(now()->greaterThan($dl->created_at->addMinutes($dl->jadwal->duration)) && $dl->reset != 2 && is_null($dl->end)) || (Number(countdown.time().seconds) <= 0 && Number(countdown.time().minutes) <= 0 && Number(countdown.time().hours) <= 0 && Number(countdown.time().days) <= 0)){
 											$wire.stopPeserta(@js($dl->id));
 											countdown = null;
 										}

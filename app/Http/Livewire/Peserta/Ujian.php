@@ -32,6 +32,12 @@ class Ujian extends Component
 			->whereNull('end')
 			->orderBy('id', 'asc')
 			->first();
+		if ($this->login->reset == 2) {
+			$duration = now()->subSeconds($this->login->created_at->addMinutes($this->login->jadwal->duration)->diffInSeconds($this->login->start->addMinutes($this->login->jadwal->duration)));
+			$dataUpdate['created_at'] = $duration;
+			$dataUpdate['reset'] = 0;
+			$this->login->update($dataUpdate);
+		}
 		$this->timer = $this->login->created_at->addMinutes($this->login->jadwal->duration)->getPreciseTimestamp(3);
 	}
 
@@ -54,7 +60,7 @@ class Ujian extends Component
 				$this->login->delete();
 				return redirect()->route('ujian.index');
 			}
-			if (now()->greaterThan($this->login->start->addMinutes($this->login->jadwal->duration))) {
+			if (now()->greaterThan($this->login->created_at->addMinutes($this->login->jadwal->duration))) {
 				return $this->stop();
 			}
 			$this->timer = $this->login->created_at->addMinutes($this->login->jadwal->duration)->getPreciseTimestamp(3);
@@ -69,10 +75,12 @@ class Ujian extends Component
 
 	public function stop()
 	{
-		$this->login->end = now()->lessThanOrEqualTo($this->login->jadwal->end) ? now() : $this->login->jadwal->end;
-		$this->login->created_at = now()->lessThanOrEqualTo($this->login->jadwal->end) ? now() : $this->login->jadwal->end;
-		$this->login->save();
-		$this->reset('login');
+		if ($this->login) {
+			$this->login->end = now()->lessThanOrEqualTo($this->login->jadwal->end) ? now() : $this->login->jadwal->end;
+			$this->login->created_at = now()->lessThanOrEqualTo($this->login->jadwal->end) ? now() : $this->login->jadwal->end;
+			$this->login->save();
+			$this->reset('login');
+		}
 		return redirect()->route('ujian.index')->with('msg', 'Ujian Selesai');
 	}
 
@@ -85,32 +93,34 @@ class Ujian extends Component
 	{
 		$this->sid++;
 		$this->checkLogin();
-		$hasSoal = $this->login->tests()->where('item_soal_id', $this->soals[$this->login->current_number]->id)->first();
-		$opts = null;
-		$this->soal = $hasSoal ?? new PesertaTest();
-		$this->soal->jadwal_id = $this->login->jadwal_id;
-		$this->soal->peserta_id = $this->user->id;
-		$this->soal->soal_id = $this->soals[$this->login->current_number]->soal_id;
-		$this->soal->login_id = $this->login->id;
-		$this->soal->item_soal_id = $this->soals[$this->login->current_number]->id;
-		$this->soal->type = $this->soals[$this->login->current_number]->type;
-		$this->soal->text = $this->soals[$this->login->current_number]->text;
-		$this->soal->score = $this->soals[$this->login->current_number]->score;
-		$this->soal->label = $this->soals[$this->login->current_number]->labels;
+		$this->soal = $this->login->tests()->where('item_soal_id', $this->soals[$this->login->current_number]->id)->first();
+		if (!$this->soal) {
+			$opts = null;
+			$this->soal = new PesertaTest();
+			$this->soal->jadwal_id = $this->login->jadwal_id;
+			$this->soal->peserta_id = $this->user->id;
+			$this->soal->soal_id = $this->soals[$this->login->current_number]->soal_id;
+			$this->soal->login_id = $this->login->id;
+			$this->soal->item_soal_id = $this->soals[$this->login->current_number]->id;
+			$this->soal->type = $this->soals[$this->login->current_number]->type;
+			$this->soal->text = $this->soals[$this->login->current_number]->text;
+			$this->soal->score = $this->soals[$this->login->current_number]->score;
+			$this->soal->label = $this->soals[$this->login->current_number]->labels;
 
-		if ($this->soals[$this->login->current_number]->shuffle) {
-			$keys = array_keys($this->soals[$this->login->current_number]->options);
-			shuffle($keys);
-			foreach ($keys as $k) {
-				$opts[$k] = $this->soals[$this->login->current_number]->options[$k];
+			if ($this->soals[$this->login->current_number]->shuffle) {
+				$keys = array_keys($this->soals[$this->login->current_number]->options);
+				shuffle($keys);
+				foreach ($keys as $k) {
+					$opts[$k] = $this->soals[$this->login->current_number]->options[$k];
+				}
+			} else {
+				$opts = $this->soals[$this->login->current_number]->options;
 			}
-		} else {
-			$opts = $this->soals[$this->login->current_number]->options;
-		}
 
 
-		if ($opts) {
-			$this->soal->option = $opts;
+			if ($opts) {
+				$this->soal->option = $opts;
+			}
 		}
 	}
 

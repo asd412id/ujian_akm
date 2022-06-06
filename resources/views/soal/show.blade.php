@@ -20,7 +20,7 @@
         <div class="flex flex-col gap-1">
           @foreach ($v->options as $key => $o)
           <div class="{{ $v->corrects[$key]?'font-bold':'' }} flex items-start gap-2">{!! $key.'.
-            <div>'.shortcode($o).'</div>'
+            <div>'.shortcode(nl2br($o)).'</div>'
             !!}
           </div>
           @endforeach
@@ -43,7 +43,7 @@
           </thead>
           @forelse ($v->options as $key => $o)
           <tr>
-            <td class="px-3 py-2 border border-gray-400">{!! shortcode($o) !!}</td>
+            <td class="px-3 py-2 border border-gray-400">{!! shortcode(nl2br($o)) !!}</td>
             <td class="px-3 py-2 text-center border border-gray-400">
               {!! $v->corrects[$key]?'<div
                 class="px-2 border rounded-md shadow-md bg-positive-50 text-positive-600 border-positive-100">Benar
@@ -60,15 +60,17 @@
           @endforelse
         </table>
         @elseif (strtolower($v->type)=='jd' && $v->relations)
-        <div class="relative flex gap-48">
+        <div class="relative grid grid-cols-2 gap-48">
           <div class="relative flex flex-col gap-2">
             @if (isset($v->labels[0])&&$v->labels[0])
             <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->labels[0] }}</div>
             @endif
             @foreach ($v->relations as $key => $o)
             @if (is_array($o))
-            <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md" x-ref='start{{ $key }}'>{!!
-              shortcode($v->options[$key]) !!}</div>
+            <div class="flex">
+              <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md" x-ref='start{{ $key }}'>{!!
+                shortcode(nl2br($v->options[$key])) !!}</div>
+            </div>
             @foreach ($o as $r)
             <div class="hidden" x-data='{open: true,lrefresh:null}' @removeline.window='open=false' x-init="
               if($refs.start{{ $key }} && $refs.end{{ $r }}){
@@ -97,8 +99,10 @@
             @endif
             @foreach ($v->relations as $key => $o)
             @if (!is_array($o))
-            <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md" x-ref='end{{ $key }}'>{!!
-              shortcode($v->options[$key]) !!}</div>
+            <div class="flex">
+              <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md" x-ref='end{{ $key }}'>{!!
+                shortcode(nl2br($v->options[$key])) !!}</div>
+            </div>
             @endif
             @endforeach
           </div>

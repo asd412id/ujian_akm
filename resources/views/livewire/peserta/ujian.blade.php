@@ -34,7 +34,7 @@ if(@js($user->sekolah->restrict_test)){
 						@else
 						<x-checkbox wire:model.defer="choices" value="{{ $key }}" class="mt-1" />
 						@endif
-						<span>{!! shortcode($o) !!}</span>
+						<span>{!! shortcode(nl2br($o)) !!}</span>
 					</label>
 					@endforeach
 				</div>
@@ -50,7 +50,7 @@ if(@js($user->sekolah->restrict_test)){
 					</thead>
 					@forelse ($soal->option as $key => $s)
 					<tr>
-						<td class="px-3 py-2 border border-gray-400">{!! shortcode($s) !!}</td>
+						<td class="px-3 py-2 border border-gray-400">{!! shortcode(nl2br($s)) !!}</td>
 						<td class="px-3 py-2 align-top border border-gray-400">
 							<label class="flex items-center justify-center gap-2">
 								<input type="radio"
@@ -77,7 +77,7 @@ if(@js($user->sekolah->restrict_test)){
 				@elseif (strtolower($soal->type)=='u')
 				<x-textarea wire:model.defer='answer' placeholder="Masukkan jawabanmu" />
 				@elseif (strtolower($soal->type)=='jd' && is_array($soal->option))
-				<div class="relative flex justify-between gap-20 mt-5 md:justify-start md:gap-48"
+				<div class="relative grid justify-between grid-cols-2 gap-16 mt-5 md:justify-start md:gap-48"
 					x-data="{relations: {}, key: null, keyb: null, paired: {}}">
 					<div class="hidden" x-init="$nextTick(()=>{
 						if(@js(count($srelation))){
@@ -97,9 +97,10 @@ if(@js($user->sekolah->restrict_test)){
 						@endif
 						@foreach ($soal->option as $key => $o)
 						@if (is_array($soal->itemSoal->relations[$key]))
-						<div
-							class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md hover:cursor-pointer hover:bg-gray-100"
-							x-ref='start{{ $key }}_{{ $soal->id }}' x-on:click="
+						<div class="flex">
+							<div
+								class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md hover:cursor-pointer hover:bg-gray-100"
+								x-ref='start{{ $key }}_{{ $soal->id }}' x-on:click="
 							key = 'start{{ $key }}_{{ $soal->id }}';
 							if(paired[key] == undefined){
 								paired[key] = 1;
@@ -129,7 +130,8 @@ if(@js($user->sekolah->restrict_test)){
 							rels = {...relations};
 							$wire.relation = rels;
 							">{!!
-							shortcode($soal->option[$key]) !!}</div>
+								shortcode(nl2br($soal->option[$key])) !!}</div>
+						</div>
 						@endif
 						@endforeach
 					</div>
@@ -139,9 +141,10 @@ if(@js($user->sekolah->restrict_test)){
 						@endif
 						@foreach ($soal->option as $key => $o)
 						@if (!is_array($soal->itemSoal->relations[$key]))
-						<div
-							class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md hover:cursor-pointer hover:bg-gray-100"
-							x-ref='end{{ $key }}_{{ $soal->id }}' x-on:click="
+						<div class="flex">
+							<div
+								class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md hover:cursor-pointer hover:bg-gray-100"
+								x-ref='end{{ $key }}_{{ $soal->id }}' x-on:click="
 							if(paired[key] == 1){
 								paired[key] = 2;
 								relations[key] = 'end{{ $key }}_{{ $soal->id }}';
@@ -153,7 +156,8 @@ if(@js($user->sekolah->restrict_test)){
 							rels = {...relations};
 							$wire.relation = rels;
 							">{!!
-							shortcode($soal->option[$key]) !!}</div>
+								shortcode(nl2br($soal->option[$key])) !!}</div>
+						</div>
 						@endif
 						@endforeach
 					</div>

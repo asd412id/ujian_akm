@@ -39,7 +39,7 @@ class Index extends Component
 			}
 		}
 
-		if ($this->login && now()->greaterThan($this->login->start->addMinutes($this->login->jadwal->duration))) {
+		if ($this->login && $this->login->reset != 2 && now()->greaterThan($this->login->created_at->addMinutes($this->login->jadwal->duration))) {
 			$this->stop();
 		}
 

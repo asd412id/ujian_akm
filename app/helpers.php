@@ -173,7 +173,7 @@ function col(ShortcodeInterface $s)
 
 function soal(ShortcodeInterface $s)
 {
-  $keys = $s->getParameters();
+  $keys = array_keys($s->getParameters());
   $num = $s->getParameter('no');
   $type = $s->getParameter('jenis');
   $score = $s->getParameter('skor');

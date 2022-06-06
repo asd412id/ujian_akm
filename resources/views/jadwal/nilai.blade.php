@@ -18,7 +18,7 @@
         @forelse ($login->tests()->orderBy('item_soal_id','asc')->get() as $k => $v)
         <tr>
           <td class="p-2 text-center align-top border border-gray-300">{{ $k+1 }}</td>
-          <td class="p-2 align-top border border-gray-300">{!! shortcode($v->text) !!}</td>
+          <td class="p-2 align-top border border-gray-300 w-80">{!! shortcode($v->text) !!}</td>
           <td class="p-2 text-center align-top border border-gray-300">{{ strtoupper($v->type) }}</td>
           <td class="p-2 align-top border border-gray-300">
             @if ((strtolower($v->type)=='pg' || strtolower($v->type)=='pgk') && is_array($v->itemSoal->options))
@@ -26,14 +26,14 @@
               @foreach ($v->itemSoal->options as $key => $o)
               <div class="{{ $v->itemSoal->corrects[$key]?'font-bold':'' }} flex items-start gap-2">{!!
                 $key.'.
-                <span>'.shortcode($o).'</span>'
+                <span>'.shortcode(nl2br($o)).'</span>'
                 !!}
               </div>
               @endforeach
             </div>
-            @elseif ((strtolower($v->type)=='is' || strtolower($v->type)=='u') && $v->answer)
+            @elseif ((strtolower($v->type)=='is' || strtolower($v->type)=='u'))
             <div class="flex flex-col gap-1">
-              <div class="flex gap-1 font-bold"><span>Jawaban:</span> {!! shortcode(nl2br($v->itemSoal->answer)) !!}
+              <div class="flex gap-1 font-bold">{!! shortcode(nl2br($v->itemSoal->answer)) !!}
               </div>
             </div>
             @elseif ((strtolower($v->type)=='bs'))
@@ -48,7 +48,7 @@
               </thead>
               @forelse ($v->itemSoal->options as $key => $o)
               <tr>
-                <td class="px-3 py-2 align-top border border-gray-400">{!! shortcode($o) !!}</td>
+                <td class="px-3 py-2 align-top border border-gray-400">{!! shortcode(nl2br($o)) !!}</td>
                 <td class="px-3 py-2 text-center align-top border border-gray-400">
                   {!! $v->itemSoal->corrects[$key]?'<span
                     class="px-2 border rounded-md shadow-md bg-positive-50 text-positive-600 border-positive-100">Benar</span>':'<span
@@ -63,17 +63,19 @@
               @endforelse
             </table>
             @elseif (strtolower($v->type)=='jd' && $v->itemSoal->relations)
-            <div class="relative flex justify-between gap-32">
+            <div class="relative grid justify-between grid-cols-2 gap-32">
               <div class="relative flex flex-col gap-2">
                 @if (isset($v->itemSoal->labels[0])&&$v->itemSoal->labels[0])
                 <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->itemSoal->labels[0] }}</div>
                 @endif
                 @foreach ($v->itemSoal->relations as $key => $o)
                 @if (is_array($o))
-                <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md"
-                  x-ref='startA{{ $k.$key }}'>
-                  {!!
-                  shortcode($v->itemSoal->options[$key]) !!}</div>
+                <div class="flex">
+                  <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md"
+                    x-ref='startA{{ $k.$key }}'>
+                    {!!
+                    shortcode(nl2br($v->itemSoal->options[$key])) !!}</div>
+                </div>
                 @foreach ($o as $r)
                 <div class="hidden" x-data='{open: true, lrefresh:null}' @removeline.window='open=false' x-init="
                   if($refs.startA{{ $k.$key }} && $refs.endA{{ $k.$r }}){
@@ -105,10 +107,12 @@
                 @endif
                 @foreach ($v->itemSoal->relations as $key => $o)
                 @if (!is_array($o))
-                <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md"
-                  x-ref='endA{{ $k.$key }}'>
-                  {!!
-                  shortcode($v->itemSoal->options[$key]) !!}</div>
+                <div class="flex">
+                  <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md"
+                    x-ref='endA{{ $k.$key }}'>
+                    {!!
+                    shortcode(nl2br($v->itemSoal->options[$key])) !!}</div>
+                </div>
                 @endif
                 @endforeach
               </div>
@@ -121,14 +125,14 @@
               @foreach ($v->itemSoal->options as $key => $o)
               <div class="{{ isset($v->correct[$key])&&$v->correct[$key]?'font-bold':'' }} flex items-start gap-2">{!!
                 $key.'.
-                <span>'.shortcode($o).'</span>'
+                <span>'.shortcode(nl2br($o)).'</span>'
                 !!}
               </div>
               @endforeach
             </div>
             @elseif ((strtolower($v->type)=='is' || strtolower($v->type)=='u') && $v->answer)
             <div class="flex flex-col gap-1">
-              <div class="flex gap-1 font-bold"><span>Jawaban:</span> {!! shortcode($v->answer) !!}</div>
+              <div class="flex gap-1 font-bold">{!! shortcode(nl2br($v->answer)) !!}</div>
             </div>
             @elseif ((strtolower($v->type)=='bs'))
             <table class="w-full">
@@ -141,7 +145,7 @@
               </thead>
               @forelse ($v->itemSoal->options as $key => $o)
               <tr>
-                <td class="px-3 py-2 align-top border border-gray-400">{!! shortcode($o) !!}</td>
+                <td class="px-3 py-2 align-top border border-gray-400">{!! shortcode(nl2br($o)) !!}</td>
                 <td class="px-3 py-2 text-center align-top border border-gray-400">
                   {!! isset($v->correct[$key])&&$v->correct[$key]?'<span
                     class="px-2 border rounded-md shadow-md bg-positive-50 text-positive-600 border-positive-100">Benar</span>':'<span
@@ -156,17 +160,19 @@
               @endforelse
             </table>
             @elseif (strtolower($v->type) == 'jd' && $v->itemSoal->options)
-            <div class="relative flex justify-between gap-32">
+            <div class="relative grid justify-between grid-cols-2 gap-32">
               <div class="relative flex flex-col gap-2">
                 @if (isset($v->label[0]))
                 <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->label[0] }}</div>
                 @endif
                 @foreach ($v->itemSoal->relations as $key => $o)
                 @if (is_array($o))
-                <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md"
-                  x-ref='startB{{ $k.$key }}'>
-                  {!!
-                  shortcode($v->itemSoal->options[$key]) !!}</div>
+                <div class="flex">
+                  <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md"
+                    x-ref='startB{{ $k.$key }}'>
+                    {!!
+                    shortcode(nl2br($v->itemSoal->options[$key])) !!}</div>
+                </div>
                 @foreach ($o as $r)
                 <div class="hidden" x-data='{open: true, lrefresh:null}' @removeline.window='open=false' x-init="
                   if($refs.startB{{ $k.$key }} && $refs.endB{{ $k.(isset($v->relation[$key])?$v->relation[$key][0]:'nm') }}){
@@ -202,10 +208,12 @@
                 @endif
                 @foreach ($v->itemSoal->options as $key => $o)
                 @if (!is_array($v->itemSoal->relations[$key]))
-                <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md"
-                  x-ref='endB{{ $k.(is_array($v->relation) && array_search([$key],$v->relation)?$key:"not-match") }}'>
-                  {!!
-                  shortcode($v->itemSoal->options[$key]) !!}</div>
+                <div class="flex">
+                  <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md"
+                    x-ref='endB{{ $k.(is_array($v->relation) && array_search([$key],$v->relation)?$key:"not-match") }}'>
+                    {!!
+                    shortcode(nl2br($v->itemSoal->options[$key])) !!}</div>
+                </div>
                 @endif
                 @endforeach
               </div>
