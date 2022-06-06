@@ -23,16 +23,18 @@
         <td class="px-6 py-4 border-b border-gray-100">
           @php($type = $v->item_soals()->select('type')->distinct('type')->get()->pluck('type')->toArray())
           @if (count($type))
-          <span class="px-3 py-1 text-sm border rounded-lg shadow-md bg-amber-50 border-amber-200 text-amber-700">{!!
-            implode('</span> <span
-            class="px-3 py-1 text-sm border rounded-lg shadow-md bg-amber-50 border-amber-200 text-amber-700">',array_map(function($v){return
-            strtoupper($v);},$type))
-            !!}</span>
+          <div class="flex flex-wrap gap-1">
+            <span class="px-3 py-1 text-sm border rounded-lg shadow-md bg-amber-50 border-amber-200 text-amber-700">{!!
+              implode('</span> <span
+              class="px-3 py-1 text-sm border rounded-lg shadow-md bg-amber-50 border-amber-200 text-amber-700">',array_map(function($v){return
+              strtoupper($v);},$type))
+              !!}</span>
+          </div>
           @endif
         </td>
         <td class="px-6 py-4 border-b border-gray-100">
           <div class="flex justify-end">
-            <div class="flex justify-end gap-1">
+            <div class="flex flex-wrap justify-end gap-1">
               <x-button info icon="search" xs label="Lihat Soal" wire:click="show('{{ $v->id }}')" />
               @if ($v->excel && Storage::exists($v->excel))
               <x-button green icon="download" xs label="Excel" title="Download Soal Excel"

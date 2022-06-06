@@ -17,15 +17,17 @@
         <td class="px-6 py-4 border-b border-gray-100">
           @php($penilai = $v->users->pluck('name')->toArray())
           @if (count($penilai))
-          <span class="px-3 py-1 text-sm border rounded-lg shadow-md bg-rose-50 border-rose-200 text-rose-700">{!!
-            implode('</span> <span
-            class="px-3 py-1 text-sm border rounded-lg shadow-md bg-rose-50 border-rose-200 text-rose-700">',$penilai)
-            !!}</span>
+          <div class="flex flex-wrap gap-1">
+            <span class="px-3 py-1 text-sm border rounded-lg shadow-md bg-rose-50 border-rose-200 text-rose-700">{!!
+              implode('</span> <span
+              class="px-3 py-1 text-sm border rounded-lg shadow-md bg-rose-50 border-rose-200 text-rose-700">',$penilai)
+              !!}</span>
+          </div>
           @endif
         </td>
         <td class="px-6 py-4 border-b border-gray-100">
           <div class="flex justify-end">
-            <div class="flex justify-end gap-1">
+            <div class="flex flex-wrap justify-end gap-1">
               <x-button warning icon="pencil" xs label="Edit" wire:click="edit('{{ $v->id }}')" />
               @if (!$v->soals()->count())
               <x-button red icon="trash" xs label="Hapus" wire:click="delete('{{ $v->id }}')" />

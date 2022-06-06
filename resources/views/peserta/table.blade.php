@@ -29,7 +29,7 @@
             }}</span></td>
         <td class="px-6 py-4 border-b border-gray-100">
           <div class="flex justify-end">
-            <div class="flex justify-end gap-1">
+            <div class="flex flex-wrap justify-end gap-1">
               @if ($v->sekolah->limit_login && $v->is_login)
               <x-button blue icon="reply" xs label="Reset Login" wire:click="resetLogin('{{ $v->id }}')" />
               @endif

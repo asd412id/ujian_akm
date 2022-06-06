@@ -77,8 +77,13 @@
       </thead>
       <tbody>
         @php
+        $datapeserta = $jadwal->pesertas()
+        ->orderBy('uid', 'asc')
+        ->orderBy('name', 'asc')
+        ->orderBy('created_at', 'asc')
+        ->get();
         @endphp
-        @foreach ($jadwal->pesertas as $key => $p)
+        @foreach ($datapeserta as $key => $p)
         <tr>
           <td style="border: solid 1px #000" class="px-2 py-3 text-center">{{ ($key+1).'.' }}</td>
           <td style="border: solid 1px #000" class="px-2 py-3">{{ $p->uid }}</td>

@@ -20,15 +20,17 @@
         <td class="px-6 py-4 border-b border-gray-100">
           @php($mapels = $v->mapels->pluck('name')->toArray())
           @if (count($mapels))
-          <span class="px-3 py-1 text-sm border rounded-lg shadow-md bg-cyan-50 border-cyan-200 text-cyan-700">{!!
-            implode('</span> <span
-            class="px-3 py-1 text-sm border rounded-lg shadow-md bg-cyan-50 border-cyan-200 text-cyan-700">',$mapels)
-            !!}</span>
+          <div class="flex flex-wrap gap-1">
+            <span class="px-3 py-1 text-sm border rounded-lg shadow-md bg-cyan-50 border-cyan-200 text-cyan-700">{!!
+              implode('</span> <span
+              class="px-3 py-1 text-sm border rounded-lg shadow-md bg-cyan-50 border-cyan-200 text-cyan-700">',$mapels)
+              !!}</span>
+          </div>
           @endif
         </td>
         <td class="px-6 py-4 border-b border-gray-100">
           <div class="flex justify-end">
-            <div class="flex justify-end gap-1">
+            <div class="flex flex-wrap justify-end gap-1">
               <x-button warning icon="pencil" xs label="Edit" wire:click="edit('{{ $v->id }}')" />
               <x-button red icon="trash" xs label="Hapus" wire:click="delete('{{ $v->id }}')" />
             </div>

@@ -38,18 +38,24 @@ class Nilai extends Component
 			})
 			->where(function ($q) {
 				$q->where('name', 'like', "%$this->search%")
+					->orWhere('uid', 'like', "%$this->search%")
 					->orWhere('ruang', 'like', "%$this->search%");
 			})
-			->orderBy('created_at', 'desc')
+			->orderBy('uid', 'asc')
+			->orderBy('name', 'asc')
+			->orderBy('created_at', 'asc')
 			->get();
 
 		$notLogin = $this->jadwal->pesertas()
 			->whereDoesntHave('logins')
 			->where(function ($q) {
 				$q->where('name', 'like', "%$this->search%")
+					->orWhere('uid', 'like', "%$this->search%")
 					->orWhere('ruang', 'like', "%$this->search%");
 			})
-			->orderBy('created_at', 'desc')
+			->orderBy('uid', 'asc')
+			->orderBy('name', 'asc')
+			->orderBy('created_at', 'asc')
 			->get();
 
 

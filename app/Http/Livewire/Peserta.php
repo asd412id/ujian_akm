@@ -44,6 +44,9 @@ class Peserta extends Component
 			->when($this->dataattrlist, function ($q, $r) {
 				$q->where('ruang', $r);
 			})
+			->orderBy('uid', 'asc')
+			->orderBy('name', 'asc')
+			->orderBy('created_at', 'asc')
 			->paginate($this->limit);
 
 		$dta = $this->data;
@@ -288,7 +291,11 @@ class Peserta extends Component
 
 	public function printCard()
 	{
-		$pesertas = ModelPeserta::whereIn('id', $this->IDS)->get();
+		$pesertas = ModelPeserta::whereIn('id', $this->IDS)
+			->orderBy('uid', 'asc')
+			->orderBy('name', 'asc')
+			->orderBy('created_at', 'asc')
+			->get();
 		$ruangs = array_unique($pesertas->pluck('ruang')->toArray());
 
 		if (!count($pesertas)) {

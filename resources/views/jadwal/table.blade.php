@@ -25,12 +25,15 @@
             <em class="-mt-1 text-sm text-gray-500">{!! nl2br($v->desc) !!}</em>
           </div>
         </td>
-        <td class="px-6 py-4 border-b border-gray-100 whitespace-nowrap"><span
-            class="px-3 py-1 text-sm border rounded-lg shadow-md bg-lime-50 border-lime-200 text-lime-700">{!!
-            implode('</span> <span
-            class="px-3 py-1 text-sm border rounded-lg shadow-md bg-lime-50 border-lime-200 text-lime-700">
-            ',array_unique($v->pesertas()->select('ruang')->distinct('ruang')->get()->pluck('ruang')->toArray()))
-            !!}</span></td>
+        <td class="px-6 py-4 border-b border-gray-100">
+          <div class="flex flex-wrap gap-1">
+            <span class="px-3 py-1 text-sm border rounded-lg shadow-md bg-lime-50 border-lime-200 text-lime-700">{!!
+              implode('</span> <span
+              class="px-3 py-1 text-sm border rounded-lg shadow-md bg-lime-50 border-lime-200 text-lime-700">
+              ',array_unique($v->pesertas()->select('ruang')->distinct('ruang')->get()->pluck('ruang')->toArray()))
+              !!}</span>
+          </div>
+        </td>
         <td class="px-6 py-4 border-b border-gray-100 whitespace-nowrap">
           <span class="px-3 py-1 text-sm border rounded-lg shadow-md bg-amber-50 border-amber-200 text-amber-700">{{
             $v->start->format('d/m/Y H:i')
