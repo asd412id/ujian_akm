@@ -36,7 +36,7 @@ class StatusPeserta extends Component
 
 	public function doResetLogin(PesertaLogin $dlogin)
 	{
-		$dlogin->update(['reset' => 2, 'end' => null, 'created_at' => now()->lessThanOrEqualTo($dlogin->jadwal->end) ? now() : $dlogin->jadwal->end]);
+		$dlogin->update(['reset' => 2, 'end' => null, 'created_at' => now()->lessThanOrEqualTo($dlogin->created_at->addMinutes($dlogin->jadwal->duration)) ? now() : $dlogin->created_at->addMinutes($dlogin->jadwal->duration)]);
 		$dlogin->peserta()->update(['is_login' => false, 'session_id' => null]);
 		return $this->notification()->success('Login peserta berhasil direset (' . $dlogin->peserta->name . ')');
 	}
@@ -73,10 +73,10 @@ class StatusPeserta extends Component
 
 	public function doStopUjian(PesertaLogin $dlogin)
 	{
-		if ($dlogin) {
+		if ($dlogin && is_null($dlogin->end)) {
 			$dlogin->update([
-				'end' => now()->lessThanOrEqualTo($dlogin->jadwal->end) ? now() : $dlogin->jadwal->end,
-				'created_at' => now()->lessThanOrEqualTo($dlogin->jadwal->end) ? now() : $dlogin->jadwal->end,
+				'end' => now()->lessThanOrEqualTo($dlogin->created_at->addMinutes($dlogin->jadwal->duration)) ? now() : $dlogin->created_at->addMinutes($dlogin->jadwal->duration),
+				'created_at' => now()->lessThanOrEqualTo($dlogin->created_at->addMinutes($dlogin->jadwal->duration)) ? now() : $dlogin->created_at->addMinutes($dlogin->jadwal->duration),
 			]);
 		}
 		return $this->notification()->success('Ujian peserta berhasil dihentikan (' . $dlogin->peserta->name . ')');
@@ -84,10 +84,10 @@ class StatusPeserta extends Component
 
 	public function stopPeserta(PesertaLogin $dlogin)
 	{
-		if ($dlogin) {
+		if ($dlogin && is_null($dlogin->end)) {
 			$dlogin->update([
-				'end' => now()->lessThanOrEqualTo($dlogin->jadwal->end) ? now() : $dlogin->jadwal->end,
-				'created_at' => now()->lessThanOrEqualTo($dlogin->jadwal->end) ? now() : $dlogin->jadwal->end,
+				'end' => now()->lessThanOrEqualTo($dlogin->created_at->addMinutes($dlogin->jadwal->duration)) ? now() : $dlogin->created_at->addMinutes($dlogin->jadwal->duration),
+				'created_at' => now()->lessThanOrEqualTo($dlogin->created_at->addMinutes($dlogin->jadwal->duration)) ? now() : $dlogin->created_at->addMinutes($dlogin->jadwal->duration),
 			]);
 		}
 	}

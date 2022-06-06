@@ -82,16 +82,27 @@
 								x-ref="timer{{ $dl->id }}" x-init="$nextTick(()=>{
 									countdown = timer(cdown);
 									countdown.init();
-									if(@js($dl->reset) == 2 || @js($dl->end)){
-										$refs.timer{{ $dl->id }}.classList.add('border-orange-100');
-										$refs.timer{{ $dl->id }}.classList.add('bg-orange-50');
-										$refs.timer{{ $dl->id }}.classList.add('text-orange-500');
+									if(@js($dl->reset) == 2 && @js(is_null($dl->end))){
+										$refs.timer{{ $dl->id }}.classList.remove('border-sky-100');
+										$refs.timer{{ $dl->id }}.classList.remove('bg-sky-50');
+										$refs.timer{{ $dl->id }}.classList.remove('text-sky-600');
+										$refs.timer{{ $dl->id }}.classList.add('border-yellow-100');
+										$refs.timer{{ $dl->id }}.classList.add('bg-yellow-50');
+										$refs.timer{{ $dl->id }}.classList.add('text-yellow-500');
+										countdown.stop();
+									}else if(@js(!is_null($dl->end))){
+										$refs.timer{{ $dl->id }}.classList.remove('border-sky-100');
+										$refs.timer{{ $dl->id }}.classList.remove('bg-sky-50');
+										$refs.timer{{ $dl->id }}.classList.remove('text-sky-600');
+										$refs.timer{{ $dl->id }}.classList.add('border-gray-100');
+										$refs.timer{{ $dl->id }}.classList.add('bg-gray-50');
+										$refs.timer{{ $dl->id }}.classList.add('text-gray-500');
 										countdown.stop();
 									}
 								})">
 								<div class="hidden" x-text="
 									if(countdown!=null){
-										if(Number(countdown.time().minutes) < 10 && Number(countdown.time().hours) <= 0 && Number(countdown.time().days) <= 0){
+										if(@js(is_null($dl->end)) && Number(countdown.time().minutes) < 10 && Number(countdown.time().hours) <= 0 && Number(countdown.time().days) <= 0){
 											$refs.timer{{ $dl->id }}.classList.remove('border-sky-100');
 											$refs.timer{{ $dl->id }}.classList.remove('bg-sky-50');
 											$refs.timer{{ $dl->id }}.classList.remove('text-sky-600');

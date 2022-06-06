@@ -63,7 +63,7 @@
               @endforelse
             </table>
             @elseif (strtolower($v->type)=='jd' && $v->itemSoal->relations)
-            <div class="relative grid justify-between grid-cols-2 gap-32">
+            <div class="relative grid justify-between grid-cols-2 gap-20">
               <div class="relative flex flex-col gap-2">
                 @if (isset($v->itemSoal->labels[0])&&$v->itemSoal->labels[0])
                 <div class="flex justify-end">
@@ -164,7 +164,7 @@
               @endforelse
             </table>
             @elseif (strtolower($v->type) == 'jd' && $v->itemSoal->options)
-            <div class="relative grid justify-between grid-cols-2 gap-32">
+            <div class="relative grid justify-between grid-cols-2 gap-20">
               <div class="relative flex flex-col gap-2">
                 @if (isset($v->label[0]))
                 <div class="flex justify-end">
