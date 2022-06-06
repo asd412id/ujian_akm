@@ -63,11 +63,13 @@
         <div class="relative grid grid-cols-2 gap-48">
           <div class="relative flex flex-col gap-2">
             @if (isset($v->labels[0])&&$v->labels[0])
-            <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->labels[0] }}</div>
+            <div class="flex justify-end">
+              <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->labels[0] }}</div>
+            </div>
             @endif
             @foreach ($v->relations as $key => $o)
             @if (is_array($o))
-            <div class="flex">
+            <div class="flex justify-end">
               <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md" x-ref='start{{ $key }}'>{!!
                 shortcode(nl2br($v->options[$key])) !!}</div>
             </div>
@@ -95,7 +97,9 @@
           </div>
           <div class="relative flex flex-col gap-2">
             @if (isset($v->labels[1])&&$v->labels[1])
-            <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->labels[1] }}</div>
+            <div class="flex">
+              <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->labels[1] }}</div>
+            </div>
             @endif
             @foreach ($v->relations as $key => $o)
             @if (!is_array($o))

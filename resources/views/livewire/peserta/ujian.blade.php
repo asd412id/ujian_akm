@@ -77,7 +77,7 @@ if(@js($user->sekolah->restrict_test)){
 				@elseif (strtolower($soal->type)=='u')
 				<x-textarea wire:model.defer='answer' placeholder="Masukkan jawabanmu" />
 				@elseif (strtolower($soal->type)=='jd' && is_array($soal->option))
-				<div class="relative grid justify-between grid-cols-2 gap-16 mt-5 md:justify-start md:gap-48"
+				<div class="relative grid justify-between grid-cols-2 gap-16 mt-5 md:gap-48"
 					x-data="{relations: {}, key: null, keyb: null, paired: {}}">
 					<div class="hidden" x-init="$nextTick(()=>{
 						if(@js(count($srelation))){
@@ -93,11 +93,13 @@ if(@js($user->sekolah->restrict_test)){
 					"></div>
 					<div class="relative flex flex-col gap-4">
 						@if (isset($soal->label[0])&&$soal->label[0])
-						<div class="font-bold text-center border-b-2 border-b-gray-600">{{ $soal->label[0] }}</div>
+						<div class="flex justify-end">
+							<div class="font-bold text-center border-b-2 border-b-gray-600">{{ $soal->label[0] }}</div>
+						</div>
 						@endif
 						@foreach ($soal->option as $key => $o)
 						@if (is_array($soal->itemSoal->relations[$key]))
-						<div class="flex">
+						<div class="flex justify-end">
 							<div
 								class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md hover:cursor-pointer hover:bg-gray-100"
 								x-ref='start{{ $key }}_{{ $soal->id }}' x-on:click="
@@ -137,7 +139,9 @@ if(@js($user->sekolah->restrict_test)){
 					</div>
 					<div class="relative flex flex-col gap-4" x-ref="contoh">
 						@if (isset($soal->label[1])&&$soal->label[1])
-						<div class="font-bold text-center border-b-2 border-b-gray-600">{{ $soal->label[1] }}</div>
+						<div class="flex">
+							<div class="font-bold text-center border-b-2 border-b-gray-600">{{ $soal->label[1] }}</div>
+						</div>
 						@endif
 						@foreach ($soal->option as $key => $o)
 						@if (!is_array($soal->itemSoal->relations[$key]))

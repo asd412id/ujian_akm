@@ -66,11 +66,13 @@
             <div class="relative grid justify-between grid-cols-2 gap-32">
               <div class="relative flex flex-col gap-2">
                 @if (isset($v->itemSoal->labels[0])&&$v->itemSoal->labels[0])
-                <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->itemSoal->labels[0] }}</div>
+                <div class="flex justify-end">
+                  <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->itemSoal->labels[0] }}</div>
+                </div>
                 @endif
                 @foreach ($v->itemSoal->relations as $key => $o)
                 @if (is_array($o))
-                <div class="flex">
+                <div class="flex justify-end">
                   <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md"
                     x-ref='startA{{ $k.$key }}'>
                     {!!
@@ -103,7 +105,9 @@
               </div>
               <div class="relative flex flex-col gap-2">
                 @if (isset($v->itemSoal->labels[1])&&$v->itemSoal->labels[1])
-                <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->itemSoal->labels[1] }}</div>
+                <div class="flex">
+                  <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->itemSoal->labels[1] }}</div>
+                </div>
                 @endif
                 @foreach ($v->itemSoal->relations as $key => $o)
                 @if (!is_array($o))
@@ -163,11 +167,13 @@
             <div class="relative grid justify-between grid-cols-2 gap-32">
               <div class="relative flex flex-col gap-2">
                 @if (isset($v->label[0]))
-                <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->label[0] }}</div>
+                <div class="flex justify-end">
+                  <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->label[0] }}</div>
+                </div>
                 @endif
                 @foreach ($v->itemSoal->relations as $key => $o)
                 @if (is_array($o))
-                <div class="flex">
+                <div class="flex justify-end">
                   <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md"
                     x-ref='startB{{ $k.$key }}'>
                     {!!
@@ -204,7 +210,9 @@
               </div>
               <div class="relative flex flex-col gap-2">
                 @if (isset($v->label[1]))
-                <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->label[1] }}</div>
+                <div class="flex">
+                  <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->label[1] }}</div>
+                </div>
                 @endif
                 @foreach ($v->itemSoal->options as $key => $o)
                 @if (!is_array($v->itemSoal->relations[$key]))
