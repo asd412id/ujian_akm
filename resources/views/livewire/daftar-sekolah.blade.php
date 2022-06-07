@@ -2,6 +2,7 @@
 	<div class="flex flex-col items-center justify-center gap-2 p-2 px-2 md:flex-row md:justify-between md:px-0">
 		<div class="flex items-center gap-2">
 			<x-button primary label="Tambah Data" icon="plus" wire:click='create' />
+			<x-toggle lg label="Verifikasi Email" wire:model='must_verified' />
 			<x-toggle lg label="Buka Pendaftaran" wire:model='allow_register' />
 		</div>
 		<div class="flex flex-col gap-2 md:flex-row">
@@ -73,11 +74,11 @@
 							</span>
 							<span
 								class="px-2 text-sm text-gray-600 border border-gray-100 rounded shadow whitespace-nowrap bg-gray-50">
-								Max Storage: {{ is_array($storage)?$storage['MaxSizeTotal'].' MB':'-' }}
+								Storage: {{ is_array($storage)?$storage['MaxSizeTotal'].' MB':'-' }}
 							</span>
 							<span
 								class="px-2 text-sm text-gray-600 border border-gray-100 rounded shadow whitespace-nowrap bg-gray-50">
-								Max Upload: {{ is_array($storage)?$storage['MaxSizeUpload'].' MB':'-' }}
+								Upload: {{ is_array($storage)?$storage['MaxSizeUpload'].' MB':'-' }}
 							</span>
 						</div>
 					</td>

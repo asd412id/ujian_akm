@@ -30,6 +30,7 @@ class DaftarSekolah extends Component
 	public $max_upload = 0;
 	public $is_verified = false;
 	public $allow_register = false;
+	public $must_verified = true;
 	public $configs = [];
 	protected $queryString = [
 		'page' => ['except' => 1, 'as' => 'hal']
@@ -38,6 +39,7 @@ class DaftarSekolah extends Component
 	public function getConfigs()
 	{
 		$this->configs['allow_register'] = false;
+		$this->configs['must_verified'] = true;
 		if (Storage::exists('configs.json')) {
 			$configs = file_get_contents(Storage::path('configs.json'));
 			if (isValidJSON($configs)) {
@@ -49,7 +51,8 @@ class DaftarSekolah extends Component
 	public function mount()
 	{
 		$this->getConfigs();
-		$this->allow_register = $this->configs['allow_register'];
+		$this->allow_register = isset($this->configs['allow_register']) ? $this->configs['allow_register'] : false;
+		$this->must_verified = isset($this->configs['must_verified']) ? $this->configs['must_verified'] : true;
 	}
 
 	public function updatedAllowRegister($value)
@@ -58,6 +61,13 @@ class DaftarSekolah extends Component
 		$this->configs['allow_register'] = $this->allow_register;
 		file_put_contents(Storage::path('configs.json'), json_encode($this->configs));
 		$this->notification()->success('Berhasil ' . ($value ? 'membuka' : 'menutup') . ' pendaftaran');
+	}
+	public function updatedMustVerified($value)
+	{
+		$this->getConfigs();
+		$this->configs['must_verified'] = $this->must_verified;
+		file_put_contents(Storage::path('configs.json'), json_encode($this->configs));
+		$this->notification()->success('Email ' . ($value ? 'harus diverifikasi' : 'tidak diverifikasi'));
 	}
 
 	public function create()
@@ -206,10 +216,22 @@ class DaftarSekolah extends Component
 	public function render()
 	{
 
-		$query = Sekolah::whereHas('users', function ($q) {
-			$q->where('name', 'like', "%$this->search%");
+		$query = Sekolah::when($this->verified != 'all', function ($q) {
+			$q->whereHas('users', function ($q) {
+				$q->where('role', 0);
+				if ($this->verified == 'verified') {
+					$q->whereNotNull('email_verified_at');
+				} else {
+					$q->whereNull('email_verified_at');
+				}
+			});
 		})
-			->orWhere('name', 'like', "%$this->search%")
+			->where(function ($q) {
+				$q->where('name', 'like', "%$this->search%")
+					->orWhereHas('users', function ($q) {
+						$q->where('name', 'like', "%$this->search%");
+					});
+			})
 			->paginate($this->limit);
 
 		return view('livewire.daftar-sekolah', ['data' => $query]);

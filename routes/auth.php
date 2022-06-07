@@ -10,20 +10,9 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['guest', 'guest:peserta'])->group(function () {
-    $configs = [];
-    $configs['allow_register'] = false;
-    if (Storage::exists('configs.json')) {
-        $configs = file_get_contents(Storage::path('configs.json'));
-        if (isValidJSON($configs)) {
-            $configs = json_decode($configs, true);
-        } else {
-            $configs = [];
-            $configs['allow_register'] = false;
-        }
-    }
+Route::middleware(['guest', 'guest:peserta'])->group(function () use ($configs) {
 
-    if ($configs['allow_register']) {
+    if (isset($configs['allow_register']) && $configs['allow_register']) {
         Route::get('daftar', [RegisteredUserController::class, 'create'])
             ->name('register');
 
