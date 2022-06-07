@@ -37,50 +37,57 @@ Route::middleware(['auth', 'verified', 'role:null,0,1'])->prefix('/admin')->grou
 	Route::get('/beranda', function () {
 		return view('dashboard', ['title' => 'Beranda']);
 	})->name('dashboard');
-	Route::get('/media', function () {
-		return view('media', ['title' => 'Media']);
-	})->name('media');
-
-	Route::middleware('role:null,0')->group(function () {
-		Route::get('/mapel', function () {
-			return view('pages', ['title' => 'Mata Pelajaran', 'wire' => 'mapel']);
-		})->name('mapel');
-		Route::get('/penilai', function () {
-			return view('pages', ['title' => 'Penilai', 'wire' => 'penilai']);
-		})->name('penilai');
+	Route::middleware('role:null')->group(function () {
+		Route::get('/sekolah', function () {
+			return view('pages', ['title' => 'Daftar Sekolah', 'wire' => 'daftar-sekolah']);
+		})->name('sekolah');
 	});
+	Route::middleware('role:0,1')->group(function () {
+		Route::get('/media', function () {
+			return view('media', ['title' => 'Media']);
+		})->name('media');
 
-	Route::get('/soal', function () {
-		return view('pages', ['title' => 'Daftar Soal', 'wire' => 'soal']);
-	})->name('soal');
-	Route::get('/peserta', function () {
-		return view('pages', ['title' => 'Peserta Ujian', 'wire' => 'peserta']);
-	})->name('peserta');
-	Route::get('/ruang', function () {
-		return view('pages', ['title' => 'Ruang Ujian', 'wire' => 'ruang']);
-	})->name('ruang');
-	Route::get('/soal', function () {
-		return view('pages', ['title' => 'Daftar Soal', 'wire' => 'soal']);
-	})->name('soal');
+		Route::middleware('role:0')->group(function () {
+			Route::get('/mapel', function () {
+				return view('pages', ['title' => 'Mata Pelajaran', 'wire' => 'mapel']);
+			})->name('mapel');
+			Route::get('/penilai', function () {
+				return view('pages', ['title' => 'Penilai', 'wire' => 'penilai']);
+			})->name('penilai');
+		});
 
-	Route::prefix('/jadwal')->group(function () {
-		Route::get('/', function () {
-			return view('pages', ['title' => 'Jadwal Ujian', 'wire' => 'jadwal']);
-		})->name('jadwal');
-		Route::get('/{uuid}', function () {
-			$jadwal = Jadwal::where('uuid', request()->uuid)->first();
-			if (!$jadwal) {
-				return redirect()->route('jadwal')->withErrors('Jadwal tidak tersedia');
-			}
-			return view('pages', ['title' => 'Status Peserta - ' . $jadwal->name, 'wire' => 'status-peserta', 'params' => $jadwal]);
-		})->name('statuspeserta');
-		Route::get('/{uuid}/nilai', function () {
-			$jadwal = Jadwal::where('uuid', request()->uuid)->first();
-			if (!$jadwal) {
-				return redirect()->route('jadwal')->withErrors('Jadwal tidak tersedia');
-			}
-			return view('pages', ['title' => 'Penilaian - ' . $jadwal->name, 'wire' => 'nilai', 'params' => $jadwal]);
-		})->name('nilai');
+		Route::get('/soal', function () {
+			return view('pages', ['title' => 'Daftar Soal', 'wire' => 'soal']);
+		})->name('soal');
+		Route::get('/peserta', function () {
+			return view('pages', ['title' => 'Peserta Ujian', 'wire' => 'peserta']);
+		})->name('peserta');
+		Route::get('/ruang', function () {
+			return view('pages', ['title' => 'Ruang Ujian', 'wire' => 'ruang']);
+		})->name('ruang');
+		Route::get('/soal', function () {
+			return view('pages', ['title' => 'Daftar Soal', 'wire' => 'soal']);
+		})->name('soal');
+
+		Route::prefix('/jadwal')->group(function () {
+			Route::get('/', function () {
+				return view('pages', ['title' => 'Jadwal Ujian', 'wire' => 'jadwal']);
+			})->name('jadwal');
+			Route::get('/{uuid}', function () {
+				$jadwal = Jadwal::where('uuid', request()->uuid)->first();
+				if (!$jadwal) {
+					return redirect()->route('jadwal')->withErrors('Jadwal tidak tersedia');
+				}
+				return view('pages', ['title' => 'Status Peserta - ' . $jadwal->name, 'wire' => 'status-peserta', 'params' => $jadwal]);
+			})->name('statuspeserta');
+			Route::get('/{uuid}/nilai', function () {
+				$jadwal = Jadwal::where('uuid', request()->uuid)->first();
+				if (!$jadwal) {
+					return redirect()->route('jadwal')->withErrors('Jadwal tidak tersedia');
+				}
+				return view('pages', ['title' => 'Penilaian - ' . $jadwal->name, 'wire' => 'nilai', 'params' => $jadwal]);
+			})->name('nilai');
+		});
 	});
 });
 

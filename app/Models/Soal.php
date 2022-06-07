@@ -46,9 +46,11 @@ class Soal extends Model
             if ($m->excel && Storage::exists($m->excel)) {
                 Storage::delete($m->excel);
             }
-            if (Storage::disk('public')->exists('uploads/' . userFolder() . '/' . Str::slug($m->name))) {
-                Storage::disk('public')->deleteDirectory('uploads/' . userFolder() . '/' . Str::slug($m->name));
-                Storage::disk('public')->deleteDirectory('thumbs/' . userFolder() . '/' . Str::slug($m->name));
+            if (!is_null(auth()->user()->role)) {
+                if (Storage::disk('public')->exists('uploads/' . userFolder() . '/' . Str::slug($m->name))) {
+                    Storage::disk('public')->deleteDirectory('uploads/' . userFolder() . '/' . Str::slug($m->name));
+                    Storage::disk('public')->deleteDirectory('thumbs/' . userFolder() . '/' . Str::slug($m->name));
+                }
             }
         });
     }

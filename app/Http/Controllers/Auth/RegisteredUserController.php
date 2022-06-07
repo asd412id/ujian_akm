@@ -67,7 +67,9 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        setUserFolder(auth()->user()->sekolah->id);
+        if (auth()->user()->sekolah) {
+            setUserFolder(auth()->user()->sekolah->id);
+        }
 
         return redirect(RouteServiceProvider::HOME);
     }

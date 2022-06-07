@@ -56,7 +56,9 @@ class LoginRequest extends FormRequest
 
         RateLimiter::clear($this->throttleKey());
 
-        setUserFolder(auth()->user()->sekolah->id);
+        if (auth()->user()->sekolah) {
+            setUserFolder(auth()->user()->sekolah->id);
+        }
     }
 
     /**

@@ -51,4 +51,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Mapel::class, 'user_mapel', 'user_id', 'mapel_id');
     }
+
+    public static function boot()
+    {
+        parent::boot();
+        self::deleting(function ($m) {
+            $m->mapels()->detach();
+        });
+    }
 }

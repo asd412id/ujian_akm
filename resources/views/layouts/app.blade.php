@@ -7,15 +7,17 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ (isset($title)?$title.' | ':'').config('app.name', 'Aplikasi Ujian AKM').(auth()->check() &&
+        !is_null(auth()->user()->role) &&
         auth()->user()->sekolah->name?' - '.auth()->user()->sekolah->name:'') }}</title>
     @php
     $logo = url('favicon.png');
-    if (auth()->check() && auth()->user()->sekolah->logo &&
+    if (auth()->check() && !is_null(auth()->user()->role) && auth()->user()->sekolah->logo &&
     Storage::disk('public')->exists('uploads/'.userFolder().'/'.auth()->user()->sekolah->logo)) {
     $logo = getUrl(auth()->user()->sekolah->logo);
     }
     @endphp
-    <link rel="shortcut icon" href="{{ $logo }}" {!! auth()->check() && Storage::disk('public')->
+    <link rel="shortcut icon" href="{{ $logo }}" {!! auth()->check() && !is_null(auth()->user()->role) &&
+    Storage::disk('public')->
     exists('uploads/'.userFolder().'/'.auth()->user()->sekolah->logo)?'type="'.Storage::disk('public')->mimeType('uploads/'.userFolder().'/'.auth()->user()->sekolah->logo).'"':'type="image/png"'
     !!}>
 

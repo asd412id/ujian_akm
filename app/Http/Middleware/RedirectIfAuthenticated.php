@@ -24,10 +24,14 @@ class RedirectIfAuthenticated
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 if ($guard == 'peserta') {
-                    setUserFolder(auth()->guard('peserta')->user()->sekolah->id);
+                    if (auth()->guard('peserta')->user()->sekolah) {
+                        setUserFolder(auth()->guard('peserta')->user()->sekolah->id);
+                    }
                     return redirect()->route('ujian.index');
                 } else {
-                    setUserFolder(auth()->user()->sekolah->id);
+                    if (auth()->user()->sekolah) {
+                        setUserFolder(auth()->user()->sekolah->id);
+                    }
                     return redirect(RouteServiceProvider::HOME);
                 }
             }

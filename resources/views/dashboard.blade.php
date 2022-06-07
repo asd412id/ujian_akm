@@ -1,7 +1,7 @@
 <x-app-layout>
 	<x-slot name="title">{{ $title }}</x-slot>
 	<x-slot name="header">
-		<h2 class="font-semibold text-xl text-gray-800 leading-tight">
+		<h2 class="text-xl font-semibold leading-tight text-gray-800">
 			{{ __($title) }}
 		</h2>
 	</x-slot>

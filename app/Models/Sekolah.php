@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Sekolah extends Model
 {
@@ -54,8 +55,39 @@ class Sekolah extends Model
     {
         return $this->opt && isset($this->opt['limit_login']) ? $this->opt['limit_login'] : false;
     }
+
     public function getRestrictTestAttribute()
     {
         return $this->opt && isset($this->opt['restrict_test']) ? $this->opt['restrict_test'] : false;
+    }
+
+    public function getOperatorAttribute()
+    {
+        return $this->users()->where('role', 0)->first();
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+        self::deleting(function ($m) {
+            foreach ($m->users as $d) {
+                $d->delete();
+            }
+            foreach ($m->mapels as $d) {
+                $d->delete();
+            }
+            foreach ($m->pesertas as $d) {
+                $d->delete();
+            }
+            foreach ($m->soals as $d) {
+                $d->delete();
+            }
+            foreach ($m->jadwals as $d) {
+                $d->delete();
+            }
+
+            Storage::disk('public')->deleteDirectory('uploads/' . generateUserFolder($m->id));
+            Storage::disk('public')->deleteDirectory('thumbs/' . generateUserFolder($m->id));
+        });
     }
 }

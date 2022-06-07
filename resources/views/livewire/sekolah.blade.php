@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-5 mx-auto max-w-7xl sm:px-6 lg:px-8 md:flex-row">
-	@if (auth()->user()->role==0)
+	@if (auth()->user()->role==0 && !is_null(auth()->user()->role))
 	<div class="w-full md:w-6/12">
 		<div class="p-6 bg-white border-b border-gray-200 rounded-lg shadow-sm">
 			<h3 class="text-2xl">Data Sekolah</h3>
@@ -14,6 +14,7 @@
 						kop = '[g]'+value.replace(@js(userFolder().'/'),'')+'[/g]';
 					}
 				})">
+				<x-input label="Nama Sekolah" wire:model.defer="nama_sekolah" />
 				<div>
 					<x-input x-ref="logo_input" x-model="logo" label="Nama File Logo Sekolah" wire:model.defer="logo_sekolah"
 						placeholder="Masukkan kode logo sekolah" corner-hint="Contoh: nama_file.png, logo/nama_file.png"
@@ -70,7 +71,7 @@
 	</div>
 	@endif
 	<div class="w-full md:w-6/12">
-		@if (auth()->user()->role==0)
+		@if (auth()->user()->role==0 && !is_null(auth()->user()->role))
 		@if (!is_dir(public_path('uploads'))||!Storage::disk('public')->exists('uploads'))
 		<div class="w-full p-6 mb-3 bg-white border-b border-gray-200 rounded-lg shadow-sm">
 			<p>Folder upload tidak terbaca oleh sistem! Anda tidak dapat melakukan unggahan/upload file ke aplikasi. Jika
@@ -89,8 +90,13 @@
 			<h3 class="text-2xl">Data Pengguna</h3>
 			<form wire:submit.prevent='updateUser' class="flex flex-col gap-3 mt-2">
 				<x-input label="Nama Admin" wire:model.defer="nama_admin" placeholder="Masukkan nama admin" required />
+				@if (is_null(auth()->user()->role))
 				<x-input label="Alamat Email" type="email" wire:model.defer="email" placeholder="Masukkan alamat email"
 					required />
+				@else
+				<x-input label="Alamat Email" type="email" wire:model.defer="email" placeholder="Masukkan alamat email" disabled
+					required />
+				@endif
 				<x-input label="Password" type="password" wire:model.defer="password" placeholder="Masukkan password"
 					required />
 				<x-input label="Password Baru" type="password" wire:model.defer="newpassword"

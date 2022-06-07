@@ -6,7 +6,7 @@
 				<!-- Logo -->
 				<div class="flex items-center shrink-0">
 					<a href="{{ route('dashboard') }}" class="flex items-center gap-3">
-						@if (auth()->user()->sekolah->logo &&
+						@if (!is_null(auth()->user()->role) && auth()->user()->sekolah->logo &&
 						Storage::disk('public')->exists('uploads/'.userFolder().'/'.auth()->user()->sekolah->logo))
 						<div class="block w-10 h-full text-gray-600 fill-current">
 							<img src="{{ getUrl(auth()->user()->sekolah->logo) }}" class="w-full" alt="">
@@ -16,7 +16,8 @@
 						@endif
 						<div class="flex flex-col items-center justify-start">
 							<span class="self-start text-sm">{{ env('APP_NAME','Aplikasi Ujian') }}</span>
-							<span class="self-start -mt-2 text-lg font-bold">{{ auth()->user()->sekolah->name }}</span>
+							<span class="self-start -mt-2 text-lg font-bold">{{ !is_null(auth()->user()->role) ?
+								auth()->user()->sekolah->name : 'Super Administrator' }}</span>
 						</div>
 					</a>
 				</div>
@@ -26,6 +27,7 @@
 					<x-anav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
 						{{ __('Beranda') }}
 					</x-anav-link>
+					@if (!is_null(auth()->user()->role))
 					<x-anav-link :href="route('media')" :active="request()->routeIs('media')">
 						{{ __('Media') }}
 					</x-anav-link>
@@ -46,6 +48,11 @@
 					<x-anav-link :href="route('jadwal')" :active="request()->routeIs('jadwal')">
 						{{ __('Jadwal Ujian') }}
 					</x-anav-link>
+					@else
+					<x-anav-link :href="route('sekolah')" :active="request()->routeIs('sekolah')">
+						{{ __('Daftar Sekolah') }}
+					</x-anav-link>
+					@endif
 				</div>
 			</div>
 
@@ -102,6 +109,7 @@
 			<x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
 				{{ __('Beranda') }}
 			</x-responsive-nav-link>
+			@if (!is_null(auth()->user()->role))
 			<x-responsive-nav-link :href="route('media')" :active="request()->routeIs('media')">
 				{{ __('Media') }}
 			</x-responsive-nav-link>
@@ -122,6 +130,11 @@
 			<x-responsive-nav-link :href="route('jadwal')" :active="request()->routeIs('jadwal')">
 				{{ __('Jadwal Ujian') }}
 			</x-responsive-nav-link>
+			@else
+			<x-responsive-nav-link :href="route('sekolah')" :active="request()->routeIs('sekolah')">
+				{{ __('Daftar Sekolah') }}
+			</x-responsive-nav-link>
+			@endif
 		</div>
 
 		<!-- Responsive Settings Options -->

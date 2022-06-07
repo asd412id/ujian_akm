@@ -23,7 +23,7 @@ class Sekolah extends Component
 	public $excel;
 	public $kop_sekolah;
 	public $nama_admin;
-	public $username;
+	public $email;
 	public $password;
 	public $newpassword;
 	public $renewpassword;
@@ -32,11 +32,13 @@ class Sekolah extends Component
 
 	public function mount()
 	{
-		$this->nama_sekolah = auth()->user()->sekolah->name;
-		$this->logo_sekolah = auth()->user()->sekolah->logo;
-		$this->kop_sekolah = auth()->user()->sekolah->kop ?? '[g]kop_sekolah.png[/g]';
-		$this->limitlogin = auth()->user()->sekolah->limit_login;
-		$this->restricttest = auth()->user()->sekolah->restrict_test;
+		if (!is_null(auth()->user()->role)) {
+			$this->nama_sekolah = auth()->user()->sekolah->name;
+			$this->logo_sekolah = auth()->user()->sekolah->logo;
+			$this->kop_sekolah = auth()->user()->sekolah->kop ?? '[g]kop_sekolah.png[/g]';
+			$this->limitlogin = auth()->user()->sekolah->limit_login;
+			$this->restricttest = auth()->user()->sekolah->restrict_test;
+		}
 		$this->nama_admin = auth()->user()->name;
 		$this->email = auth()->user()->email;
 	}
@@ -72,15 +74,18 @@ class Sekolah extends Component
 	{
 		$rules = [
 			'nama_admin' => 'required',
-			'email' => 'required|unique:users,email,' . auth()->user()->id,
 			'password' => 'required',
 		];
 		$msgs = [
 			'nama_admin.required' => 'Nama admin tidak boleh kosong',
-			'email.required' => 'Alamat email tidak boleh kosong',
 			'password.required' => 'Password tidak boleh kosong',
-			'email.unique' => 'Alamat email sudah digunakan'
 		];
+
+		if (is_null(auth()->user()->role)) {
+			$rules['email'] = 'required|unique:users,email,' . auth()->user()->id;
+			$msgs['email.required'] = 'Alamat email tidak boleh kosong';
+			$msgs['email.unique'] = 'Alamat email telah digunakan';
+		}
 
 		if ($this->newpassword) {
 			$rules['renewpassword'] = 'same:newpassword';
@@ -95,7 +100,9 @@ class Sekolah extends Component
 
 		$update = auth()->user();
 		$update->name = $this->nama_admin;
-		$update->email = $this->email;
+		if (is_null(auth()->user()->role)) {
+			$update->email = $this->email;
+		}
 		if ($this->newpassword) {
 			$update->password = bcrypt($this->newpassword);
 		}

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Storage;
 use Thunder\Shortcode\ShortcodeFacade;
 use Thunder\Shortcode\Shortcode\ShortcodeInterface;
 
@@ -12,9 +13,30 @@ function userFolder()
 {
   $userFolder = $_COOKIE['_userfolder'];
   if (!Storage::disk('public')->exists('uploads/' . $userFolder . '/config.php')) {
-    symlink(app_path('filemanager.php'), public_path('uploads/' . $userFolder . '/config.php'));
+    copy(app_path('filemanager.php'), public_path('uploads/' . $userFolder . '/config.php'));
   }
   return $userFolder;
+}
+
+function createUserFolder($id)
+{
+  if (!Storage::disk('public')->exists('uploads')) {
+    Storage::disk('public')->makeDirectory('uploads');
+    Storage::disk('public')->makeDirectory('thumbs');
+  }
+
+  $dir = generateUserFolder($id);
+  if (!Storage::disk('public')->exists('uploads/' . $dir)) {
+    Storage::disk('public')->makeDirectory('uploads/' . $dir);
+    Storage::disk('public')->makeDirectory('thumbs/' . $dir);
+  }
+
+  if (file_exists(public_path('uploads/' . $dir . '/config.php'))) {
+    unlink(public_path('uploads/' . $dir . '/config.php'));
+  }
+  copy(app_path('filemanager.php'), public_path('uploads/' . $dir . '/config.php'));
+
+  return public_path('uploads/' . $dir . '/config.php');
 }
 
 function setUserFolder($id)
@@ -32,7 +54,7 @@ function setUserFolder($id)
   }
 
   if (!Storage::disk('public')->exists('uploads/' . $dir . '/config.php')) {
-    symlink(app_path('filemanager.php'), public_path('uploads/' . $dir . '/config.php'));
+    copy(app_path('filemanager.php'), public_path('uploads/' . $dir . '/config.php'));
   }
 
   setcookie('_userfolder', $dir, $time, '/');
