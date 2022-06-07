@@ -171,6 +171,8 @@ class DaftarSekolah extends Component
 			}
 			if ($this->is_verified && is_null($operator->email_verified_at)) {
 				$operator->email_verified_at = now();
+			} elseif (!$this->is_verified) {
+				$operator->email_verified_at = null;
 			}
 			$operator->save();
 			$this->reset([
