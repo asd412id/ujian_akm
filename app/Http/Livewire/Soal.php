@@ -321,11 +321,11 @@ class Soal extends Component
 						$styles = $styles == '' ? $richTextElement->getText() : $styles;
 						$styles = sprintf('<sub>%s</sub>', $styles);
 					}
-					if ($richTextElement->getFont()->getSize()) {
-						$st = 1;
-						$styles = $styles == '' ? $richTextElement->getText() : $styles;
-						$styles = sprintf('<span style="font-size: %spt">%s</span>', $richTextElement->getFont()->getSize(), $styles);
-					}
+					// if ($richTextElement->getFont()->getSize()) {
+					// 	$st = 1;
+					// 	$styles = $styles == '' ? $richTextElement->getText() : $styles;
+					// 	$styles = sprintf('<span style="font-size: %spt">%s</span>', $richTextElement->getFont()->getSize(), $styles);
+					// }
 
 					if (!$st) {
 						$newtext .= $richTextElement->getText();
@@ -425,6 +425,10 @@ class Soal extends Component
 				$soal = $reader->getSheetByName('Soal')->getCell($cols[1] . ($key + 1))->getValue();
 				$imgs = isset($images[$cols[1] . ($key + 1)]) ? $images[$cols[1] . ($key + 1)] : [];
 
+				usort($imgs, function ($a, $b) {
+					return $a->getOffsetY() <=> $b->getOffsetY();
+				});
+
 				if ((!$soal || $soal == '') && (!is_array($imgs) || !count($imgs))) {
 					continue;
 				}
@@ -476,6 +480,10 @@ class Soal extends Component
 					$val = $opsi->getValue();
 					$opstyle = $opsi->getAppliedStyle();
 					$imgs = isset($images[$cols[$k - 1] . ($key + 1)]) ? $images[$cols[$k - 1] . ($key + 1)] : [];
+
+					usort($imgs, function ($a, $b) {
+						return $a->getOffsetY() <=> $b->getOffsetY();
+					});
 
 					if ((!$val || $val == '') && (!is_array($imgs) || !count($imgs))) {
 						continue;
