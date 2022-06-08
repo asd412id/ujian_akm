@@ -270,7 +270,7 @@ class Soal extends Component
 
 	public function download(ModelsSoal $soal)
 	{
-		return response()->download(storage_path('app/' . $soal->excel), 'Soal ' . $soal->name . ' - ' . env('APP_NAME', 'Aplikasi Ujian') . '.xlsx');
+		return response()->download(storage_path('app/' . $soal->excel), 'Soal ' . str_replace(['/', '\\'], '-', $soal->name) . ' - ' . env('APP_NAME', 'Aplikasi Ujian') . '.xlsx');
 	}
 
 	public function downloadFormat()
@@ -351,11 +351,18 @@ class Soal extends Component
 		$extension = $image->getExtension();
 
 		$imageName = Str::slug($this->name) . '/' . sha1($image->getName()) . '.' . $extension;
+		$imageSize = strlen($imageContents);
 
-		Storage::disk('public')->put('uploads/' . userFolder() . '/' . $imageName, $imageContents);
-		Storage::disk('public')->put('thumbs/' . userFolder() . '/' . $imageName, $imageContents);
+		$storage = file_exists(public_path('uploads/' . userFolder()) . '/config.php') ? include public_path('uploads/' . userFolder()) . '/config.php' : null;
 
-		return $imageName;
+		if (is_array($storage)) {
+			if (($imageSize <= $storage['MaxSizeUpload'] * pow(1024, 2)) && (($imageSize + folderSize(public_path('uploads/' . userFolder()))) <= $storage['MaxSizeTotal'] * pow(1024, 2))) {
+				Storage::disk('public')->put('uploads/' . userFolder() . '/' . $imageName, $imageContents);
+				Storage::disk('public')->put('thumbs/' . userFolder() . '/' . $imageName, $imageContents);
+				return $imageName;
+			}
+		}
+		return false;
 	}
 
 	public function updatedExcel()
@@ -393,6 +400,9 @@ class Soal extends Component
 		foreach ($drawings as $key => $dr) {
 			$images[$dr->getCoordinates()][$key] = $dr;
 		}
+
+		Storage::disk('public')->deleteDirectory('uploads/' . userFolder() . '/' . Str::slug($this->name));
+		Storage::disk('public')->deleteDirectory('thumbs/' . userFolder() . '/' . Str::slug($this->name));
 
 		if (count($elements)) {
 			$cols = range('A', 'Z');
@@ -439,7 +449,11 @@ class Soal extends Component
 					$inserted = [];
 					foreach ($imgs as $ki => $image) {
 						$ipath = $this->saveImage($image);
-						$img = "[g" . ($image->getOffsetX() == 0 && $image->getOffsetX() != $image->getOffsetX2() ? ' kiri' : ($image->getOffsetX2() == 0 && $image->getOffsetX() != $image->getOffsetX2() ? ' kanan' : ($image->getOffsetX() == $image->getOffsetX2() || ($image->getOffsetX() > 0 && $image->getOffsetX2() / $image->getOffsetX() <= 2.1) ? ' tengah' : ''))) . "]" . $ipath . "[/g]";
+						if (!$ipath) {
+							$img = '<p style="font-style: italic;font-weight: bold">[Gambar tidak dapat terupload]</p>';
+						} else {
+							$img = "[g" . ($image->getOffsetX() == 0 && $image->getOffsetX() != $image->getOffsetX2() ? ' kiri' : ($image->getOffsetX2() == 0 && $image->getOffsetX() != $image->getOffsetX2() ? ' kanan' : ($image->getOffsetX() == $image->getOffsetX2() || ($image->getOffsetX() > 0 && $image->getOffsetX2() / $image->getOffsetX() <= 2.1) ? ' tengah' : ''))) . "]" . $ipath . "[/g]";
+						}
 						if ($image->getOffsetY() == 0) {
 							$soal = $img . $soal;
 						} elseif ($image->getOffsetY2() == 0) {
@@ -495,7 +509,11 @@ class Soal extends Component
 						$inserted = [];
 						foreach ($imgs as $ki => $image) {
 							$ipath = $this->saveImage($image);
-							$img = "[g" . ($image->getOffsetX() == 0 && $image->getOffsetX() != $image->getOffsetX2() ? ' kiri' : ($image->getOffsetX2() == 0 && $image->getOffsetX() != $image->getOffsetX2() ? ' kanan' : ($image->getOffsetX() == $image->getOffsetX2() || ($image->getOffsetX() > 0 && $image->getOffsetX2() / $image->getOffsetX() <= 2.1) ? ' tengah' : ''))) . "]" . $ipath . "[/g]";
+							if (!$ipath) {
+								$img = '[Gambar tidak dapat terupload]';
+							} else {
+								$img = "[g" . ($image->getOffsetX() == 0 && $image->getOffsetX() != $image->getOffsetX2() ? ' kiri' : ($image->getOffsetX2() == 0 && $image->getOffsetX() != $image->getOffsetX2() ? ' kanan' : ($image->getOffsetX() == $image->getOffsetX2() || ($image->getOffsetX() > 0 && $image->getOffsetX2() / $image->getOffsetX() <= 2.1) ? ' tengah' : ''))) . "]" . $ipath . "[/g]";
+							}
 							if ($image->getOffsetY() == 0) {
 								$val = $img . $val;
 							} elseif ($image->getOffsetY2() == 0) {

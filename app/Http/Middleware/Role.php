@@ -16,11 +16,9 @@ class Role
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
-        $guards = array_map(function ($r) {
-            return $r == 'null' ? null : (int) $r;
-        }, $guards);
+        $role = is_null(auth()->user()->role) ? 'null' : strval(auth()->user()->role);
 
-        if (!in_array(auth()->user()->role, $guards)) {
+        if (!in_array($role, $guards)) {
             return redirect()->back()->withErrors('Anda tidak memiliki akses');
         }
         return $next($request);
