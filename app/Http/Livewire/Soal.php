@@ -80,7 +80,10 @@ class Soal extends Component
 			$this->data->whereIn('mapel_id', auth()->user()->mapels->pluck('id')->toArray());
 		}
 
-		$this->data = $this->data->paginate($this->limit);
+		$this->data = $this->data
+			->orderBy('name', 'asc')
+			->orderBy('id', 'desc')
+			->paginate($this->limit);
 
 		$dta = $this->data;
 		$this->IDS = $dta->pluck('id')->toArray();
@@ -544,7 +547,7 @@ class Soal extends Component
 					} else {
 						$options[$cols[$i]] = trim($val);
 						if (in_array(strtolower($jenis), ['pg', 'pgk', 'bs'])) {
-							$corrects[$cols[$i]] = $opstyle->getFill()->getColorsChanged();
+							$corrects[$cols[$i]] = $opstyle->getFill()->getColorsChanged() && $opstyle->getFill()->getStartColor()->getRGB() != 'FFFFFF';
 							if (strtolower($jenis) == 'bs') {
 								$soals .= sprintf("\n\t[opsi %s%s%s]%s[/opsi]", $cols[$i], $corrects[$cols[$i]] ? ' benar' : null, (is_array($labels) && isset($labels[$i]) ? ' label="' . $labels[$i] . '"' : null), trim($val));
 							} else {
