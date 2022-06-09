@@ -42,6 +42,8 @@ class Penilai extends Component
 			})->where('role', 1);
 		})
 			->where('role', 1)
+			->orderBy('name', 'asc')
+			->orderBy('id', 'desc')
 			->paginate($this->limit);
 		return view('livewire.penilai', ['data' => $this->data]);
 	}

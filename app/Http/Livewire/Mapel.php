@@ -36,6 +36,8 @@ class Mapel extends Component
 						->orWhere('email', 'like', "%$r%");
 				});
 		})
+			->orderBy('name', 'asc')
+			->orderBy('id', 'desc')
 			->paginate($this->limit);
 		return view('livewire.mapel', ['data' => $this->data]);
 	}
