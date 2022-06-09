@@ -481,7 +481,7 @@ class Soal extends Component
 					}
 				}
 
-				$soals .= sprintf("\n\t[teks]\n\t\t%s\n\t[/teks]", $soal);
+				$soals .= sprintf("\n\t[teks]\n\t\t%s\n\t[/teks]", trim($soal));
 
 				$options = null;
 				$labels = array_map(function ($d) {
@@ -513,7 +513,7 @@ class Soal extends Component
 						foreach ($imgs as $ki => $image) {
 							$ipath = $this->saveImage($image);
 							if (!$ipath) {
-								$img = '[Gambar tidak dapat terupload]';
+								$img = '<p style="font-style: italic;font-weight: bold">[Gambar tidak dapat terupload]</p>';
 							} else {
 								$img = "[g" . ($image->getOffsetX() == 0 && $image->getOffsetX() != $image->getOffsetX2() ? ' kiri' : ($image->getOffsetX2() == 0 && $image->getOffsetX() != $image->getOffsetX2() ? ' kanan' : ($image->getOffsetX() == $image->getOffsetX2() || ($image->getOffsetX() > 0 && $image->getOffsetX2() / $image->getOffsetX() <= 2.1) ? ' tengah' : ''))) . "]" . $ipath . "[/g]";
 							}
@@ -549,7 +549,7 @@ class Soal extends Component
 						if (in_array(strtolower($jenis), ['pg', 'pgk', 'bs'])) {
 							$corrects[$cols[$i]] = $opstyle->getFill()->getColorsChanged() && $opstyle->getFill()->getStartColor()->getRGB() != 'FFFFFF';
 							if (strtolower($jenis) == 'bs') {
-								$soals .= sprintf("\n\t[opsi %s%s%s]%s[/opsi]", $cols[$i], $corrects[$cols[$i]] ? ' benar' : null, (is_array($labels) && isset($labels[$i]) ? ' label="' . $labels[$i] . '"' : null), trim($val));
+								$soals .= sprintf("\n\t[opsi %s%s%s]%s[/opsi]", $cols[$i], $corrects[$cols[$i]] ? ' benar' : null, (is_array($labels) && isset($labels[$i]) ? ' label="' . trim($labels[$i]) . '"' : null), trim($val));
 							} else {
 								$soals .= sprintf("\n\t[opsi %s%s]%s[/opsi]", $cols[$i], $corrects[$cols[$i]] ? ' benar' : null, trim($val));
 							}
@@ -566,7 +566,7 @@ class Soal extends Component
 									}
 								}
 							}
-							$soals .= sprintf("\n\t[opsi %s%s%s]%s[/opsi]", $cols[$i], (is_array($relations[$cols[$i]]) && count($relations[$cols[$i]]) ? ' relasi=' . implode(',', $relations[$cols[$i]]) : null), (is_array($labels) && isset($labels[$i]) ? ' label="' . $labels[$i] . '"' : null), trim($val));
+							$soals .= sprintf("\n\t[opsi %s%s%s]%s[/opsi]", $cols[$i], (is_array($relations[$cols[$i]]) && count($relations[$cols[$i]]) ? ' relasi=' . trim(implode(',', $relations[$cols[$i]])) : null), (is_array($labels) && isset($labels[$i]) ? ' label="' . trim($labels[$i]) . '"' : null), trim($val));
 						}
 					}
 				}
