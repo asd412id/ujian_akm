@@ -74,7 +74,8 @@
 							</span>
 							<span
 								class="px-2 text-sm text-gray-600 border border-gray-100 rounded shadow whitespace-nowrap bg-gray-50">
-								Storage: {{ is_array($storage)?$storage['MaxSizeTotal'].' MB':'-' }}
+								Storage: {{ is_array($storage)?(round(folderSize(public_path('uploads/' .
+								generateUserFolder($v->id)))/pow(1024,2),1)).' MB / '.$storage['MaxSizeTotal'].' MB':'-' }}
 							</span>
 							<span
 								class="px-2 text-sm text-gray-600 border border-gray-100 rounded shadow whitespace-nowrap bg-gray-50">

@@ -1,7 +1,7 @@
 <?php
 return [
-  'MaxSizeTotal' => 50,
-  'MaxSizeUpload' => 2,
+  'MaxSizeTotal' => 10,
+  'MaxSizeUpload' => 1,
   'default_language' => "id",
   'show_total_size' => true,
   'show_folder_size' => true,
