@@ -48,7 +48,8 @@ class Mapel extends Component
 			->where('role', 1)
 			->where(function ($q) use ($value) {
 				$q->where('name', 'like', "%$value%")
-					->orWhere('email', 'like', "%$value%");
+					->orWhere('email', 'like', "%$value%")
+					->orWhereIn('id', $this->penilai);
 			})
 			->select('id', 'name')
 			->get()

@@ -31,8 +31,8 @@ class Jadwal extends Component
 	public $start;
 	public $end;
 	public $duration;
-	public $soals;
-	public $ruangs;
+	public $soals = [];
+	public $ruangs = [];
 	public $soal_count;
 	public $shuffle = false;
 	public $show_score = false;
@@ -90,6 +90,7 @@ class Jadwal extends Component
 	{
 		$this->listRuang = auth()->user()->sekolah->pesertas()
 			->where('ruang', 'like', "%$value%")
+			->orWhereIn('ruang', $this->ruangs)
 			->select('ruang as label', 'ruang as value')
 			->distinct('ruang')
 			->get()
@@ -100,6 +101,7 @@ class Jadwal extends Component
 	{
 		$this->listSoal = auth()->user()->sekolah->soals()
 			->where('name', 'like', "%$value%")
+			->orWhereIn('id', $this->soals)
 			->orWhereHas('mapel', function ($q) use ($value) {
 				$q->where('name', 'like', "%$value%");
 			})

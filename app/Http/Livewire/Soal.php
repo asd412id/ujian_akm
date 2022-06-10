@@ -124,6 +124,7 @@ class Soal extends Component
 				$q->whereIn('id', auth()->user()->mapels->pluck('id')->toArray());
 			})
 			->where('name', 'like', "%$value%")
+			->orWhere('id', $this->mapel)
 			->select('id', 'name')
 			->get()
 			->toArray();

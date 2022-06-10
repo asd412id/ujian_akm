@@ -52,6 +52,7 @@ class Penilai extends Component
 	{
 		$list = auth()->user()->sekolah->mapels()
 			->where('name', 'like', "%$value%")
+			->orWhereIn('id', $this->mapel)
 			->select('id', 'name')
 			->get()
 			->toArray();
