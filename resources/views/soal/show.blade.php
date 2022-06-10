@@ -9,7 +9,15 @@
     <x-card>
       <div class="flex flex-col gap-2" x-data>
         <div>
-          <div class="text-sm italic font-bold text-gray-400">#Jenis: {{ strtoupper($v->type) }}, Skor: {{ $v->score }}
+          <div class="flex items-center gap-2 w-full">
+            <span class="text-sm italic font-bold text-gray-400">
+              #Jenis: {{ strtoupper($v->type) }},
+              Skor: {{ $v->score }}
+            </span>
+            @if (in_array(strtolower($v->type),['pg','pgk','bs','jd']) && $v->shuffle)
+            <span class="px-2 italic text-xs bg-rose-50 border border-rose-100 text-rose-600 rounded shadow">Pilihan
+              Diacak</span>
+            @endif
           </div>
           <div class="flex gap-1">
             <div>{{ ($k+1) }}.</div>
