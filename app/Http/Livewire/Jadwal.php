@@ -100,6 +100,9 @@ class Jadwal extends Component
 	{
 		$this->listSoal = auth()->user()->sekolah->soals()
 			->where('name', 'like', "%$value%")
+			->orWhereHas('mapel', function ($q) use ($value) {
+				$q->where('name', 'like', "%$value%");
+			})
 			->select('name as label', 'id as value')
 			->get()
 			->toArray();

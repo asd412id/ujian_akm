@@ -91,7 +91,6 @@ class Ujian extends Component
 
 	public function setSoal()
 	{
-		$this->sid++;
 		$this->checkLogin();
 		$this->soal = $this->login->tests()->where('item_soal_id', $this->soals[$this->login->current_number]->id)->first();
 		if (!$this->soal) {
@@ -122,6 +121,7 @@ class Ujian extends Component
 				$this->soal->option = $opts;
 			}
 		}
+		$this->sid++;
 	}
 
 	public function saveAnswer()
@@ -343,7 +343,7 @@ class Ujian extends Component
 	public function stopUjian()
 	{
 		$this->dialog()->confirm([
-			'title' => 'Yakin Ingin Menyelesaikan Ujian?',
+			'title' => 'Anda telah mengerjakan <b>' . $this->login->tests()->whereNotNull('correct')->orWhereNotNull('relation')->orWhereNotNull('answer')->count() . '</b> dari <b>' . $this->login->jadwal->soal_count . '</b> soal<br>Yakin Ingin Menyelesaikan Ujian?',
 			'acceptLabel' => 'Ya, Saya Yakin',
 			'rejectLabel' => 'Tidak, Lanjutkan Kerja Soal',
 			'method' => 'stop'
