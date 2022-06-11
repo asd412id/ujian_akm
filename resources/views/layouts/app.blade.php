@@ -22,12 +22,12 @@
     !!}>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ url('css/app.css') }}">
+    <link rel="stylesheet" href="{{ url('css/app.css').'?v='.config('app.version') }}">
 
     <!-- Scripts -->
     @livewireStyles
     @wireUiScripts
-    <script src="{{ url('js/app.js') }}" defer></script>
+    <script src="{{ url('js/app.js').'?v='.config('app.version') }}" defer></script>
 </head>
 
 <body class="font-sans antialiased">

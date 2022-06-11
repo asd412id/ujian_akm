@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Storage;
 
 class RegisteredUserController extends Controller
 {
@@ -52,16 +53,31 @@ class RegisteredUserController extends Controller
             'g-recaptcha-response.captcha' => 'Verifkasi captcha bermasalah! Silahkan hubungi developer',
         ]);
 
+        $configs = [];
+        $configs['must_verified'] = true;
+        if (Storage::exists('configs.json')) {
+            $configs = file_get_contents(Storage::path('configs.json'));
+            if (isValidJSON($configs)) {
+                $configs = json_decode($configs, true);
+            }
+        }
+
         $sekolah = Sekolah::create([
             'name' => $request->sekolah
         ]);
 
-        $user = $sekolah->users()->create([
+        $userdata = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 0,
-        ]);
+        ];
+
+        if (!isset($configs['must_verified']) || (isset($configs['must_verified']) && !$configs['must_verified'])) {
+            $userdata['email_verified_at'] = now();
+        }
+
+        $user = $sekolah->users()->create($userdata);
 
         event(new Registered($user));
 

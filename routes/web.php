@@ -15,17 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-$configs = [];
-$configs['allow_register'] = false;
-$configs['must_verified'] = true;
-if (Storage::exists('configs.json')) {
-	$configs = file_get_contents(Storage::path('configs.json'));
-	if (isValidJSON($configs)) {
-		$configs = json_decode($configs, true);
-	}
-}
-
-Route::middleware(['guest:peserta', 'guest'])->group(function () use ($configs) {
+Route::middleware(['guest:peserta', 'guest'])->group(function () {
 	Route::get('/', function () {
 		return view('welcome');
 	})->name('index');
@@ -43,11 +33,7 @@ Route::middleware(['auth:peserta', 'limit_login'])->prefix('ujian')->group(funct
 	})->name('ujian.tes')->middleware('ujian');
 });
 
-$middleware = ['auth', 'role:null,0,1'];
-if (isset($configs['must_verified']) && $configs['must_verified']) {
-	array_push($middleware, 'verified');
-}
-Route::middleware($middleware)->prefix('/admin')->group(function () {
+Route::middleware(['auth', 'verified', 'role:null,0,1'])->prefix('/admin')->group(function () {
 	Route::get('/beranda', function () {
 		return view('dashboard', ['title' => 'Beranda']);
 	})->name('dashboard');

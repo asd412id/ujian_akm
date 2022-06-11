@@ -10,6 +10,15 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
+$configs = [];
+$configs['allow_register'] = false;
+if (Storage::exists('configs.json')) {
+    $configs = file_get_contents(Storage::path('configs.json'));
+    if (isValidJSON($configs)) {
+        $configs = json_decode($configs, true);
+    }
+}
+
 Route::middleware(['guest', 'guest:peserta'])->group(function () use ($configs) {
 
     if (isset($configs['allow_register']) && $configs['allow_register']) {
