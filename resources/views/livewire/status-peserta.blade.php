@@ -29,7 +29,7 @@
 						Aksi</th>
 				</tr>
 			</thead>
-			<tbody wire:poll.keep-alive.7s>
+			<tbody wire:poll.keep-alive>
 				@foreach ($data as $key => $v)
 				@php
 				$dl = $v->logins()->where('jadwal_id',$jadwal->id)->first();
