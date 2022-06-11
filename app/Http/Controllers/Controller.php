@@ -60,14 +60,18 @@ class Controller extends BaseController
 			'qrcode.required' => 'Kode QR tidak terdeteksi'
 		]);
 
-		$check = Peserta::where('token', $r->qrcode)->first();
-		if ($check) {
-			Auth::guard('peserta')->login($check, true);
+		$user = Peserta::where('token', $r->qrcode)->first();
+		if ($user) {
+			if ($user->sekolah->limit_login && $user->is_login) {
+				return response()->json(['status' => false, 'msg' => 'Anda telah login di tempat lain'], 406);
+			}
 
-			$check->is_login = true;
-			$check->session_id = session()->getId();
-			$check->save();
-			setUserFolder($check->sekolah->id);
+			Auth::guard('peserta')->login($user, true);
+
+			$user->is_login = true;
+			$user->session_id = session()->getId();
+			$user->save();
+			setUserFolder($user->sekolah->id);
 
 			return response()->json(['status' => true, 'msg' => 'Login berhasil']);
 		}
