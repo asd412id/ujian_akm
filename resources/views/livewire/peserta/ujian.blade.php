@@ -92,14 +92,14 @@ if(@js($user->sekolah->restrict_test)){
 					})
 					"></div>
 					<div class="relative flex flex-col gap-4">
-						@if (isset($soal->label[0])&&$soal->label[0])
-						<div class="flex justify-end">
+						@if (isset($soal->label[0]) && $soal->label[0])
+						<div class="flex justify-center">
 							<div class="font-bold text-center border-b-2 border-b-gray-600">{{ $soal->label[0] }}</div>
 						</div>
 						@endif
 						@foreach ($soal->option as $key => $o)
 						@if (is_array($soal->itemSoal->relations[$key]))
-						<div class="flex justify-end">
+						<div class="flex justify-center">
 							<div
 								class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md hover:cursor-pointer hover:bg-gray-100"
 								x-ref='start{{ $key }}_{{ $soal->id }}' x-on:click="
@@ -138,14 +138,14 @@ if(@js($user->sekolah->restrict_test)){
 						@endforeach
 					</div>
 					<div class="relative flex flex-col gap-4" x-ref="contoh">
-						@if (isset($soal->label[1])&&$soal->label[1])
-						<div class="flex">
+						@if (isset($soal->label[1]) && $soal->label[1])
+						<div class="flex justify-center">
 							<div class="font-bold text-center border-b-2 border-b-gray-600">{{ $soal->label[1] }}</div>
 						</div>
 						@endif
 						@foreach ($soal->option as $key => $o)
 						@if (!is_array($soal->itemSoal->relations[$key]))
-						<div class="flex">
+						<div class="flex justify-center">
 							<div
 								class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md hover:cursor-pointer hover:bg-gray-100"
 								x-ref='end{{ $key }}_{{ $soal->id }}' x-on:click="

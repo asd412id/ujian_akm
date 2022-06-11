@@ -9,13 +9,13 @@
     <x-card>
       <div class="flex flex-col gap-2" x-data>
         <div>
-          <div class="flex items-center gap-2 w-full">
+          <div class="flex items-center w-full gap-2">
             <span class="text-sm italic font-bold text-gray-400">
               #Jenis: {{ strtoupper($v->type) }},
               Skor: {{ $v->score }}
             </span>
             @if (in_array(strtolower($v->type),['pg','pgk','bs','jd']) && $v->shuffle)
-            <span class="px-2 italic text-xs bg-rose-50 border border-rose-100 text-rose-600 rounded shadow">Pilihan
+            <span class="px-2 text-xs italic border rounded shadow bg-rose-50 border-rose-100 text-rose-600">Pilihan
               Diacak</span>
             @endif
           </div>
@@ -70,14 +70,14 @@
         @elseif (strtolower($v->type)=='jd' && $v->relations)
         <div class="relative grid grid-cols-2 gap-48">
           <div class="relative flex flex-col gap-2">
-            @if (isset($v->labels[0])&&$v->labels[0])
-            <div class="flex justify-end">
+            @if (isset($v->labels[0]) && $v->labels[0])
+            <div class="flex justify-center">
               <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->labels[0] }}</div>
             </div>
             @endif
             @foreach ($v->relations as $key => $o)
             @if (is_array($o))
-            <div class="flex justify-end">
+            <div class="flex justify-center">
               <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md" x-ref='start{{ $key }}'>{!!
                 shortcode(nl2br($v->options[$key])) !!}</div>
             </div>
@@ -104,14 +104,14 @@
             @endforeach
           </div>
           <div class="relative flex flex-col gap-2">
-            @if (isset($v->labels[1])&&$v->labels[1])
-            <div class="flex">
+            @if (isset($v->labels[1]) && $v->labels[1])
+            <div class="flex justify-center">
               <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->labels[1] }}</div>
             </div>
             @endif
             @foreach ($v->relations as $key => $o)
             @if (!is_array($o))
-            <div class="flex">
+            <div class="flex justify-center">
               <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md" x-ref='end{{ $key }}'>{!!
                 shortcode(nl2br($v->options[$key])) !!}</div>
             </div>

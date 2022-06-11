@@ -65,14 +65,14 @@
             @elseif (strtolower($v->type)=='jd' && $v->itemSoal->relations)
             <div class="relative grid justify-between grid-cols-2 gap-20">
               <div class="relative flex flex-col gap-2">
-                @if (isset($v->itemSoal->labels[0])&&$v->itemSoal->labels[0])
-                <div class="flex justify-end">
+                @if (isset($v->itemSoal->labels[0]) && $v->itemSoal->labels[0])
+                <div class="flex justify-center">
                   <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->itemSoal->labels[0] }}</div>
                 </div>
                 @endif
                 @foreach ($v->itemSoal->relations as $key => $o)
                 @if (is_array($o))
-                <div class="flex justify-end">
+                <div class="flex justify-center">
                   <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md"
                     x-ref='startA{{ $k.$key }}'>
                     {!!
@@ -104,14 +104,14 @@
                 @endforeach
               </div>
               <div class="relative flex flex-col gap-2">
-                @if (isset($v->itemSoal->labels[1])&&$v->itemSoal->labels[1])
-                <div class="flex">
+                @if (isset($v->itemSoal->labels[1]) && $v->itemSoal->labels[1])
+                <div class="flex justify-center">
                   <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->itemSoal->labels[1] }}</div>
                 </div>
                 @endif
                 @foreach ($v->itemSoal->relations as $key => $o)
                 @if (!is_array($o))
-                <div class="flex">
+                <div class="flex justify-center">
                   <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md"
                     x-ref='endA{{ $k.$key }}'>
                     {!!
@@ -166,14 +166,14 @@
             @elseif (strtolower($v->type) == 'jd' && $v->itemSoal->options)
             <div class="relative grid justify-between grid-cols-2 gap-20">
               <div class="relative flex flex-col gap-2">
-                @if (isset($v->label[0]))
-                <div class="flex justify-end">
+                @if (isset($v->label[0]) && $v->label[0])
+                <div class="flex justify-center">
                   <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->label[0] }}</div>
                 </div>
                 @endif
                 @foreach ($v->itemSoal->relations as $key => $o)
                 @if (is_array($o))
-                <div class="flex justify-end">
+                <div class="flex justify-center">
                   <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md"
                     x-ref='startB{{ $k.$key }}'>
                     {!!
@@ -209,14 +209,14 @@
                 @endforeach
               </div>
               <div class="relative flex flex-col gap-2">
-                @if (isset($v->label[1]))
-                <div class="flex">
+                @if (isset($v->label[1]) && $v->label[1])
+                <div class="flex justify-center">
                   <div class="font-bold text-center border-b-2 border-b-gray-600">{{ $v->label[1] }}</div>
                 </div>
                 @endif
                 @foreach ($v->itemSoal->options as $key => $o)
                 @if (!is_array($v->itemSoal->relations[$key]))
-                <div class="flex">
+                <div class="flex justify-center">
                   <div class="px-2 py-1 text-center border border-gray-300 rounded-md shadow-md"
                     x-ref='endB{{ $k.(is_array($v->relation) && array_search([$key],$v->relation)?$key:"not-match") }}'>
                     {!!
