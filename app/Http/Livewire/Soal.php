@@ -279,7 +279,7 @@ class Soal extends Component
 
 	public function downloadFormat()
 	{
-		return response()->download(resource_path('format_soal.xlsx'), 'Format Soal' . ($this->name ? ' ' . $this->name : '') . ' - ' . env('APP_NAME', 'Aplikasi Ujian') . '.xlsx');
+		return response()->download(resource_path('format_soal.xlsx'), 'Format Soal' . ($this->name ? ' ' . str_replace(['/', '\\'], '-', $this->name) : '') . ' - ' . env('APP_NAME', 'Aplikasi Ujian') . '.xlsx');
 	}
 
 	public function getRichText($text)

@@ -392,8 +392,8 @@ class Jadwal extends Component
 		]);
 
 		return response()->streamDownload(function () use ($pdf, $jadwal) {
-			$pdf->stream('Daftar Hadir ' . $jadwal->name . '.pdf');
-		}, 'Daftar Hadir ' . $jadwal->name . '.pdf');
+			$pdf->stream('Daftar Hadir ' . str_replace(['/', '\\'], '-', $jadwal->name) . '.pdf');
+		}, 'Daftar Hadir ' . str_replace(['/', '\\'], '-', $jadwal->name) . '.pdf');
 	}
 
 	public function daftarNilai(ModelsJadwal $jadwal)
@@ -420,7 +420,7 @@ class Jadwal extends Component
 		]);
 
 		return response()->streamDownload(function () use ($pdf, $jadwal) {
-			$pdf->stream('Daftar Nilai ' . $jadwal->name . '.pdf');
-		}, 'Daftar Nilai ' . $jadwal->name . '.pdf');
+			$pdf->stream('Daftar Nilai ' . str_replace(['/', '\\'], '-', $jadwal->name) . '.pdf');
+		}, 'Daftar Nilai ' . str_replace(['/', '\\'], '-', $jadwal->name) . '.pdf');
 	}
 }
