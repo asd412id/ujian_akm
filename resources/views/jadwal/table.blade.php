@@ -60,14 +60,15 @@
               <x-button positive sm :href="route('nilai',['uuid'=>$v->uuid])" icon="pencil-alt" title="Penilaian" />
               <x-button amber sm wire:click="resetUjian('{{ $v->id }}')" icon="refresh" title="Reset Ujian" />
               <x-button purple sm wire:click="daftarNilai('{{ $v->id }}')" icon="clipboard-list" title="Daftar Nilai" />
-              @else
-              <x-button warning sm wire:click="edit('{{ $v->id }}')" icon="pencil" title="Edit" />
               @endif
               <x-button info sm wire:click="daftarHadir('{{ $v->id }}')" icon="view-list" title="Daftar Hadir" />
+              <x-button warning sm wire:click="edit('{{ $v->id }}')" icon="pencil" title="Edit" />
               <x-button negative sm wire:click="delete('{{ $v->id }}')" icon="trash" title="Hapus" />
               @else
+              <x-button info sm wire:click="daftarHadir('{{ $v->id }}')" icon="view-list" title="Daftar Hadir" />
               <x-button primary sm :href="route('statuspeserta',['uuid'=>$v->uuid])" icon="desktop-computer"
                 title="Status Peserta" />
+              <x-button warning sm wire:click="edit('{{ $v->id }}')" icon="pencil" title="Edit" />
               @endif
             </div>
           </div>

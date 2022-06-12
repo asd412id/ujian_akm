@@ -26,6 +26,7 @@ class Jadwal extends Component
 	public $sid;
 	public $ID;
 	public $IDS;
+	public $jlogin = 0;
 	public $name;
 	public $desc;
 	public $start;
@@ -218,6 +219,7 @@ class Jadwal extends Component
 		$this->resetValidation();
 
 		$this->ID = $jadwal->id;
+		$this->jlogin = $jadwal->logins()->count() || $jadwal->active;
 		$this->name = $jadwal->name;
 		$this->start = $jadwal->start;
 		$this->end = $jadwal->end;
@@ -291,10 +293,13 @@ class Jadwal extends Component
 						'created_at' => now()->lessThanOrEqualTo($jadwal->end) ? now() : $jadwal->end,
 					]);
 				}
-				return $this->notification()->success('Jadwal berhasil di ' . ($jadwal->active ? 'Aktifkan' : 'Non-Aktifkan'));
+				$this->notification()->success('Jadwal berhasil di ' . ($jadwal->active ? 'Aktifkan' : 'Non-Aktifkan'));
+			} else {
+				$this->notification()->error('Jadwal gagal di ' . ($jadwal->active ? 'Aktifkan' : 'Non-Aktifkan'));
 			}
+		} else {
+			$this->notification()->error('Jadwal gagal di ' . ($jadwal->active ? 'Aktifkan' : 'Non-Aktifkan'));
 		}
-		return $this->notification()->error('Jadwal gagal di ' . ($jadwal->active ? 'Aktifkan' : 'Non-Aktifkan'));
 	}
 
 	public function resetUjian(ModelsJadwal $jadwal)
