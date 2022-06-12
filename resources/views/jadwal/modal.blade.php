@@ -1,17 +1,17 @@
 <x-modal.card maxWidth="5xl" blur title="{{ $modalTitle }}" wire:model='modal' staticbackdrop>
   <form wire:submit.prevent='store' class="flex flex-col gap-3">
     <div class="flex gap-5">
-      <div class="flex flex-col gap-2 w-6/12">
+      <div class="flex flex-col w-6/12 gap-2">
         <x-input wire:model.defer='name' label="Nama Jadwal" placeholder="Masukkan nama jadwal" />
         <x-textarea wire:model.defer='desc' label="Deskripsi" placeholder="Masukkan deskripsi jadwal" />
         <x-datetime-picker wire:model.defer='start' label="Waktu Mulai" placeholder="Masukkan waktu mulai ujian"
           display-format="DD/MM/YYYY HH:mm" time-format="24" :disabled="boolVal($jlogin)" />
         <x-datetime-picker wire:model.defer='end' label="Waktu Selesai" placeholder="Masukkan waktu selesai ujian"
           display-format="DD/MM/YYYY HH:mm" time-format="24" :disabled="boolVal($jlogin)" />
-        <x-inputs.maskable wire:model.defer='duration' label="Masukkan Durasi Ujian (menit)"
-          placeholder="Durasi dalam menit" mask="####" :disabled="boolVal($jlogin)" />
+        <x-inputs.maskable wire:model.defer='duration' label="Durasi Ujian (menit)" placeholder="Durasi dalam menit"
+          mask="####" :disabled="boolVal($jlogin)" />
       </div>
-      <div class="flex flex-col gap-2 w-6/12">
+      <div class="flex flex-col w-6/12 gap-2">
         <x-select label="Pilih Ruangan" multiselect placeholder="Pilih Ruangan Peserta" searchable
           wire:model.defer='ruangs' :options="$listRuang" option-label="label" option-value="value"
           searchmodel="select_ruang" :disabled="boolVal($jlogin)" />

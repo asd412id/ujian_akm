@@ -9,8 +9,6 @@
         <th class="px-6 py-4 text-sm font-bold text-gray-700 uppercase bg-gray-100 border-b border-gray-100">
           Waktu</th>
         <th class="px-6 py-4 text-sm font-bold text-gray-700 uppercase bg-gray-100 border-b border-gray-100">
-          Durasi</th>
-        <th class="px-6 py-4 text-sm font-bold text-gray-700 uppercase bg-gray-100 border-b border-gray-100">
           Status</th>
         <th class="px-6 py-4 text-sm font-bold text-right text-gray-700 uppercase bg-gray-100 border-b border-gray-100">
           Aksi</th>
@@ -22,7 +20,7 @@
         <td class="px-6 py-4 border-b border-gray-100 whitespace-nowrap">
           <div class="flex flex-col">
             <span>{{ $v->name }}</span>
-            <em class="-mt-1 text-sm text-gray-500">{!! nl2br($v->desc) !!}</em>
+            <em class="-mt-1 text-xs text-gray-500">{!! nl2br($v->desc) !!}</em>
           </div>
         </td>
         <td class="px-6 py-4 border-b border-gray-100">
@@ -34,15 +32,17 @@
               !!}</span>
           </div>
         </td>
-        <td class="px-6 py-4 border-b border-gray-100 whitespace-nowrap">
-          <span class="px-3 py-1 text-sm border rounded-lg shadow-md bg-amber-50 border-amber-200 text-amber-700">{{
-            $v->start->format('d/m/Y H:i')
-            }} - {{
-            $v->end->format('d/m/Y H:i') }}</span>
-        </td>
-        <td class="px-6 py-4 border-b border-gray-100 whitespace-nowrap">
-          <span class="px-3 py-1 text-sm border rounded-lg shadow-md bg-sky-50 border-sky-200 text-sky-700">{{
-            $v->duration.' Menit' }}</span>
+        <td class="px-6 py-4 border-b border-gray-100">
+          <div class="flex flex-wrap gap-1">
+            <span
+              class="px-3 py-1 text-sm border rounded-lg shadow-md whitespace-nowrap bg-amber-50 border-amber-200 text-amber-700">{{
+              $v->start->format('d/m/Y H:i')
+              }} - {{
+              $v->end->format('d/m/Y H:i') }}</span>
+            <span
+              class="px-3 py-1 text-sm border rounded-lg shadow-md whitespace-nowrap bg-sky-50 border-sky-200 text-sky-700">{{
+              $v->duration.' Menit' }}</span>
+          </div>
         </td>
         <td class="px-6 py-4 border-b border-gray-100 whitespace-nowrap">{!! $v->active?'<span
             class="px-3 py-1 text-sm border rounded-lg shadow-md bg-positive-50 text-positive-700 border-positive-200">Aktif</span>':'<span

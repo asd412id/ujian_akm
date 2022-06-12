@@ -72,7 +72,8 @@ class Jadwal extends Component
 				});
 			})
 			->orderBy('active', 'desc')
-			->orderBy('start', 'desc')
+			->orderBy('start', 'asc')
+			->orderBy('name', 'asc')
 			->paginate($this->limit);
 
 		$dta = $this->data;
@@ -184,24 +185,28 @@ class Jadwal extends Component
 		$update = $this->ID ? ModelsJadwal::find($this->ID) : new ModelsJadwal();
 		$update->name = $this->name;
 		$update->sekolah_id = auth()->user()->sekolah_id;
-		$update->start = $this->start;
-		$update->end = $this->end;
-		$update->duration = $this->duration;
-		$update->soal_count = $this->soal_count;
-		$update->shuffle = boolval($this->shuffle);
+		if (!boolval($this->jlogin)) {
+			$update->start = Carbon::parse($this->start)->startOfMinute();
+			$update->end = Carbon::parse($this->end)->startOfMinute();
+			$update->duration = $this->duration;
+			$update->soal_count = $this->soal_count;
+			$update->shuffle = boolval($this->shuffle);
+			$update->active = boolval($this->active);
+		}
 		$update->show_score = boolval($this->show_score);
-		$update->active = boolval($this->active);
 		$update->opt = [
 			'desc' => $this->desc
 		];
 		if ($update->save()) {
-			$pids = auth()->user()->sekolah->pesertas()
-				->whereIn('ruang', $this->ruangs)->select('id')
-				->get()
-				->pluck('id')
-				->toArray();
-			$update->pesertas()->sync($pids);
-			$update->soals()->sync($this->soals);
+			if (!boolval($this->jlogin)) {
+				$pids = auth()->user()->sekolah->pesertas()
+					->whereIn('ruang', $this->ruangs)->select('id')
+					->get()
+					->pluck('id')
+					->toArray();
+				$update->pesertas()->sync($pids);
+				$update->soals()->sync($this->soals);
+			}
 			$this->reset('modal');
 			$this->resetValidation();
 			return $this->notification()->success('Data berhasil disimpan');
@@ -221,10 +226,10 @@ class Jadwal extends Component
 		$this->ID = $jadwal->id;
 		$this->jlogin = $jadwal->logins()->count() || $jadwal->active;
 		$this->name = $jadwal->name;
-		$this->start = $jadwal->start;
-		$this->end = $jadwal->end;
-		$this->duration = $jadwal->duration;
-		$this->soal_count = $jadwal->soal_count;
+		$this->start = strval($jadwal->start);
+		$this->end = strval($jadwal->end);
+		$this->duration = intval($jadwal->duration);
+		$this->soal_count = intval($jadwal->soal_count);
 		$this->shuffle = boolval($jadwal->shuffle);
 		$this->show_score = boolval($jadwal->show_score);
 		$this->active = boolval($jadwal->active);
