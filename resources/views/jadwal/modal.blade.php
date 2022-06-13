@@ -5,11 +5,11 @@
         <x-input wire:model.defer='name' label="Nama Jadwal" placeholder="Masukkan nama jadwal" />
         <x-textarea wire:model.defer='desc' label="Deskripsi" placeholder="Masukkan deskripsi jadwal" />
         <x-datetime-picker wire:model.defer='start' label="Waktu Mulai" placeholder="Masukkan waktu mulai ujian"
-          display-format="DD/MM/YYYY HH:mm" time-format="24" :disabled="boolVal($jlogin)" />
+          display-format="DD/MM/YYYY HH:mm" time-format="24" />
         <x-datetime-picker wire:model.defer='end' label="Waktu Selesai" placeholder="Masukkan waktu selesai ujian"
-          display-format="DD/MM/YYYY HH:mm" time-format="24" :disabled="boolVal($jlogin)" />
+          display-format="DD/MM/YYYY HH:mm" time-format="24" />
         <x-inputs.maskable wire:model.defer='duration' label="Durasi Ujian (menit)" placeholder="Durasi dalam menit"
-          mask="####" :disabled="boolVal($jlogin)" />
+          mask="####" />
       </div>
       <div class="flex flex-col w-6/12 gap-2">
         <x-select label="Pilih Ruangan" multiselect placeholder="Pilih Ruangan Peserta" searchable
@@ -22,7 +22,7 @@
           mask="####" :disabled="boolVal($jlogin)" />
         <x-toggle lg label="Acak Soal" wire:model.defer="shuffle" :disabled="boolVal($jlogin)" />
         <x-toggle lg label="Tampilkan Nilai Akhir" wire:model.defer="show_score" />
-        <x-toggle lg label="Aktifkan Jadwal" wire:model.defer="active" :disabled="boolVal($jlogin)" />
+        <x-toggle lg label="Aktifkan Jadwal" wire:model.defer="active" />
       </div>
     </div>
     <div class="flex justify-end gap-2">

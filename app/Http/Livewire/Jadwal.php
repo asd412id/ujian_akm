@@ -185,14 +185,14 @@ class Jadwal extends Component
 		$update = $this->ID ? ModelsJadwal::find($this->ID) : new ModelsJadwal();
 		$update->name = $this->name;
 		$update->sekolah_id = auth()->user()->sekolah_id;
+		$update->start = Carbon::parse($this->start)->startOfMinute();
+		$update->end = Carbon::parse($this->end)->startOfMinute();
+		$update->duration = $this->duration;
 		if (!boolval($this->jlogin)) {
-			$update->start = Carbon::parse($this->start)->startOfMinute();
-			$update->end = Carbon::parse($this->end)->startOfMinute();
-			$update->duration = $this->duration;
 			$update->soal_count = $this->soal_count;
 			$update->shuffle = boolval($this->shuffle);
-			$update->active = boolval($this->active);
 		}
+		$update->active = boolval($this->active);
 		$update->show_score = boolval($this->show_score);
 		$update->opt = [
 			'desc' => $this->desc
