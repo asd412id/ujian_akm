@@ -162,11 +162,11 @@ class Nilai extends Component
 						}
 						break;
 					case 'is':
-						similar_text(strtolower(str_replace("\n", '', $v->answer)), strtolower(str_replace("\n", '', $soalOri->answer)), $percent);
+						similar_text(strtolower(str_replace("\n", '', trim($v->answer))), strtolower(str_replace("\n", '', trim($soalOri->answer))), $percent);
 						$v->pscore = round($percent) < 50 ? round($percent) / 100 * $soalOri->score : $soalOri->score;
 						break;
 					case 'u':
-						similar_text(strtolower(str_replace("\n", '', $v->answer)), strtolower(str_replace("\n", '', $soalOri->answer)), $percent);
+						similar_text(strtolower(str_replace("\n", '', trim($v->answer))), strtolower(str_replace("\n", '', trim($soalOri->answer))), $percent);
 						$v->pscore = round($percent) < 50 ? round($percent) / 100 * $soalOri->score : $soalOri->score;
 						break;
 				}
