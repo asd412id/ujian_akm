@@ -188,7 +188,7 @@ if(@js($user->sekolah->restrict_test)){
 		x-init="opennum=false">
 		<div
 			class="flex flex-col justify-center w-full gap-3 p-3 text-xl border rounded-lg shadow-md bg-amber-50 border-amber-100 text-amber-600 md:text-md md:p-5"
-			x-ref="timer" wire:poll.keep-alive='checkTimer'>
+			x-ref="timer" wire:poll.keep-alive.15s='checkTimer'>
 			<div class="flex flex-col items-center" x-data="{cdown: @entangle('timer'), countdown: null}" x-init="$nextTick(()=>{
 				countdown = timer(cdown);
 				countdown.init();
