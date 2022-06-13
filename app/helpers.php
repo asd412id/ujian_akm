@@ -242,7 +242,7 @@ function soal(ShortcodeInterface $s)
   $data = [
     'num' => intval($num),
     'type' => $type,
-    'score' => doubleval($score) <= 0 ? 1 : doubleval($score),
+    'score' => doubleval($score),
     'text' => $content,
     'options' => $options,
     'shuffle' => $shuffle,

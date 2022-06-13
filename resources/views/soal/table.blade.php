@@ -41,9 +41,11 @@
               <x-button green icon="download" xs label="Excel" title="Download Soal Excel"
                 wire:click="download('{{ $v->id }}')" />
               @endif
+              @if (!$v->tests()->count())
               <x-button warning icon="pencil" xs label="Edit" wire:click="edit('{{ $v->id }}')" />
               @if (!$v->jadwals()->count())
               <x-button red icon="trash" xs label="Hapus" wire:click="delete('{{ $v->id }}')" />
+              @endif
               @endif
             </div>
           </div>

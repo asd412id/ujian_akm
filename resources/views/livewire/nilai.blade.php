@@ -3,6 +3,7 @@
 		<div class="w-full p-2 md:p-0">
 			<x-input type="search" wire:model.debounce.500ms='search' placeholder="Cari Data" right-icon="search" />
 		</div>
+		<x-button primary label="Kalkulasi Ulang Nilai" class="whitespace-nowrap" wire:click='calculateScore' />
 	</div>
 	<div class="w-full shadow-sm bg-white border-b border-gray-200 rounded-lg">
 		<table class="text-left w-full border-collapse">

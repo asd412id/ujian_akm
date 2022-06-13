@@ -645,11 +645,7 @@ class Soal extends Component
 			->whereIn('id', $this->IDS)->get();
 		if (count($soals)) {
 			foreach ($soals as $key => $s) {
-				$items = $s->item_soals->pluck('id')->toArray();
-				if (!$s->jadwals()
-					->whereHas('tests', function ($q) use ($items) {
-						$q->whereIn('item_soal_id', $items);
-					})->count()) {
+				if (!$s->tests()->count()) {
 					$s->delete();
 					$count++;
 				}

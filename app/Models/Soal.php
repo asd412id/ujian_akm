@@ -18,6 +18,11 @@ class Soal extends Model
         return $this->hasMany(ItemSoal::class);
     }
 
+    public function tests()
+    {
+        return $this->hasMany(PesertaTest::class);
+    }
+
     public function mapel()
     {
         return $this->belongsTo(Mapel::class);
@@ -43,6 +48,7 @@ class Soal extends Model
         parent::boot();
         self::deleting(function ($m) {
             $m->item_soals()->delete();
+            $m->tests()->delete();
             if ($m->excel && Storage::exists($m->excel)) {
                 Storage::delete($m->excel);
             }

@@ -168,17 +168,18 @@ class Ujian extends Component
 							if ($soalOri->corrects[$key] == $correct[$key]) {
 								$i++;
 							} else {
+								$i--;
 								$j++;
 							}
 						}
 					}
-					if ($i <= 0) {
+					if ($i < 0) {
 						$i = 0;
 					}
 					if ($i <= $ccount && $j > count($soalOri->corrects)) {
 						$i = 0;
 					}
-					$this->soal->pscore = $i / ($ccount * $soalOri->score <= 0 ? 1 : $ccount * $soalOri->score);
+					$this->soal->pscore = $ccount > 0 ? $i / $ccount * $soalOri->score : $soalOri->score;
 					$this->soal->correct = $correct;
 				} else {
 					$this->soal->pscore = 0;
@@ -204,7 +205,7 @@ class Ujian extends Component
 							}
 						}
 					}
-					$this->soal->pscore = $i / ($ccount * $soalOri->score <= 0 ? 1 : $ccount * $soalOri->score);
+					$this->soal->pscore = $ccount > 0 ? $i / $ccount * $soalOri->score : $soalOri->score;
 					$this->soal->relation = $r;
 				} else {
 					$this->soal->pscore = 0;
@@ -220,17 +221,17 @@ class Ujian extends Component
 						$i++;
 					}
 				}
-				$this->soal->pscore = $i / (count($soalOri->options) * $soalOri->score <= 0 ? 1 : count($soalOri->options) * $soalOri->score);
+				$this->soal->pscore = $i / count($soalOri->options) * $soalOri->score;
 				$this->soal->correct = $r;
 				break;
 			case 'is':
 				similar_text(strtolower(str_replace("\n", '', $this->answer)), strtolower(str_replace("\n", '', $soalOri->answer)), $percent);
-				$this->soal->pscore = round($percent) / (100 * $soalOri->score <= 0 ? 1 : 100 * $soalOri->score);
+				$this->soal->pscore = round($percent) < 50 ? round($percent) / 100 * $soalOri->score : $soalOri->score;
 				$this->soal->answer = $this->answer;
 				break;
 			case 'u':
 				similar_text(strtolower(str_replace("\n", '', $this->answer)), strtolower(str_replace("\n", '', $soalOri->answer)), $percent);
-				$this->soal->pscore = round($percent) / (100 * $soalOri->score <= 0 ? 1 : 100 * $soalOri->score);
+				$this->soal->pscore = round($percent) < 50 ? round($percent) / 100 * $soalOri->score : $soalOri->score;
 				$this->soal->answer = $this->answer;
 				break;
 		}
@@ -343,7 +344,7 @@ class Ujian extends Component
 	public function stopUjian()
 	{
 		$this->dialog()->confirm([
-			'title' => 'Anda telah mengerjakan <b>' . $this->login->tests()->whereNotNull('correct')->orWhereNotNull('relation')->orWhereNotNull('answer')->count() . '</b> dari <b>' . $this->login->jadwal->soal_count . '</b> soal<br>Yakin Ingin Menyelesaikan Ujian?',
+			'title' => 'Anda telah mengerjakan <b>' . $this->login->tests()->where('peserta_id', $this->login->peserta->id)->whereNotNull('correct')->orWhereNotNull('relation')->orWhereNotNull('answer')->count() . '</b> dari <b>' . $this->login->jadwal->soal_count . '</b> soal<br>Yakin Ingin Menyelesaikan Ujian?',
 			'acceptLabel' => 'Ya, Saya Yakin',
 			'rejectLabel' => 'Tidak, Lanjutkan Kerja Soal',
 			'method' => 'stop'

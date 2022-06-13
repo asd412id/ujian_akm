@@ -65,6 +65,119 @@ class Nilai extends Component
 		return view('livewire.nilai', ['data' => $query]);
 	}
 
+	public function calculateScore()
+	{
+		$this->dialog()->confirm([
+			'title' => 'Lakukan kalkulasi ulang nilai?',
+			'description' => 'Nilai yang sudah diinput akan dikalkulasi ulang!',
+			'acceptLabel' => 'Ya, Kalkulasi Nilai',
+			'rejectLabel' => 'Tidak, Batalkan',
+			'method' => 'doCalculateScore'
+		]);
+	}
+
+	public function doCalculateScore()
+	{
+		if ($this->jadwal->tests()->count()) {
+			foreach ($this->jadwal->tests as $v) {
+				$soalOri = $v->itemSoal;
+				switch ($v->type) {
+					case 'pg':
+						if (is_array($v->correct) && count($v->correct)) {
+							foreach ($v->option as $key => $o) {
+								if ($v->correct[$key]) {
+									if ($soalOri->corrects[$key] == $v->correct[$key]) {
+										$v->pscore = $soalOri->score;
+									} else {
+										$v->pscore = 0;
+									}
+								}
+							}
+						} else {
+							$v->pscore = 0;
+						}
+						break;
+					case 'pgk':
+						$ccount = 0;
+						foreach ($soalOri->corrects as $key => $v1) {
+							$ccount += $v1 ? 1 : 0;
+						}
+
+						if (is_array($v->correct) && count($v->correct)) {
+							$i = 0;
+							$j = 0;
+							foreach ($v->option as $key => $o) {
+								if ($v->correct[$key]) {
+									$j++;
+									if ($soalOri->corrects[$key] == $v->correct[$key]) {
+										$i++;
+									} else {
+										$i--;
+										$j++;
+									}
+								}
+							}
+							if ($i < 0) {
+								$i = 0;
+							}
+							if ($i <= $ccount && $j > count($soalOri->corrects)) {
+								$i = 0;
+							}
+							$v->pscore = $ccount > 0 ? $i / $ccount * $soalOri->score : $soalOri->score;
+						} else {
+							$v->pscore = 0;
+						}
+						break;
+					case 'jd':
+						$ccount = 0;
+						foreach ($soalOri->relations as $key => $v1) {
+							$ccount += is_array($v1) ? 1 : 0;
+						}
+						if (is_array($v->relation) && count($v->relation)) {
+							$i = 0;
+							foreach ($v->relation as $key => $v2) {
+								if ($v2 != null) {
+									foreach ($v2 as $vr) {
+										if (in_array($vr, $soalOri->relations[$key])) {
+											$i++;
+										}
+									}
+								}
+							}
+							$v->pscore = $ccount > 0 ? $i / $ccount * $soalOri->score : $soalOri->score;
+						} else {
+							$v->pscore = 0;
+						}
+						break;
+					case 'bs':
+						$i = 0;
+						$v->pscore = 0;
+						if (is_array($v->correct) && count($v->correct)) {
+							foreach ($v->correct as $key => $v) {
+								if (boolval($v) == $soalOri->corrects[$key]) {
+									$i++;
+								}
+							}
+							$v->pscore = $i / count($soalOri->options) * $soalOri->score;
+						}
+						break;
+					case 'is':
+						similar_text(strtolower(str_replace("\n", '', $v->answer)), strtolower(str_replace("\n", '', $soalOri->answer)), $percent);
+						$v->pscore = round($percent) < 50 ? round($percent) / 100 * $soalOri->score : $soalOri->score;
+						break;
+					case 'u':
+						similar_text(strtolower(str_replace("\n", '', $v->answer)), strtolower(str_replace("\n", '', $soalOri->answer)), $percent);
+						$v->pscore = round($percent) < 50 ? round($percent) / 100 * $soalOri->score : $soalOri->score;
+						break;
+				}
+				$v->save();
+			}
+			$this->notification()->success('Nilai ujian selesai dikalkulasi!');
+		} else {
+			$this->notification()->warning('Tidak ada peserta ujian yang mengerjakan soal!');
+		}
+	}
+
 	public function inputNilai(PesertaLogin $login)
 	{
 		$this->login = $login;

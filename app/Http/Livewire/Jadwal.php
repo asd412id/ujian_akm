@@ -293,10 +293,13 @@ class Jadwal extends Component
 			$jadwal->active = !$jadwal->active;
 			if ($jadwal->save()) {
 				if (!$jadwal->active) {
-					$jadwal->logins()->update([
-						'end' => now()->lessThanOrEqualTo($jadwal->end) ? now() : $jadwal->end,
-						'created_at' => now()->lessThanOrEqualTo($jadwal->end) ? now() : $jadwal->end,
-					]);
+					foreach ($jadwal->logins as $l) {
+						if (is_null($l->end)) {
+							$l->end = now()->lessThanOrEqualTo($l->created_at->addMinutes($l->jadwal->duration)) ? now() : $l->created_at->addMinutes($l->jadwal->duration);
+							$l->created_at = now()->lessThanOrEqualTo($l->created_at->addMinutes($l->jadwal->duration)) ? now() : $l->created_at->addMinutes($l->jadwal->duration);
+							$l->save();
+						}
+					}
 				}
 				$this->notification()->success('Jadwal berhasil di ' . ($jadwal->active ? 'Aktifkan' : 'Non-Aktifkan'));
 			} else {
