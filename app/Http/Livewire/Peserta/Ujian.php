@@ -178,7 +178,7 @@ class Ujian extends Component
 					if ($i <= $ccount && $j > count($soalOri->corrects)) {
 						$i = 0;
 					}
-					$this->soal->pscore = $i / $ccount * $soalOri->score;
+					$this->soal->pscore = $i / ($ccount * $soalOri->score <= 0 ? 1 : $ccount * $soalOri->score);
 					$this->soal->correct = $correct;
 				} else {
 					$this->soal->pscore = 0;
@@ -204,7 +204,7 @@ class Ujian extends Component
 							}
 						}
 					}
-					$this->soal->pscore = $i / $ccount * $soalOri->score;
+					$this->soal->pscore = $i / ($ccount * $soalOri->score <= 0 ? 1 : $ccount * $soalOri->score);
 					$this->soal->relation = $r;
 				} else {
 					$this->soal->pscore = 0;
@@ -220,17 +220,17 @@ class Ujian extends Component
 						$i++;
 					}
 				}
-				$this->soal->pscore = $i / count($soalOri->options) * $soalOri->score;
+				$this->soal->pscore = $i / (count($soalOri->options) * $soalOri->score <= 0 ? 1 : count($soalOri->options) * $soalOri->score);
 				$this->soal->correct = $r;
 				break;
 			case 'is':
 				similar_text(strtolower(str_replace("\n", '', $this->answer)), strtolower(str_replace("\n", '', $soalOri->answer)), $percent);
-				$this->soal->pscore = round($percent) / 100 * $soalOri->score;
+				$this->soal->pscore = round($percent) / (100 * $soalOri->score <= 0 ? 1 : 100 * $soalOri->score);
 				$this->soal->answer = $this->answer;
 				break;
 			case 'u':
 				similar_text(strtolower(str_replace("\n", '', $this->answer)), strtolower(str_replace("\n", '', $soalOri->answer)), $percent);
-				$this->soal->pscore = round($percent) / 100 * $soalOri->score;
+				$this->soal->pscore = round($percent) / (100 * $soalOri->score <= 0 ? 1 : 100 * $soalOri->score);
 				$this->soal->answer = $this->answer;
 				break;
 		}

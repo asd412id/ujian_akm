@@ -115,7 +115,9 @@ class StatusPeserta extends Component
 
 		if ($this->login == 'all' || $this->login == '!login') {
 			$notLogin = $this->jadwal->pesertas()
-				->whereDoesntHave('logins')
+				->whereDoesntHave('logins', function ($q) {
+					$q->where('jadwal_id', $this->jadwal->id);
+				})
 				->where(function ($q) {
 					$q->where('name', 'like', "%$this->search%")
 						->orWhere('uid', 'like', "%$this->search%")
