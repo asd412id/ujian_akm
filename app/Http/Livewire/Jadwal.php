@@ -319,7 +319,7 @@ class Jadwal extends Component
 		}
 		$this->ID = $jadwal->id;
 		$this->dialog()->confirm([
-			'title' => 'Reset Ujian dan Nilai Peserta?',
+			'title' => 'Ujian peserta pada jadwal ini akan terhapus!<br>Reset Ujian dan Nilai Peserta?',
 			'description' => 'Ujian ini telah diikuti oleh ' . $jadwal->logins()->count() . ' Peserta',
 			'acceptLabel' => 'Ya',
 			'rejectLabel' => 'Tidak',

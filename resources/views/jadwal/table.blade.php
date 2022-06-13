@@ -58,7 +58,7 @@
               @if (!$v->active)
               @if ($v->logins()->count())
               <x-button positive sm :href="route('nilai',['uuid'=>$v->uuid])" icon="pencil-alt" title="Penilaian" />
-              <x-button amber sm wire:click="resetUjian('{{ $v->id }}')" icon="refresh" title="Reset Ujian" />
+              <x-button teal sm wire:click="resetUjian('{{ $v->id }}')" icon="refresh" title="Reset Ujian" />
               <x-button purple sm wire:click="daftarNilai('{{ $v->id }}')" icon="clipboard-list" title="Daftar Nilai" />
               @endif
               <x-button info sm wire:click="daftarHadir('{{ $v->id }}')" icon="view-list" title="Daftar Hadir" />
