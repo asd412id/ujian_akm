@@ -66,7 +66,7 @@ if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->st
 	<div class="w-full ">
 		<div class="p-5 bg-white border-b border-gray-200 rounded-lg shadow-md">
 			<div class="text-2xl font-bold underline underline-offset-8">Daftar Ujian</div>
-			<div class="flex flex-col gap-3 mt-5" wire:poll.keep-alive.15s='checkJadwal'>
+			<div class="flex flex-col gap-3 mt-5" wire:poll.keep-alive.30s='checkJadwal'>
 				@if (is_null($login))
 				@forelse ($jadwal as $j)
 				<a href="#" wire:click.prevent='join({{ $j->id }})'>
