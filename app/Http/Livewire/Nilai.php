@@ -173,7 +173,6 @@ class Nilai extends Component
 				$v->save();
 			}
 			$this->notification()->success('Nilai ujian selesai dikalkulasi!');
-			$this->render();
 		} else {
 			$this->notification()->warning('Tidak ada peserta ujian yang mengerjakan soal!');
 		}
