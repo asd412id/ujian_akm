@@ -170,6 +170,7 @@ class Nilai extends Component
 						$v->pscore = round($percent) < 50 ? round($percent) / 100 * $soalOri->score : $soalOri->score;
 						break;
 				}
+				$v->score = $soalOri->score;
 				$v->save();
 			}
 			$this->notification()->success('Nilai ujian selesai dikalkulasi!');
