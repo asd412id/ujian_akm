@@ -344,7 +344,11 @@ class Ujian extends Component
 	public function stopUjian()
 	{
 		$this->dialog()->confirm([
-			'title' => 'Anda telah mengerjakan <b>' . $this->login->tests()->where('peserta_id', $this->login->peserta->id)->whereNotNull('correct')->orWhereNotNull('relation')->orWhereNotNull('answer')->count() . '</b> dari <b>' . $this->login->jadwal->soal_count . '</b> soal<br>Yakin Ingin Menyelesaikan Ujian?',
+			'title' => 'Anda telah mengerjakan <b>' . $this->login->tests()
+				->where('peserta_id', $this->login->peserta->id)
+				->where(function ($q) {
+					$q->whereNotNull('correct')->orWhereNotNull('relation')->orWhereNotNull('answer');
+				})->count() . '</b> dari <b>' . $this->login->jadwal->soal_count . '</b> soal<br>Yakin Ingin Menyelesaikan Ujian?',
 			'acceptLabel' => 'Ya, Saya Yakin',
 			'rejectLabel' => 'Tidak, Lanjutkan Kerja Soal',
 			'method' => 'stop'
