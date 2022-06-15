@@ -125,7 +125,6 @@ class StatusPeserta extends Component
 				})
 				->orderBy('uid', 'asc')
 				->orderBy('name', 'asc')
-				->orderBy('created_at', 'asc')
 				->get();
 		}
 

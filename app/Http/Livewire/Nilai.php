@@ -43,7 +43,6 @@ class Nilai extends Component
 			})
 			->orderBy('uid', 'asc')
 			->orderBy('name', 'asc')
-			->orderBy('created_at', 'asc')
 			->get();
 
 		$notLogin = $this->jadwal->pesertas()
@@ -57,7 +56,6 @@ class Nilai extends Component
 			})
 			->orderBy('uid', 'asc')
 			->orderBy('name', 'asc')
-			->orderBy('created_at', 'asc')
 			->get();
 
 
