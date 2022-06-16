@@ -6,16 +6,18 @@ use App\Models\ItemSoal;
 use App\Models\Jadwal;
 use App\Models\PesertaLogin;
 use Livewire\Component;
+use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
 class Index extends Component
 {
 	use Actions;
+	use WithPagination;
 
 	public $user;
 	public $jadwal;
 	public $login = null;
-	public $logins;
+	protected $logins;
 	public $jid;
 
 	public function getJadwal()
@@ -46,8 +48,7 @@ class Index extends Component
 		if (!$this->login) {
 			$this->logins = $this->user->logins()
 				->orderBy('end', 'desc')
-				->limit(5)
-				->get();
+				->paginate(10);
 			$this->jadwal = $this->user->jadwals()
 				->where('active', true)
 				->where('start', '<=', now())
@@ -79,7 +80,7 @@ class Index extends Component
 	public function render()
 	{
 		$this->getJadwal();
-		return view('livewire.peserta.index');
+		return view('livewire.peserta.index', ['dataLogins' => $this->logins]);
 	}
 
 	public function join(Jadwal $jadwal)

@@ -144,7 +144,7 @@ if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->st
 					</div>
 				</x-card>
 				@endforelse
-				@foreach ($logins as $j)
+				@foreach ($dataLogins as $j)
 				<x-card cardClasses="bg-gray-50 border-gray-100 cursor-pointer hover:bg-gray-100 opacity-50"
 					wire:loading.class='cursor-not-allowed'>
 					<div class="flex flex-col gap-1">
@@ -215,6 +215,7 @@ if(@js($user->sekolah->restrict_test && (!is_null($login) && !is_null($login->st
 					</div>
 				</x-card>
 				@endforeach
+				{!! $dataLogins->links() !!}
 				@else
 				@php
 				$loginJadwal = $login->jadwal;
