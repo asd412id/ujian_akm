@@ -151,8 +151,8 @@ class Nilai extends Component
 						$i = 0;
 						$v->pscore = 0;
 						if (is_array($v->correct) && count($v->correct)) {
-							foreach ($v->correct as $key => $v) {
-								if (boolval($v) == $soalOri->corrects[$key]) {
+							foreach ($v->correct as $key => $v1) {
+								if (boolval($v1) == $soalOri->corrects[$key]) {
 									$i++;
 								}
 							}
