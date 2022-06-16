@@ -9,7 +9,7 @@ class PesertaLogin extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['reset', 'end', 'created_at'];
+    protected $fillable = ['reset', 'end', 'created_at', 'opt'];
 
     public $dates = [
         'start',
@@ -24,7 +24,8 @@ class PesertaLogin extends Model
     }
 
     public $casts = [
-        'soal' => 'array'
+        'soal' => 'array',
+        'opt' => 'array',
     ];
 
     public function soals()
@@ -44,6 +45,11 @@ class PesertaLogin extends Model
     public function tests()
     {
         return $this->hasMany(PesertaTest::class, 'login_id');
+    }
+
+    public function getChangedNilaiAttribute()
+    {
+        return isset($this->opt['changed_nilai']) ? $this->opt['changed_nilai'] : false;
     }
 
     public static function boot()

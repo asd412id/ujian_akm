@@ -171,6 +171,11 @@ class Nilai extends Component
 				$v->score = $soalOri->score;
 				$v->save();
 			}
+			$this->jadwal->logins()->update([
+				'opt' => [
+					'changed_nilai' => false
+				]
+			]);
 			$this->notification()->success('Nilai ujian selesai dikalkulasi!');
 		} else {
 			$this->notification()->warning('Tidak ada peserta ujian yang mengerjakan soal!');
@@ -198,6 +203,11 @@ class Nilai extends Component
 		foreach ($this->score as $id => $n) {
 			$this->login->tests()->where('id', $id)->update(['pscore' => $n]);
 		}
+		$this->login->update([
+			'opt' => [
+				'changed_nilai' => true
+			]
+		]);
 		$this->modal = false;
 		$this->notification()->success('Nilai berhasil disimpan');
 	}

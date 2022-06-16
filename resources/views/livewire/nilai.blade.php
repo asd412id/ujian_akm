@@ -36,8 +36,8 @@
 				$dl->created_at->addMinutes($jadwal->duration)->getPreciseTimestamp(3);
 				}
 				@endphp
-				<tr class="{{ !$dl || ($dl && $dl->reset == 3) ? 'bg-gray-50 opacity-30 italic' : 'hover:bg-gray-100' }}"
-					wire:ignore wire:key='{{ $totalscore }}' x-data="{cdown: @js($cdown), countdown: null}">
+				<tr class="{{ $dl && $dl->changed_nilai ? 'bg-amber-100' : 'hover:bg-gray-100' }}"
+					x-data="{cdown: @js($cdown), countdown: null}">
 					<td class="px-6 py-4 border-b border-gray-100">
 						<div class="flex flex-col">
 							<span>{{ $v->name }}</span>
