@@ -46,6 +46,7 @@ class Index extends Component
 		if (!$this->login) {
 			$this->logins = $this->user->logins()
 				->orderBy('end', 'desc')
+				->limit(5)
 				->get();
 			$this->jadwal = $this->user->jadwals()
 				->where('active', true)
@@ -55,6 +56,9 @@ class Index extends Component
 					$q->where('peserta_id', $this->user->id);
 				})
 				->orderBy('start', 'asc')
+				->orderBy('created_at', 'asc')
+				->orderBy('name', 'asc')
+				->limit(1)
 				->get();
 		}
 	}
