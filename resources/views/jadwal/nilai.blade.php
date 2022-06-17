@@ -152,8 +152,9 @@
                 <td class="px-3 py-2 align-top border border-gray-400">{!! shortcode(nl2br($o)) !!}</td>
                 <td class="px-3 py-2 text-center align-top border border-gray-400">
                   {!! isset($v->correct[$key])&&$v->correct[$key]?'<span
-                    class="px-2 border rounded-md shadow-md bg-positive-50 text-positive-600 border-positive-100">Benar</span>':'<span
-                    class="px-2 border rounded-md shadow-md bg-negative-50 text-negative-600 border-negative-100">Salah</span>'
+                    class="px-2 border rounded-md shadow-md bg-positive-50 text-positive-600 border-positive-100">Benar</span>':(isset($v->correct[$key])?'<span
+                    class="px-2 border rounded-md shadow-md bg-negative-50 text-negative-600 border-negative-100">Salah</span>':'<span
+                    class="px-2 border rounded-md shadow-md bg-gray-50 text-gray-600 border-gray-100">X</span>')
                   !!}
                 </td>
               </tr>
