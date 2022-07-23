@@ -54,7 +54,7 @@ class RegisteredUserController extends Controller
         ]);
 
         $configs = [];
-        $configs['must_verified'] = true;
+        $configs['must_verified'] = false;
         if (Storage::exists('configs.json')) {
             $configs = file_get_contents(Storage::path('configs.json'));
             if (isValidJSON($configs)) {

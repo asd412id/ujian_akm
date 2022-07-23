@@ -23,3 +23,13 @@ Merupakan aplikasi ujian yang dikembangkan menggunakan framework Laravel dengan 
 - Selanjutnya jalankan **_php artisan migrate --seed_**
 - Jalankan web server, dan buka *http://localhost/folder_ujian/public*
 - Agar folder *public* tidak muncul pada alamat url, ubah root folder pada aplikasi web server agar mengarah ke folder **_public_** aplikasi ujian
+
+## Petunjuk Awal Penggunaan
+- Halaman awal adalah halaman login siswa yang dilengkapi dengan scan kode QR jika website menggunakan ssl/https
+- Klik *Masuk Sebagai Administrator*. Masukkan email: *admin@ujianq.id* dan password: *passwordAdmin* untuk login sebagai Super Admin
+- Klik tambah data, dan masukkan data sekolah termasuk email dan password login, simpan
+- Logout dari akun Super Admin, dan masukkan email dan password sekolah yang sudah dibuat tadi
+- Atur data sekolah seperti mata pelajaran, penilai, siswa, dan ujian
+
+## Info Tambahan
+Jika ada pertanyaan, silahkan mampir di laman [Facebook](https://www.facebook.com/aezdar) atau [Twitter](https://www.twitter.com/asd412id)
