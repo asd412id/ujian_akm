@@ -18,6 +18,13 @@
 </head>
 
 <body>
+  @php
+  $ruangs = array_unique($jadwal->pesertas()->select('ruang')->distinct('ruang')->get()->pluck('ruang')->toArray());
+  @endphp
+  @if (!count($ruangs))
+  <h4 class="text-center" style="font-weight:bold;padding:0;margin: 0">Peserta tidak tersedia atau terhapus</h4>
+  @else
+  @foreach ($ruangs as $rkey => $j)
   {!! shortcode(auth()->user()->sekolah->kop) !!}
   <div class="mt-2">
     <h4 class="text-center" style="font-weight:bold;padding:0;margin: 0">DAFTAR HADIR</h4>
@@ -37,9 +44,7 @@
             <tr>
               <td>Kelas/Ruang</td>
               <td align="center">:</td>
-              <td class="text-left">{{ implode(',
-                ',array_unique($jadwal->pesertas()->select('ruang')->distinct('ruang')->get()->pluck('ruang')->toArray()))
-                }}</td>
+              <td class="text-left">{{ $j}}</td>
             </tr>
             <tr>
               <td>Jumlah Peserta</td>
@@ -71,13 +76,13 @@
           <th style="border: solid 1px #000" class="p-2 border-b-2 text-center">No.</th>
           <th style="border: solid 1px #000" class="p-2 border-b-2 text-center">ID Peserta</th>
           <th style="border: solid 1px #000" class="p-2 border-b-2 text-center">Nama</th>
-          <th style="border: solid 1px #000" class="p-2 border-b-2 text-center">Kelas/Ruang</th>
           <th style="border: solid 1px #000" class="p-2 border-b-2 text-center">Tanda Tangan</th>
         </tr>
       </thead>
       <tbody>
         @php
         $datapeserta = $jadwal->pesertas()
+        ->where('ruang',$j)
         ->orderBy('uid', 'asc')
         ->orderBy('name', 'asc')
         ->orderBy('created_at', 'asc')
@@ -88,7 +93,6 @@
           <td style="border: solid 1px #000" class="px-2 py-3 text-center">{{ ($key+1).'.' }}</td>
           <td style="border: solid 1px #000" class="px-2 py-3">{{ $p->uid }}</td>
           <td style="border: solid 1px #000" class="px-2 py-3">{{ $p->name }}</td>
-          <td style="border: solid 1px #000" class="px-2 py-3">{{ $p->ruang }}</td>
           <td style="border: solid 1px #000;{{ $key!=0&&($key+1)%2==0?'padding-left: 75px':'' }}" class="px-2 py-3">
             {{ $key+1 }}.
           </td>
@@ -155,6 +159,11 @@
       </tr>
     </table>
   </div>
+  @if ($rkey
+  < count($ruangs)-1) <pagebreak />
+  @endif
+  @endforeach
+  @endif
 </body>
 
 </html>
