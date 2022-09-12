@@ -160,9 +160,7 @@
       </tr>
     </table>
   </div>
-  @if ($rkey
-  < count($ruangs)-1) <pagebreak />
-  @endif
+  <pagebreak />
   @endforeach
   @endif
 </body>
