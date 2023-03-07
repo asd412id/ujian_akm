@@ -174,6 +174,9 @@ class Peserta extends Component
 			if (!$this->password) {
 				$update->password = bcrypt($this->uid);
 				$update->password_string = $this->uid;
+			}else{
+				$update->password = bcrypt($this->password);
+				$update->password_string = $this->password;
 			}
 		}
 		if ($this->ID && $this->password) {
